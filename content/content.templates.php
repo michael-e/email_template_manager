@@ -11,6 +11,19 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 		$this->_uri = URL . '/symphony/extension/emailtemplates';
 	}
 	
+	function __viewEdit(){
+		$this->setPageType('table');
+		$this->setTitle(__('Symphony &ndash; Email Templates &ndash; Edit'));
+		try{
+			$templates = EmailTemplateManager::load('testa');
+		}
+		catch(EmailTemplateManagerException $e){
+			$this->pageAlert('An error occurred. ' . $e->getMessage());
+			$this->__viewIndex();
+		}
+		//var_dump($templates);
+	}
+	
 	function __viewIndex(){
 		$this->setPageType('table');
 		$this->setTitle(__('Symphony &ndash; Email Templates'));

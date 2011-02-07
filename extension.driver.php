@@ -24,4 +24,16 @@
 				)
 			);
 		}
+		
+		public function install(){
+			if(!is_dir(dirname(__FILE__) . '/templates')){
+				try{
+					mkdir(dirname(__FILE__) . '/templates');
+				}
+				catch(Exception $e){
+					return false;
+				}
+			}
+			return true;
+		}
 	}
