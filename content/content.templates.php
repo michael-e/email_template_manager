@@ -11,6 +11,12 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 		$this->_uri = URL . '/symphony/extension/email_templates';
 	}
 	
+	public function __actionIndex(){
+		if($_POST['with-selected'] == 'delete'){
+			$this->_delete($_POST['items']);
+		}
+	}
+	
 	public function __actionNew(){
 		$this->_context[0] = 'new';
 		$this->__actionEdit();
@@ -46,7 +52,7 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 						"{$this->_uri}/templates/edit/{$template->getHandle()}/"
 					)
 				);
-				$col_name->appendChild(Widget::Input("items[" . ++$i . "]", null, 'checkbox'));
+				$col_name->appendChild(Widget::Input("items[" . $template->getHandle() . "]", null, 'checkbox'));
 				
 				$tmp = Array();
 				$prv = Array();
@@ -121,6 +127,17 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 	
 	public function __actionEdit() {
 		list($mode,$handle, $template) = $this->_context;
+		
+		if(isset($_POST['action']['delete'])){
+			if($this->_delete($handle)){
+				redirect($this->_uri. '/templates/');
+			}
+			else{
+				return;
+			}
+		}
+		
+		
 		
 		//Edit Template xsl Files
 		if(!is_null($template)){
@@ -409,6 +426,28 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 			// TODO: log error?
 			throw new FrontendPageNotFoundException();
 		}
+	}
+	
+	function _delete($handles){
+		if(!is_array($handles)){
+			$handles = Array($handles=>$handles);
+		}
+		foreach($handles as $handle=>$val){
+			if(is_dir(dirname(__FILE__) . '/../templates/' . basename($handle))){
+				try{
+					unlink(dirname(__FILE__) . '/../templates/' . basename($handle));
+				}
+				catch(Exception $e){
+					$this->pageAlert(__('Directory could not be removed. Please check permissions on <code>/extensions/email_templates/templates/'.basename($handle).'</code>.'), Alert::ERROR);
+					return false;
+				}
+			}
+			else{
+				$this->pageAlert(__('Directory could not be removed. Directory <code>/extensions/email_templates/templates/'.basename($handle).'</code> does not exist.'), Alert::ERROR);
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	function __getclassName(){
