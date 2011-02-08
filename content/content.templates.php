@@ -187,6 +187,7 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 			$filename = EmailTemplateManager::getFileNameFromHandle(EmailTemplateManager::getHandleFromName($fields['name']));
 			if(!is_dir(dirname(__FILE__) . '/../templates/' . EmailTemplateManager::getHandleFromName($fields['name'])) && $this->_context[0] == 'edit')
 				@rename(dirname(__FILE__) . '/../templates/' . EmailTemplateManager::getHandleFromName($handle), dirname(__FILE__) . '/../templates/' . EmailTemplateManager::getHandleFromName($fields['name']));
+				@unlink(dirname(__FILE__) . '/../templates/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/' . EmailTemplateManager::getFileNameFromHandle(EmailTemplateManager::getHandleFromName($handle)));
 			$file = dirname(__FILE__) . '/../templates/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/' . $filename;
 			
 			if(!is_writable(dirname($file)) || !$write = General::writeFile($file, $tpl, Symphony::Configuration()->get('write_mode', 'file')))
