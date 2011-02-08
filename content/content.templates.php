@@ -238,10 +238,56 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 	protected function _editClass(){
 		list(,$handle, $template) = $this->_context;
 		if(!empty($handle)){
-			$this->setPageType('table');
+			$this->setPageType('form');
 			$this->setTitle(__('Symphony &ndash; Email Templates &ndash; Edit'));
 			try{
 				$templates = EmailTemplateManager::load($handle);
+					
+				$templ = $templates->getConfig();
+				$templ = (array)$templ['templates'];
+				
+				foreach($templ as $name=>$tm){
+					$out .= Widget::Anchor(__("Edit ".ucfirst($name)." Template"), $this->_uri . '/templates/edit/' . $handle . '/' . $name, __('Edit Email Template'), 'button', NULL, array('accesskey' => 't'))->generate();
+				}
+				
+				$this->appendSubheading(__($templates->getName() ? $templates->getName() : __('Untitled')),$out);
+				
+				$fields = $templates->about;
+				$fields = array_merge($fields, $templates->config);
+				
+				$fieldset = new XMLElement('fieldset');
+				$fieldset->setAttribute('class', 'settings');
+				$fieldset->appendChild(new XMLElement('legend', __('Template Settings')));
+
+				$label = Widget::Label(__('Title'));
+				$label->appendChild(Widget::Input(
+					'fields[name]', General::sanitize($fields['name'])
+				));
+
+				if(isset($this->_errors['name'])) {
+					$label = $this->wrapFormElementWithError($label, $this->_errors['name']);
+				}
+
+				$fieldset->appendChild($label);
+				//$this->Form->appendChild($fieldset);
+				
+				$label = Widget::Label(__('Data Sources'));
+
+				$manager = new DatasourceManager($this->_Parent);
+				$datasources = $manager->listAll();
+
+				$options = array();
+
+				if(is_array($datasources) && !empty($datasources)) {
+					if(!is_array($fields['data_sources'])) $fields['data_sources'] = array();
+					foreach ($datasources as $name => $about) $options[] = array(
+						$name, in_array($name, $fields['datasources']), $about['name']
+					);
+				}
+
+				$label->appendChild(Widget::Select('fields[data_sources][]', $options, array('multiple' => 'multiple')));
+				$fieldset->appendChild($label);
+				$this->Form->appendChild($fieldset);
 			}
 			catch(EmailTemplateManagerException $e){
 				// TODO: log error?
