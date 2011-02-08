@@ -38,8 +38,8 @@ Class EmailTemplateManager extends Manager{
 		$result = Array();
 		foreach(new DirectoryIterator(EMAILTEMPLATES . "/templates") as $dir){
 			if($dir->isDir() && !$dir->isDot()){
-				if(file_exists($dir->getPathname() . '/config.php') && file_exists($dir->getPathname() . '/template.xsl')){
-					$result[] = $dir->getFileName();
+				if(file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))){
+					$result[] = self::load($dir->getFileName());
 				}
 			}	
 		}
@@ -51,7 +51,7 @@ Class EmailTemplateManager extends Manager{
 	}
 	
 	public function getHandleFromFilename($filename){
-		return sscanf($filename, 'template.%[^.php].php');
+		return sscanf($filename, 'class.%[^.php].php');
 	}
 	
 	public function getFileNameFromHandle($handle){

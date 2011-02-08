@@ -7,29 +7,82 @@ require_once(CORE . '/class.frontend.php');
 Class EmailTemplate extends XSLTPage{
 	
 	protected $_frontendPage;
+	public $ExtensionManager;
 	
-	protected $_name = null;
-	
-	protected $_config = Array();
+	protected $config = Array();
 	
 	public function __construct(){
 		parent::__construct();
-		//$this->_frontendPage = new FrontendPage(Symphony::Engine());
-
+		//needed for debug devkit.
+		$this->ExtensionManager = Symphony::ExtensionManager();
 	}
 	
-	public function setName($name){
-		$this->_name = $name;
+	public function getAbout(){
+		return $this->about;
+	}
+	
+	public function getConfig(){
+		return $this->config;
 	}
 	
 	public function getName(){
-		return $this->_name;
+		return $this->about['name'];
 	}
 	
-	public function processDatasources(){
-		$this->_frontendPage->processDatasources('test', $XML = new XMLElement('data'));
-		return $XML;
-	}	
+	public function getHandle(){
+		return strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', $this->getName())));
+	}
+	
+	protected function processDatasources(){
+		if(is_null($this->_frontendPage)) $this->_frontendPage = new FrontendPage(Symphony::Engine());
+		$xml = new XMLElement('data');
+		$xml->setIncludeHeader(true);
+		$this->_frontendPage->processDatasources(implode(', ',$this->config['datasources']), $xml);
+		return $xml;
+	}
+	
+	public function render($filter_template = false){
+		if(!empty($this->config['datasources']) && !empty($this->config['templates'])){
+			$result = Array();
+			if(is_null($this->getXML())){
+				try{
+					$this->setXML($this->processDatasources()->generate(true, 0));
+				}
+				catch(Exception $e){
+					throw new EmailTemplateException('Error including XML for rendering');
+				}
+			}
+			foreach($this->config['templates'] as $type=>$template){
+				$this->setXSL(dirname(__FILE__) . '/../templates/' . $this->getHandle() . '/' . $template, true);
+				$res = $this->generate();
+				if($res){
+					$result[$type] = $res;
+				}
+				else{
+					throw new EmailTemplateException('Error compiling xml to xslt');
+				}
+			}
+			return $result;
+		}
+	}
+	
+	public function preview($template){
+		$output = $this->render($template);
+		$output = $output[$template];
+		$devkit = null;
+		Symphony::ExtensionManager()->notifyMembers(
+			'FrontendDevKitResolve', '/frontend/',
+			array(
+				'full_generate'	=> true,
+				'devkit'		=> &$devkit
+			)
+		);
+		if (!is_null($devkit)) {
+			$devkit->prepare($this, Array('filelocation'=>dirname(__FILE__) . '/../templates/' . $this->getHandle() . '/template.' . $template . '.xsl'), $this->_xml, $this->_param, $output);
+			return $devkit->build();
+		}
+		return $output;
+	}
 }
 
 Class EmailTemplateException extends Exception{
