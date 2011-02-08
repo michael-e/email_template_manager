@@ -57,6 +57,10 @@ Class EmailTemplateManager extends Manager{
 	public function getFileNameFromHandle($handle){
 		return sprintf('class.%s.php', strtolower($handle));
 	}
+	
+	public function getHandleFromName($name){
+		return strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', $name)));
+	}
 }
 
 Class EmailTemplateManagerException extends Exception{

@@ -98,7 +98,7 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 			);
 		}
 		list(,$handle, $template) = $this->_context;
-		if(!is_null($template)){
+		if(!is_null($template) && $template != 'saved'){
 			$this->_editXSL();
 		}
 		else{
@@ -136,6 +136,63 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 		
 		//Edit Template Configuration Files
 		else{
+		
+			$fields = $_POST['fields'];
+			$tpl_file = dirname(__FILE__) . '/templates/class.tpl';
+			
+			// new entry
+			if(!is_null($handle)){
+				$templ = null;
+				try{
+					$templ = EmailTemplateManager::load($handle);
+					if($templ->config['editable'] != true){
+						throw new FrontendPageNotFoundException();
+						// do something fancy here, like redirect to the info page
+					}
+				}
+				catch(EmailTemplateManagerException $e){
+					throw new FrontendPageNotFoundException();
+				}
+			}
+			
+			$tpl = @file_get_contents($tpl_file);
+			//TODO: sanitation
+			$about = Array(
+				'name' => $fields['name'],
+				'author name' => Administration::instance()->Author->getFullName(),
+				'author email' => Administration::instance()->Author->get('email'),
+				'author website' => URL,
+				'release date' => DateTimeObj::getGMT('c'),
+				'version' => '1.0'
+			);
+			$datasources = null;
+			foreach((Array)$fields['data_sources'] as $ds){
+				$datasources .= "\r\n \t\t\t'$ds',";
+			}
+			$config = Array(
+				'datasources' => $datasources,
+				'templates'	  => "'html' => 'template.html.xsl',\r\n\t\t\t'text' => 'template.text.xsl'"
+			);
+			
+			$tpl = str_replace('<!-- CLASS NAME -->', ucfirst(EmailTemplateManager::getHandleFromName($fields['name'])), $tpl);
+			$tpl = str_replace('<!-- NAME -->', $about['name'], $tpl);
+			$tpl = str_replace('<!-- AUTHOR NAME -->', $about['author name'], $tpl);
+			$tpl = str_replace('<!-- AUTHOR EMAIL -->', $about['author email'], $tpl);
+			$tpl = str_replace('<!-- AUTHOR WEBSITE -->', $about['author website'], $tpl);
+			$tpl = str_replace('<!-- RELEASE DATE -->', $about['release date'], $tpl);
+			$tpl = str_replace('<!-- VERSION -->', $about['version'], $tpl);
+			$tpl = str_replace('<!-- DATASOURCES -->', $config['datasources'], $tpl);
+			$tpl = str_replace('<!-- TEMPLATES -->', $config['templates'], $tpl);
+			
+			$filename = EmailTemplateManager::getFileNameFromHandle(EmailTemplateManager::getHandleFromName($fields['name']));
+			if(!is_dir(dirname(__FILE__) . '/../templates/' . EmailTemplateManager::getHandleFromName($fields['name'])) && $this->_context[0] == 'edit')
+				@rename(dirname(__FILE__) . '/../templates/' . EmailTemplateManager::getHandleFromName($handle), dirname(__FILE__) . '/../templates/' . EmailTemplateManager::getHandleFromName($fields['name']));
+			$file = dirname(__FILE__) . '/../templates/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/' . $filename;
+			
+			if(!is_writable(dirname($file)) || !$write = General::writeFile($file, $tpl, Symphony::Configuration()->get('write_mode', 'file')))
+				$this->pageAlert(__('Failed to write Template to <code>%s</code>. Please check permissions.', array(dirname(dirname(__FILE__) . '/../templates/'))), Alert::ERROR);
+			
+			redirect($this->_uri . '/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved/');
 		}
 	}
 	
@@ -239,6 +296,7 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 		list(,$handle, $template) = $this->_context;
 		if(!empty($handle)){
 			$this->setPageType('form');
+			$this->Form->setAttribute('action', $this->_uri . '/templates/edit/' . $handle . '/');
 			$this->setTitle(__('Symphony &ndash; Email Templates &ndash; Edit'));
 			try{
 				$templates = EmailTemplateManager::load($handle);
@@ -288,6 +346,21 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 				$label->appendChild(Widget::Select('fields[data_sources][]', $options, array('multiple' => 'multiple')));
 				$fieldset->appendChild($label);
 				$this->Form->appendChild($fieldset);
+				
+				$div = new XMLElement('div');
+				$div->setAttribute('class', 'actions');
+				$div->appendChild(Widget::Input(
+					'action[save]', __('Save Changes'),
+					'submit', array('accesskey' => 's')
+				));
+				
+				if($this->_context[0] == 'edit'){
+					$button = new XMLElement('button', __('Delete'));
+					$button->setAttributeArray(array('name' => 'action[delete]', 'class' => 'button confirm delete', 'title' => __('Delete this page'), 'accesskey' => 'd'));
+					$div->appendChild($button);
+				}
+
+				$this->Form->appendChild($div);
 			}
 			catch(EmailTemplateManagerException $e){
 				// TODO: log error?
