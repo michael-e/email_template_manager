@@ -433,9 +433,20 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 			$handles = Array($handles=>$handles);
 		}
 		foreach($handles as $handle=>$val){
-			if(is_dir(dirname(__FILE__) . '/../templates/' . basename($handle))){
+			$dir = dirname(__FILE__) . '/../templates/' . basename($handle);
+			if(is_dir($dir)){
 				try{
-					unlink(dirname(__FILE__) . '/../templates/' . basename($handle));
+					if(!(($files = @scandir($dir)) && count($files) <= 2)){
+						foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir)) as $filename => $cur){
+							if(is_dir($filename)){
+								rmdir($filename);
+							}
+							elseif(is_file($filename)){
+								unlink($filename);
+							}
+						}
+					}
+					rmdir($dir);
 				}
 				catch(Exception $e){
 					$this->pageAlert(__('Directory could not be removed. Please check permissions on <code>/extensions/email_templates/templates/'.basename($handle).'</code>.'), Alert::ERROR);
