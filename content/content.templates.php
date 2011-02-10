@@ -447,6 +447,7 @@ Class contentExtensionemail_templatestemplates extends AdministrationPage {
 						}
 					}
 					rmdir($dir);
+					redirect($this->_uri . '/templates');
 				}
 				catch(Exception $e){
 					$this->pageAlert(__('Directory could not be removed. Please check permissions on <code>/extensions/email_templates/templates/'.basename($handle).'</code>.'), Alert::ERROR);

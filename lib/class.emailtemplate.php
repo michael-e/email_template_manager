@@ -15,7 +15,7 @@ Class EmailTemplate extends XSLTPage{
 		parent::__construct();
 		//needed for debug devkit.
 		$this->ExtensionManager = Symphony::ExtensionManager();
-		$this->_param = array(
+		$this->addParams(array(
 			'today' => DateTimeObj::get('Y-m-d'),
 			'current-time' => DateTimeObj::get('H:i'),
 			'this-year' => DateTimeObj::get('Y'),
@@ -25,7 +25,12 @@ Class EmailTemplate extends XSLTPage{
 			'website-name' => Symphony::Configuration()->get('sitename', 'general'),
 			'root' => URL,
 			'workspace' => URL . '/workspace'
-		);
+		));
+	}
+		
+	public function addParams($params = array()){
+		if(!is_array($params)) return false;
+		return ($this->setRunTimeParam(array_merge($this->_param, $params)));
 	}
 	
 	public function getAbout(){
