@@ -1,48 +1,190 @@
 <?php
 
-if(!defined('EMAILTEMPLATES')) define('EMAILTEMPLATES',EXTENSIONS . "/email_templates");
+if(!defined('EMAILTEMPLATES')) define('EMAILTEMPLATES', WORKSPACE . "/email-templates");
+if(!defined('ETDIR')) define('ETDIR', EXTENSIONS . "/email_templates");
 require_once(TOOLKIT . '/class.manager.php');
-require_once(EMAILTEMPLATES . '/lib/class.emailtemplate.php');
+require_once(TOOLKIT . '/class.extensionmanager.php');
+require_once('class.emailtemplate.php');
 
 Class EmailTemplateManager extends Manager{
+
+	static $errorMsg = "";
 	
 	public function load($handle){
+		$classname = self::getClassNameFromHandle($handle);
+		if(self::find($handle)){
+			return new $classname;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public function find($handle){
 		$filename = self::getFileNameFromHandle($handle);
 		$classname = self::getClassNameFromHandle($handle);
-		if(is_dir(EMAILTEMPLATES . "/templates/$handle")){
-			if(file_exists(EMAILTEMPLATES . "/templates/$handle/$filename")){
-				include_once(EMAILTEMPLATES . "/templates/$handle/$filename");
+		if(is_dir(EMAILTEMPLATES . "/$handle")){
+			if(file_exists(EMAILTEMPLATES . "/$handle/$filename")){
+				include_once(EMAILTEMPLATES . "/$handle/$filename");
 				if(class_exists($classname)){
-					return new $classname;
+					return EMAILTEMPLATES . "/$handle/$filename";
 				}
 				else{
-					throw new EmailTemplateManagerException("Class $classname not set in file $filename");
+					self::$errorMsg = "Class $classname not set in file $filename";
+					return false;
 				}
 			}
 			else{
-				throw new EmailTemplateManagerException("File $filename not set for template $handle");
+				self::$errorMsg = "File $filename not set for template $handle";
+				return false;
 			}
 		}
 		else{
-			throw new EmailTemplateManagerException("Template $handle not found");
-		}	
+			$found = false;
+			foreach(ExtensionManager::listInstalledHandles() as $extension){
+				if(is_dir(EXTENSIONS . '/' . $extension . '/email-templates/' . $handle)){
+					if(file_exists(EXTENSIONS . '/' . $extension . "/email-templates/$handle/$filename")){
+						include_once(EXTENSIONS . '/' . $extension . "/email-templates/$handle/$filename");
+						if(class_exists($classname)){
+							$found = true;
+							return EXTENSIONS . '/' . $extension . "/email-templates/$handle";
+						}
+						else{
+							self::$errorMsg = "Class $classname not set in file $filename";
+							return false;
+						}
+					}
+					else{
+						self::$errorMsg = "File $filename not set for template $handle";
+						return false;
+					}
+				}
+			}
+			if(!$found){
+				self::$errorMsg = "Template $handle not found";
+				return false;
+			}
+		}
 	}
 	
-	public function create($handle, $config){
+	public function create($config){
+		$handle = self::getHandleFromName($config['name']);
+		if(!self::find($handle)){
+			if(!is_dir(EMAILTEMPLATES . "/$handle")){
+				mkdir(EMAILTEMPLATES . "/$handle");
+				if(!self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config), true)) return false;
+				if(!self::_writeLayout($handle, 'text', file_get_contents(ETDIR . '/content/templates/xsl-text.tpl'), true)) return false;
+				if(!self::_writeLayout($handle, 'html',  file_get_contents(ETDIR . '/content/templates/xsl-html.tpl'), true)) return false;
+				return true;
+			}
+			else{
+				self::$errorMsg = 'Dir ' . EMAILTEMPLATES . "/$handle already exists.";
+				return false;
+			}
+		}
+		else{
+			self::$errorMsg = "Template $handle already exists.";
+			return false;
+		}
 	}
 	
-	public function edit($handle, $config){
-	}
+	public function editConfig($handle, $config){
+		if($template = self::load($handle)){
+			if($template->config['editable'] == true){
+				if(self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config))){
 
+					$old_dir = self::find($handle);
+					$new_dir = dirname($old_dir) . '/' . self::getHandleFromName($config['name']);
+					
+					if(self::getHandleFromName($config['name']) != $handle){
+						if(!is_dir($new_dir)){
+							if(!rename($old_dir, $new_dir)) return false;
+							return rename($new_dir . '/' . self::getFileNameFromHandle($handle), $new_dir . '/' . self::getFileNameFromHandle(self::getHandleFromName($config['name'])));
+						}
+					}
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				self::$errorMsg = "Template $handle is set to read-only mode.";
+				return false;
+			}
+		}
+		else{
+			self::$errorMsg = "Template $handle can not be found.";
+			return false;
+		}
+	}
+	
+	public function editLayout($handle, $layout, $content){
+		if($template = self::load($handle)){
+			if(in_array($layout, array_keys($template->config['layouts']), true)){
+				return self::_writeLayout($handle, $layout, $content);
+			}
+			else{
+				self::$errorMsg = "Layout $layout is not set with template $handle.";
+				return false;
+			}
+		}
+		else{
+			self::$errorMsg = "Template $handle not found.";
+			return false;
+		}
+	}
+	
+	public function delete($handle){
+		$dir = dirname(self::find($handle));
+		if(is_dir($dir) && is_writeable($dir)){
+			try{
+				if(!(($files = @scandir($dir)) && count($files) <= 2)){
+					foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir)) as $filename => $cur){
+						if(is_dir($filename)){
+							rmdir($filename);
+						}
+						elseif(is_file($filename)){
+							unlink($filename);
+						}
+					}
+				}
+				return rmdir($dir);
+			}
+			catch(Exception $e){
+				self::$errorMsg = "Directory $dir could not be removed. Please check permissions.";
+				return false;
+			}
+		}
+		else{
+			self::$errorMsg = "Template $handle can not be found.";
+			return false;
+		}
+	}
+	
 	public function listAll(){
 		$result = Array();
-		foreach(new DirectoryIterator(EMAILTEMPLATES . "/templates") as $dir){
+		
+		foreach(new DirectoryIterator(EMAILTEMPLATES) as $dir){
 			if($dir->isDir() && !$dir->isDot()){
 				if(file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))){
 					$result[] = self::load($dir->getFileName());
 				}
 			}	
 		}
+		
+		foreach(ExtensionManager::listInstalledHandles() as $extension){
+			if(is_dir(EXTENSIONS . '/' . $extension . "/email-templates")){
+				foreach(new DirectoryIterator(EXTENSIONS . '/' . $extension . "/email-templates") as $dir){
+					if($dir->isDir() && !$dir->isDot()){
+						if(file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))){
+							$result[] = self::load($dir->getFileName());
+						}
+					}	
+				}
+			}
+		}
+		
 		return $result;
 	}
 	
@@ -59,8 +201,121 @@ Class EmailTemplateManager extends Manager{
 	}
 	
 	public function getHandleFromName($name){
-		return strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', $name)));
+		return ltrim(strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', $name))), "\x49..\x58");
 	}
+	public function getFileNameFromLayout($layout = 'html'){
+		return sprintf('template.%s.xsl', strtolower($layout));
+	}
+	
+	/**
+	 * Writes configuration values to the template configuration file.
+	 * 
+	 * The name of the template to write configuration values to
+	 * @param string $handle
+	 * The configuration to write
+	 * @param string $contents
+	 * The location to write to, defaults to the workspace dir
+	 * @param string $file
+	 * @param bool $overwrite
+	 *
+	 * @return bool
+	 */
+	protected function _writeConfig($handle, $contents, $new = false){
+		if($dir = ($new) ? EMAILTEMPLATES . '/' . $handle : dirname(self::find($handle))){
+			if(is_dir($dir) && is_writeable($dir)){
+				if((is_writeable($dir . '/' . self::getFileNameFromHandle($handle))) || !file_exists($dir . '/' . self::getFileNameFromHandle($handle))){
+					file_put_contents($dir . '/' . self::getFileNameFromHandle($handle), $contents);
+					return true;
+				}
+				else{
+					return false;
+					self::$errorMsg = "File $dir " . '/' . self::getFileNameFromHandle($handle) . " can not be written to. Please check permissions";
+				}
+			}
+			else{
+				self::$errorMsg = "Directory $dir does not exist, or is not writeable.";
+				return false;
+			}
+		}
+		else{
+			self::$errorMsg = "Template $handle can not be found.";
+			return false;
+		}
+	}
+	
+	/**
+	 * Writes the layout to the layout file.
+	 * 
+	 * The name of the template containing the layout
+	 * @param string $handle
+	 * The layout to write to
+	 * @param string $layout
+	 * The content to write to the layout file
+	 * @param string $contents
+	 *
+	 * @return bool
+	 */
+	protected function _writeLayout($handle, $layout, $contents, $new = false){
+		if($dir = ($new) ? EMAILTEMPLATES . '/' . $handle : dirname(self::find($handle))){
+			if(is_dir($dir) && is_writeable($dir)){
+				if((is_writeable($dir . '/' . self::getFileNameFromLayout($layout))) || !file_exists($dir . '/' . self::getFileNameFromLayout($layout))){
+					file_put_contents($dir . '/' . self::getFileNameFromLayout($layout), $contents);
+					return true;
+				}
+				else{
+					self::$errorMsg = "File $dir " . '/' . self::getFileNameFromLayout($layout) . " can not be written to. Please check permissions";
+					return false;
+				}
+			}
+			else{
+				self::$errorMsg = "Directory $dir does not exist, or is not writeable.";
+				return false;
+			}
+		}
+		else{
+			self::$errorMsg = "Template $handle can not be found.";
+			return false;
+		}
+	}
+	
+	protected function _parseConfigTemplate($handle, $config){
+		
+		$default_config = Array(
+			'datasources'=>Array(
+			),
+			'layouts' => Array(
+				'html'=>'template.html.xsl',
+				'text'=>'template.text.xsl'
+			)
+		);
+		
+		$config = array_merge($default_config, $config);
+		
+		$config_template = file_get_contents(ETDIR . '/content/templates/class.tpl', $config_template);
+		
+		$config_template = str_replace('<!-- CLASS NAME -->', self::getClassNameFromHandle(self::getHandleFromName($config['name'])), $config_template);
+		$config_template = str_replace('<!-- NAME -->',	$config['name'], $config_template);
+		$config_template = str_replace('<!-- VERSION -->', '1.0', $config_template);
+		$config_template = str_replace('<!-- AUTHOR NAME -->', Administration::instance()->Author->getFullName(), $config_template);
+		$config_template = str_replace('<!-- AUTHOR WEBSITE -->', URL, $config_template);
+		$config_template = str_replace('<!-- AUTHOR EMAIL -->', Administration::instance()->Author->get('email'), $config_template);
+		$config_template = str_replace('<!-- RELEASE DATE -->', DateTimeObj::getGMT('c'), $config_template);
+		$config_template = str_replace('<!-- SUBJECT -->', $config['subject'], $config_template);
+		
+		foreach($config['datasources'] as $ds){
+			$datasources .= "\r\n \t\t\t'$ds',";
+		}
+		
+		
+		$config_template = str_replace('<!-- DATASOURCES -->', $datasources, $config_template);
+		
+		foreach($config['layouts'] as $tp => $lt){
+			$layouts .= "\r\n \t\t\t'$tp' => '$lt',";
+		}
+		$config_template = str_replace('<!-- LAYOUTS -->', $layouts, $config_template);
+		
+		return $config_template;
+ 	}
 }
 
 Class EmailTemplateManagerException extends Exception{

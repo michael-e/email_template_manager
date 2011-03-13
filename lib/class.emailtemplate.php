@@ -6,6 +6,7 @@ require_once(CORE . '/class.frontend.php');
 
 Class EmailTemplate extends XSLTPage{
 	
+	public $subject = "";
 	protected $_frontendPage;
 	public $ExtensionManager;
 	
@@ -57,9 +58,13 @@ Class EmailTemplate extends XSLTPage{
 		return $xml;
 	}
 	
-	public function render($filter_template = false){
-		if(!empty($this->config['datasources']) && !empty($this->config['templates'])){
+	public function render($layouts = Array('text', 'html')){
+		if(!is_array($layouts)){
+			$layouts = Array($layouts);
+		}
+		if(isset($this->config['datasources']) && isset($this->config['layouts'])){
 			$result = Array();
+			
 			if(is_null($this->getXML())){
 				try{
 					$this->setXML($this->processDatasources()->generate(true, 0));
@@ -68,14 +73,50 @@ Class EmailTemplate extends XSLTPage{
 					throw new EmailTemplateException('Error including XML for rendering');
 				}
 			}
-			foreach($this->config['templates'] as $type=>$template){
-				$this->setXSL(dirname(__FILE__) . '/../templates/' . $this->getHandle() . '/' . $template, true);
-				$res = $this->generate();
-				if($res){
-					$result[$type] = $res;
+			
+			if(!empty($this->config['subject'])){
+				// Basic {$variable} matching
+				$search_strings = Array();
+				foreach(array_keys($this->_param) as $param){
+					$search_strings[] = '{$' . $param . '}';
 				}
-				else{
-					throw new EmailTemplateException('Error compiling xml to xslt');
+				$subject = str_replace($search_strings, $this->_param, $this->config['subject']);
+				
+				// More advanced XPATH matching. Using both is currently not supported.
+				$replacements = array();
+				preg_match_all('/\{[^\}]+\}/', $subject, $matches);
+				if(is_array($matches[0])){
+					$dom = new DOMDocument();
+					$dom->strictErrorChecking = false;
+					$dom->loadXML($this->getXML());
+					$xpath = new DOMXPath($dom);
+					foreach ($matches[0] as $match) {
+						$results = @$xpath->evaluate('string(' . trim($match, '{}') . ')');
+						if (!is_null($results)) {
+							$replacements[$match] = trim($results);
+						}
+						else {
+							$replacements[$match] = '';
+						}
+					}
+				}
+				$subject = str_replace(array_keys($replacements), array_values($replacements), $subject);
+				
+				$this->subject = $subject;
+				$this->addParams(Array('subject'=>$subject));
+			}
+			
+			foreach($this->config['layouts'] as $type=>$layout){
+				if(in_array($type, $layouts)){
+					$this->setXSL(dirname(EmailTemplateManager::find($this->getHandle())) . '/' . $layout, true);
+					$res = $this->generate();
+					if($res){
+						$result[$type] = $res;
+					}
+					else{
+						throw new EmailTemplateException('Error compiling xml to xslt: ' . $this->getError);
+					}
+					
 				}
 			}
 			return $result;
@@ -94,7 +135,7 @@ Class EmailTemplate extends XSLTPage{
 			)
 		);
 		if (!is_null($devkit)) {
-			$devkit->prepare($this, Array('filelocation'=>dirname(__FILE__) . '/../templates/' . $this->getHandle() . '/template.' . $template . '.xsl'), $this->_xml, $this->_param, $output);
+			$devkit->prepare($this, Array('filelocation'=>dirname(EmailTemplateManager::find($this->getHandle())) . '/' . EmailTemplateManager::getFileNameFromLayout($template)), $this->_xml, $this->_param, $output);
 			return $devkit->build();
 		}
 		return $output;

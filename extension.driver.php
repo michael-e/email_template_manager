@@ -18,7 +18,7 @@
 		public function fetchNavigation() {
 			return array(
 				array(
-					'location'  => __('Blueprints'), // or 'Blueprints' or whatever
+					'location'  => __('Blueprints'),
 					'name'      => __('Email Templates'),
 					'link'      => '/templates/'
 				)
@@ -26,9 +26,9 @@
 		}
 		
 		public function install(){
-			if(!is_dir(dirname(__FILE__) . '/templates')){
+			if(!is_dir(WORKSPACE . '/email-templates')){
 				try{
-					mkdir(dirname(__FILE__) . '/templates');
+					mkdir(WORKSPACE . '/email-templates');
 				}
 				catch(Exception $e){
 					return false;
