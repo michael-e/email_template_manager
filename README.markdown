@@ -1,7 +1,7 @@
 Email Template Manager
 ===========================
 
-Version:	1.0beta
+Version:	1.0beta   
 Author:		Huib Keemink (creativedutchmen)
 
 What's this?
