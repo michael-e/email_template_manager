@@ -25,6 +25,8 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 	function __actionNew(){
 		$fields = $_POST['fields'];
 		
+		$this->setTitle(__("Symphony - Email Templates - new"));
+		
 		if(!$this->_validateConfig($fields, false, true)){
 			$this->_XML->appendChild($this->_validateConfig($fields, true, true));
 			$this->pageAlert(
@@ -123,6 +125,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 
 	function __viewIndex(){
 		$this->setPageType('index');
+		$this->setTitle(__("Symphony - Email Templates"));
 		
 		$templates = new XMLElement("templates");
 		foreach(EmailTemplateManager::listAll() as $template){
@@ -137,6 +140,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 	
 	function __viewEdit($new = false){
 		$this->setPageType('form');
+		$this->setTitle(sprintf(__("Symphony - Email Templates - %s", Array(), false), $this->_context[1]));
 		
 		if($this->_context[2] == 'saved' || $this->_context[3] == 'saved'){
 			$this->pageAlert(
