@@ -21,7 +21,7 @@
 	<fieldset class="primary">
 		<xsl:if test="/data/errors/body">
 			<xsl:attribute name="class">
-				<xsl:text>invalid</xsl:text>
+				<xsl:text>invalid primary</xsl:text>
 			</xsl:attribute>
 		</xsl:if>
 
