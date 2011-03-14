@@ -58,7 +58,7 @@ Class EmailTemplate extends XSLTPage{
 		return $xml;
 	}
 	
-	public function render($layouts = Array('text', 'html')){
+	public function render($layouts = Array('plain', 'html')){
 		if(!is_array($layouts)){
 			$layouts = Array($layouts);
 		}
