@@ -55,10 +55,16 @@ Class EmailTemplate extends XSLTPage{
 		$xml = new XMLElement('data');
 		$xml->setIncludeHeader(true);
 		$this->_frontendPage->processDatasources(implode(', ',$this->config['datasources']), $xml);
+		$env = $this->_frontendPage->Env();
+		foreach($env['pool'] as $name => $val){
+			$tmp[$name] = implode(", ", (array)$val);
+		}
+		$this->addParams($tmp);
 		return $xml;
 	}
 	
 	public function render($layouts = Array('plain', 'html')){
+		
 		if(!is_array($layouts)){
 			$layouts = Array($layouts);
 		}
