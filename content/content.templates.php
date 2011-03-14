@@ -25,8 +25,6 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 	function __actionNew(){
 		$fields = $_POST['fields'];
 		
-		$this->setTitle(__("Symphony - Email Templates - new"));
-		
 		if(!$this->_validateConfig($fields, false, true)){
 			$this->_XML->appendChild($this->_validateConfig($fields, true, true));
 			$this->pageAlert(
@@ -221,6 +219,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 	}
 	
 	function __viewNew(){
+		$this->_context[1] = 'New';
 		$this->_useTemplate = 'viewEdit';
 		$this->__viewEdit(true);
 	}
