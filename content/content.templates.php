@@ -167,7 +167,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 		else{
 			$this->_useTemplate = 'viewEditLayout';
 			$utils = General::listStructure(UTILITIES, array('xsl'), false, 'asc', UTILITIES);
-			$utils = $utils['filelist'];
+			$utils = array($utils['filelist']);
 			
 			$utilities = new XMLElement('utilities');
 			General::array_to_xml($utilities, $utils);
