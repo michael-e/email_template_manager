@@ -18,7 +18,7 @@
 		</xsl:for-each>
 		<a class="button" href="{substring-before($current-url, concat('/',/data/context/item[@index = 3],'/'))}/">Edit Configuration</a>
 	</h2>
-	<form method="POST" action="{$current-url}">
+	<form method="post" action="{$current-url}">
 		<fieldset class="primary">
 			<xsl:if test="/data/errors/body">
 				<xsl:attribute name="class">

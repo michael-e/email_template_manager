@@ -12,7 +12,7 @@
 		<span>Email Templates</span>
 		<a href="{concat($root, '/symphony/extension/email_templates/templates/new')}" class="create button">Create new</a>
 	</h2>
-	<form method="POST" action="{$current-url}">
+	<form method="post" action="{$current-url}">
 		<table class="selectable">
 			<thead>
 				<tr>

@@ -14,7 +14,7 @@
 			<a href="{concat($root, '/symphony/extension/email_templates/templates/edit/', ../../handle, '/', local-name())}" class="button">Edit <xsl:value-of select="local-name()"/> layout</a>
 		</xsl:for-each>
 	</h2>
-	<form method="POST" action="{$current-url}">
+	<form method="post" action="{$current-url}">
 		<fieldset class="settings">
 			<legend>Email Settings</legend>
 			<xsl:if test="/data/errors/subject">
