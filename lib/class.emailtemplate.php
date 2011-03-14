@@ -52,6 +52,9 @@ Class EmailTemplate extends XSLTPage{
 	
 	protected function processDatasources(){
 		if(is_null($this->_frontendPage)) $this->_frontendPage = new FrontendPage(Symphony::Engine());
+		
+		$this->_frontendPage->_param = $this->_param;
+		
 		$xml = new XMLElement('data');
 		$xml->setIncludeHeader(true);
 		$this->_frontendPage->processDatasources(implode(', ',$this->config['datasources']), $xml);
@@ -71,12 +74,19 @@ Class EmailTemplate extends XSLTPage{
 		if(isset($this->config['datasources']) && isset($this->config['layouts'])){
 			$result = Array();
 			
+			if(is_array($_GET) && !empty($_GET)){
+				foreach($_GET as $key => $val){
+					if(!in_array($key, array('symphony-page', 'debug', 'profile'))) $this->_param['url-' . $key] = $val;
+				}
+			}
+			
 			if(is_null($this->getXML())){
 				try{
 					$this->setXML($this->processDatasources()->generate(true, 0));
 				}
 				catch(Exception $e){
-					throw new EmailTemplateException('Error including XML for rendering');
+					$error = $this->getError();
+					throw new EmailTemplateException('Error including XML for rendering: ' . $e->getMessage());
 				}
 			}
 			
