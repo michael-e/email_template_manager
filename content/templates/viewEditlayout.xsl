@@ -8,7 +8,7 @@
 	indent="yes" />
 
 <xsl:template match="/">
-	<h2>	
+	<h2>
 		<span><xsl:value-of select="/data/templates/entry/name" /> - <xsl:value-of select="/data/context/item[@index = 3]" /></span>
 		<a class="button" href="{$root}/symphony/extension/email_templates/templates/preview/{/data/context/item[@index = 2]}/{/data/context/item[@index = 3]}/">Preview layout</a>
 		<xsl:for-each select="/data/templates/entry/layouts/*">
@@ -19,28 +19,26 @@
 		<a class="button" href="{substring-before($current-url, concat('/',/data/context/item[@index = 3],'/'))}/">Edit Configuration</a>
 	</h2>
 	<fieldset class="primary">
-		<div>
-			<xsl:if test="/data/errors/body">
-				<xsl:attribute name="class">
-					<xsl:text>invalid</xsl:text>
-				</xsl:attribute>
-			</xsl:if>
-		
-			<label>
-				Body
-				<textarea class="code" cols="80" rows="30" name="fields[body]">
-					<xsl:if test="/data/fields">
-						<xsl:value-of select="/data/fields/body"/>
-					</xsl:if>
-					<xsl:if test="not(/data/fields)">
-						<xsl:value-of select="/data/layout"/>
-					</xsl:if>
-				</textarea>
-				<xsl:if test="/data/errors/body">
-					<p><xsl:copy-of select="/data/errors/body" /></p>
+		<xsl:if test="/data/errors/body">
+			<xsl:attribute name="class">
+				<xsl:text>invalid</xsl:text>
+			</xsl:attribute>
+		</xsl:if>
+
+		<label>
+			Body
+			<textarea class="code" cols="80" rows="30" name="fields[body]">
+				<xsl:if test="/data/fields">
+					<xsl:value-of select="/data/fields/body"/>
 				</xsl:if>
-			</label>
-		</div>
+				<xsl:if test="not(/data/fields)">
+					<xsl:value-of select="/data/layout"/>
+				</xsl:if>
+			</textarea>
+			<xsl:if test="/data/errors/body">
+				<p><xsl:copy-of select="/data/errors/body" /></p>
+			</xsl:if>
+		</label>
 	</fieldset>
 	<div class="secondary">
 		<p class="label">Utilities</p>
