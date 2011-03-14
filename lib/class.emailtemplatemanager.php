@@ -206,7 +206,7 @@ Class EmailTemplateManager extends Manager{
 	public function getFileNameFromLayout($layout = 'html'){
 		return sprintf('template.%s.xsl', strtolower($layout));
 	}
-	
+
 	/**
 	 * Writes configuration values to the template configuration file.
 	 * 

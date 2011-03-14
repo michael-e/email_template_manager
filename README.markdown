@@ -1,7 +1,7 @@
 Email Template Manager
 ===========================
 
-Version:	1.0beta   
+Version:	1.0 
 Author:		Huib Keemink (creativedutchmen)
 
 What's this?
@@ -12,6 +12,10 @@ It does **NOT** have the functionality to override the ugly emails sent by symph
 Ofcourse, it is possible to send prettier emails using this extension, but it will require a custom event.
 
 This extension is developed mainly for the Email Newsletter extension in mind.
+
+Watch out!
+-------------------
+* Don't rename the datasources, otherwise you will be grilled.
 
 Example usage
 --------------------

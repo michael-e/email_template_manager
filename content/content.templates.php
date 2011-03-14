@@ -138,7 +138,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 	
 	function __viewEdit($new = false){
 		$this->setPageType('form');
-		$this->setTitle(sprintf(__("Symphony - Email Templates - %s", Array(), false), $this->_context[1]));
+		$this->setTitle(sprintf(__("Symphony - Email Templates - %s", Array(), false), ucfirst($this->_context[1])));
 		
 		if($this->_context[2] == 'saved' || $this->_context[3] == 'saved'){
 			$this->pageAlert(
