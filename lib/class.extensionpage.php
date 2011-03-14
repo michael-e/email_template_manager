@@ -15,6 +15,11 @@ Class ExtensionPage extends AdministrationPage{
 		parent::__switchboard($type);
 	}
 	
+	function view(){
+		$this->Contents = new XMLElement('div', NULL, array('class' => 'contents'));
+		return parent::view();
+	}
+	
 	function generate(){
 		if($this->_useTemplate !== false){
 			$template = ETVIEWS . '/' . (empty($this->_useTemplate)?$this->_getTemplate($this->_type, $this->_function):$this->_useTemplate . '.xsl');
@@ -44,7 +49,8 @@ Class ExtensionPage extends AdministrationPage{
 			else{
 				throw new FrontendPageNotFoundException();
 			}
-			$this->Form->setValue($html);
+			$this->Form = null;
+			$this->Contents->setValue($html);
 		}
 		return parent::generate();
 	}
