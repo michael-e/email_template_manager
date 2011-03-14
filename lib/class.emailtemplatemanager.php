@@ -93,7 +93,7 @@ Class EmailTemplateManager extends Manager{
 			if($template->config['editable'] == true){
 				if(self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config))){
 
-					$old_dir = self::find($handle);
+					$old_dir = dirname(self::find($handle));
 					$new_dir = dirname($old_dir) . '/' . self::getHandleFromName($config['name']);
 					
 					if(self::getHandleFromName($config['name']) != $handle){
