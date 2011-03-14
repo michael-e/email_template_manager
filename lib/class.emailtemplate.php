@@ -31,7 +31,7 @@ Class EmailTemplate extends XSLTPage{
 		
 	public function addParams($params = array()){
 		if(!is_array($params)) return false;
-		return ($this->setRunTimeParam(array_merge($this->_param, $params)));
+		return ($this->setRuntimeParam(array_merge($this->_param, $params)));
 	}
 	
 	public function getAbout(){
