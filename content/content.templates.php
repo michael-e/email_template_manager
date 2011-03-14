@@ -107,6 +107,19 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 			}
 		}
 	}
+	
+	function __actionIndex(){
+		if($_POST['with-selected'] == 'delete'){
+			foreach((array)$_POST['items'] as $item=>$status){
+				if(!EmailTemplateManager::delete($item)){
+					$this->pageAlert(
+						__('Could not delete: ') .  __(EmailTemplateManager::$errorMsg),
+						Alert::ERROR
+					);
+				}
+			}
+		}
+	}
 
 	function __viewIndex(){
 		$this->setPageType('index');
@@ -228,7 +241,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 			$this->_context[2] = null;
 		}
 		$fields = new XMLElement('fields');
-		General::array_to_xml($fields, $_POST['fields']);
+		General::array_to_xml($fields, (array)$_POST['fields']);
 		$this->_XML->appendChild($fields);
 		parent::action();
 	}

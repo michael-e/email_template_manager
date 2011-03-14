@@ -104,6 +104,7 @@ Class EmailTemplate extends XSLTPage{
 				
 				$this->subject = $subject;
 				$this->addParams(Array('subject'=>$subject));
+				$result['subject'] = $subject;
 			}
 			
 			foreach($this->config['layouts'] as $type=>$layout){

@@ -33,12 +33,20 @@
 			</xsl:if>
 		</tbody>
 	</table>
+	<div class="actions">
+		<select name="with-selected">
+			<option value="">With Selected...</option>
+			<option class="confirm" value="delete">Delete</option>
+		</select>
+		<input type="submit" value="Apply" name="action[apply]" />
+	</div>
 </xsl:template>
 
 <xsl:template match="templates/entry">
 	<tr>
 		<td>
 			<a href="{concat($root, '/symphony/extension/email_templates/templates/edit/', handle)}"><xsl:value-of select="name"/></a>
+			<input name="items[{handle}]" type="checkbox" />
 		</td>
 		<td>
 			<xsl:apply-templates select="layouts/*" mode="edit"/>

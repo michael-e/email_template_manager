@@ -73,7 +73,7 @@ Class EmailTemplateManager extends Manager{
 			if(!is_dir(EMAILTEMPLATES . "/$handle")){
 				mkdir(EMAILTEMPLATES . "/$handle");
 				if(!self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config), true)) return false;
-				if(!self::_writeLayout($handle, 'text', file_get_contents(ETDIR . '/content/templates/xsl-text.tpl'), true)) return false;
+				if(!self::_writeLayout($handle, 'plain', file_get_contents(ETDIR . '/content/templates/xsl-plain.tpl'), true)) return false;
 				if(!self::_writeLayout($handle, 'html',  file_get_contents(ETDIR . '/content/templates/xsl-html.tpl'), true)) return false;
 				return true;
 			}
@@ -285,7 +285,7 @@ Class EmailTemplateManager extends Manager{
 			),
 			'layouts' => Array(
 				'html'=>'template.html.xsl',
-				'text'=>'template.text.xsl'
+				'plain'=>'template.plain.xsl'
 			)
 		);
 		
