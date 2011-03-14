@@ -34,8 +34,8 @@ Example usage
             'John Doe' => 'john@example.com',
         );
         $email->subject    = $output['subject'];
-        $email->text_plain = $output['plain'];
-        $email->text_html  = $output['html'];
+        $email->text_plain = $output['Plain'];
+        $email->text_html  = $output['HTML'];
     
         $email->send();
     }
