@@ -169,6 +169,20 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 			$utils = General::listStructure(UTILITIES, array('xsl'), false, 'asc', UTILITIES);
 			$utils = (array)$utils['filelist'];
 			
+			$templates = new XMLElement("templates");
+			$template = EmailTemplateManager::load($this->_context[1]);
+			if($template){
+				$entry = new XMLElement("entry");
+				General::array_to_xml($entry, $template->about);
+				General::array_to_xml($entry, $template->config);
+				$entry->appendChild(new XMLElement("handle", $template->getHandle()));
+				$templates->appendChild($entry);
+			}
+			elseif(!$new){
+				throw new FrontendPageNotFoundException();
+			}
+			$this->_XML->appendChild($templates);
+			
 			$utilities = new XMLElement('utilities');
 			General::array_to_xml($utilities, $utils);
 			$this->_XML->appendChild($utilities);

@@ -9,10 +9,13 @@
 
 <xsl:template match="/">
 	<h2>	
-		<span>Email Templates</span>
+		<span><xsl:value-of select="/data/context/item[@index = 2]" /> - <xsl:value-of select="/data/context/item[@index = 3]" /></span>
 		<xsl:for-each select="/data/templates/entry/layouts/*">
-			<a href="" class="button">Edit <xsl:value-of select="local-name()"/> layout</a>
+			<xsl:if test="not(local-name() = /data/context/item[@index = 3])">
+				<a href="{concat(substring-before($current-url, concat('/',/data/context/item[@index = 3],'/')), '/', local-name() , '/')}" class="button">Edit <xsl:value-of select="local-name()"/> layout</a>
+			</xsl:if>
 		</xsl:for-each>
+		<a class="button" href="{substring-before($current-url, concat('/',/data/context/item[@index = 3],'/'))}">Edit Configuration</a>
 	</h2>
 	<fieldset class="primary">
 		<div>

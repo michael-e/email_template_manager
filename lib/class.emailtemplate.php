@@ -114,7 +114,8 @@ Class EmailTemplate extends XSLTPage{
 						$result[$type] = $res;
 					}
 					else{
-						throw new EmailTemplateException('Error compiling xml to xslt: ' . $this->getError);
+						$error = $this->getError();
+						throw new EmailTemplateException('Error compiling xml with xslt: ' . $error[1]['message']);
 					}
 					
 				}
