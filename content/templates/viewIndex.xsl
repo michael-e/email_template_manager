@@ -8,38 +8,40 @@
 	indent="yes" />
 
 <xsl:template match="/">
-	<h2 style="margin:0 19px">
+	<h2>
 		<span>Email Templates</span>
 		<a href="{concat($root, '/symphony/extension/email_templates/templates/new')}" class="create button">Create new</a>
 	</h2>
-	<table class="selectable">
-		<thead>
-			<tr>
-				<th scope="col">Name</th>
-				<th scope="col">Layouts</th>
-				<th scope="col">Preview</th>
-			</tr>
-		</thead>
-		<tbody>
-			<xsl:if test="/data/templates/entry">
-				<xsl:apply-templates select="/data/templates/entry"/>
-			</xsl:if>
-			<xsl:if test="not(/data/templates/entry)">
+	<form method="POST" action="{$current-url}">
+		<table class="selectable">
+			<thead>
 				<tr>
-					<td class="inactive" colspan="3">
-						None found
-					</td>
+					<th scope="col">Name</th>
+					<th scope="col">Layouts</th>
+					<th scope="col">Preview</th>
 				</tr>
-			</xsl:if>
-		</tbody>
-	</table>
-	<div class="actions">
-		<select name="with-selected">
-			<option value="">With Selected...</option>
-			<option class="confirm" value="delete">Delete</option>
-		</select>
-		<input type="submit" value="Apply" name="action[apply]" />
-	</div>
+			</thead>
+			<tbody>
+				<xsl:if test="/data/templates/entry">
+					<xsl:apply-templates select="/data/templates/entry"/>
+				</xsl:if>
+				<xsl:if test="not(/data/templates/entry)">
+					<tr>
+						<td class="inactive" colspan="3">
+							None found
+						</td>
+					</tr>
+				</xsl:if>
+			</tbody>
+		</table>
+		<div class="actions">
+			<select name="with-selected">
+				<option value="">With Selected...</option>
+				<option class="confirm" value="delete">Delete</option>
+			</select>
+			<input type="submit" value="Apply" name="action[apply]" />
+		</div>
+	</form>
 </xsl:template>
 
 <xsl:template match="templates/entry">

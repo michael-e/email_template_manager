@@ -18,45 +18,47 @@
 		</xsl:for-each>
 		<a class="button" href="{substring-before($current-url, concat('/',/data/context/item[@index = 3],'/'))}/">Edit Configuration</a>
 	</h2>
-	<fieldset class="primary">
-		<xsl:if test="/data/errors/body">
-			<xsl:attribute name="class">
-				<xsl:text>invalid primary</xsl:text>
-			</xsl:attribute>
-		</xsl:if>
-
-		<label>
-			Body
-			<textarea class="code" cols="80" rows="30" name="fields[body]">
-				<xsl:if test="/data/fields">
-					<xsl:value-of select="/data/fields/body"/>
-				</xsl:if>
-				<xsl:if test="not(/data/fields)">
-					<xsl:value-of select="/data/layout"/>
-				</xsl:if>
-			</textarea>
+	<form method="POST" action="{$current-url}">
+		<fieldset class="primary">
 			<xsl:if test="/data/errors/body">
-				<p><xsl:copy-of select="/data/errors/body" /></p>
+				<xsl:attribute name="class">
+					<xsl:text>invalid primary</xsl:text>
+				</xsl:attribute>
 			</xsl:if>
-		</label>
-	</fieldset>
-	<div class="secondary">
-		<p class="label">Utilities</p>
-		<ul id="utilities">
-			<xsl:for-each select="/data/utilities/item">
-				<li>
-					<xsl:if test="(position() mod 2) = 1">
-						<xsl:attribute name="class">
-							odd
-						</xsl:attribute>
+
+			<label>
+				Body
+				<textarea class="code" cols="80" rows="30" name="fields[body]">
+					<xsl:if test="/data/fields">
+						<xsl:value-of select="/data/fields/body"/>
 					</xsl:if>
-					<a href="{$root}/symphony/blueprints/utilities/edit/{substring-before(.,'.xsl')}"><xsl:value-of select="." /></a>
-				</li>
-			</xsl:for-each>
-		</ul>
-	</div>
-	<div class="actions">
-		<input type="submit" accesskey="s" value="Save Changes" name="action[save]" />
-	</div>
+					<xsl:if test="not(/data/fields)">
+						<xsl:value-of select="/data/layout"/>
+					</xsl:if>
+				</textarea>
+				<xsl:if test="/data/errors/body">
+					<p><xsl:copy-of select="/data/errors/body" /></p>
+				</xsl:if>
+			</label>
+		</fieldset>
+		<div class="secondary">
+			<p class="label">Utilities</p>
+			<ul id="utilities">
+				<xsl:for-each select="/data/utilities/item">
+					<li>
+						<xsl:if test="(position() mod 2) = 1">
+							<xsl:attribute name="class">
+								odd
+							</xsl:attribute>
+						</xsl:if>
+						<a href="{$root}/symphony/blueprints/utilities/edit/{substring-before(.,'.xsl')}"><xsl:value-of select="." /></a>
+					</li>
+				</xsl:for-each>
+			</ul>
+		</div>
+		<div class="actions">
+			<input type="submit" accesskey="s" value="Save Changes" name="action[save]" />
+		</div>
+	</form>
 </xsl:template>
 </xsl:stylesheet>
