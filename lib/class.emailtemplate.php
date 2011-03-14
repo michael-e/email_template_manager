@@ -66,7 +66,7 @@ Class EmailTemplate extends XSLTPage{
 		return $xml;
 	}
 	
-	public function render($layouts = Array('plain', 'html')){
+	public function render($layouts = Array('Plain', 'HTML')){
 		
 		if(!is_array($layouts)){
 			$layouts = Array($layouts);
@@ -122,9 +122,9 @@ Class EmailTemplate extends XSLTPage{
 				$this->addParams(Array('subject'=>$subject));
 				$result['subject'] = $subject;
 			}
-			
+
 			foreach($this->config['layouts'] as $type=>$layout){
-				if(in_array(strtolower($type), $layouts)){
+				if(in_array(strtolower($type), array_map("strtolower", $layouts))){
 					$this->setXSL(dirname(EmailTemplateManager::find($this->getHandle())) . '/' . $layout, true);
 					$res = $this->generate();
 					if($res){

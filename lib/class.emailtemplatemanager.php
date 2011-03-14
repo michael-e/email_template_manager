@@ -284,8 +284,8 @@ Class EmailTemplateManager extends Manager{
 			'datasources'=>Array(
 			),
 			'layouts' => Array(
-				'html'=>'template.html.xsl',
-				'plain'=>'template.plain.xsl'
+				'HTML'=>'template.html.xsl',
+				'Plain'=>'template.plain.xsl'
 			)
 		);
 		
