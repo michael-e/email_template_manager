@@ -11,7 +11,7 @@
 	<h2>	
 		<span>Email Templates</span>
 		<xsl:for-each select="/data/templates/entry/layouts/*">
-			<a href="{local-name()}" class="button">Edit <xsl:value-of select="local-name()"/> layout</a>
+			<a href="{concat($root, '/symphony/extension/email_templates/templates/edit/', ../../handle, '/', local-name())}" class="button">Edit <xsl:value-of select="local-name()"/> layout</a>
 		</xsl:for-each>
 	</h2>
 	<fieldset class="settings">
