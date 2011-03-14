@@ -16,7 +16,7 @@ Class ExtensionPage extends AdministrationPage{
 	}
 	
 	function view(){
-		$this->Contents = new XMLElement('div', NULL, array('class' => 'contents'));
+		$this->Contents = new XMLElement('div', NULL, array('id' => 'contents'));
 		return parent::view();
 	}
 	

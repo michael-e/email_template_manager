@@ -124,7 +124,7 @@ Class EmailTemplate extends XSLTPage{
 			}
 			
 			foreach($this->config['layouts'] as $type=>$layout){
-				if(in_array($type, $layouts)){
+				if(in_array(strtolower($type), $layouts)){
 					$this->setXSL(dirname(EmailTemplateManager::find($this->getHandle())) . '/' . $layout, true);
 					$res = $this->generate();
 					if($res){
