@@ -44,6 +44,11 @@
 					'delegate' => 'EventFinalSaveFilter',
 					'callback' => 'eventFinalSaveFilter'
 				),
+				array(
+					'page' => '/blueprints/events/edit/',
+					'delegate' => 'AppendEventFilterDocumentation',
+					'callback' => 'AppendEventFilterDocumentation'
+				),
 			);
 		}
 		
@@ -80,9 +85,33 @@
 			}
 		}
 		
+		// borrowed from event.section.php
+		protected function __sendEmailFindFormValue($needle, $haystack, $discard_field_name=true, $default=NULL, $collapse=true){
+
+			if(preg_match('/^(fields\[[^\]]+\],?)+$/i', $needle)){
+				$parts = preg_split('/\,/i', $needle, -1, PREG_SPLIT_NO_EMPTY);
+				$parts = array_map('trim', $parts);
+
+				$stack = array();
+				foreach($parts as $p){
+					$field = str_replace(array('fields[', ']'), '', $p);
+					($discard_field_name ? $stack[] = $haystack[$field] : $stack[$field] = $haystack[$field]);
+				}
+
+				if(is_array($stack) && !empty($stack)) return ($collapse ? implode(' ', $stack) : $stack);
+				else $needle = NULL;
+			}
+
+			$needle = trim($needle);
+			if(empty($needle)) return $default;
+
+			return $needle;
+
+		}
+		
 		protected function _sendEmail($template, $context){
 			ksort($_POST['etm'], SORT_STRING);
-			$params = Array();
+			$fields = Array();
 			foreach((array)$_POST['etm'] as $handle => $values){
 			
 				// Numeric handle values are not set in html (etm[][setting]) and can be regarded as
@@ -92,10 +121,12 @@
 				// but different templates.
 				
 				if(is_numeric($handle) || $template->getHandle() == $handle){
-					$params = array_merge($params, $values);
+					$fields = array_merge($params, $values);
 				}
 			}
+			$params['recipient'] = __sendEmailFindFormValue($fields['recipient'], $_POST['fields'], true);
 			if(!empty($params['recipient'])){
+
 				$params['recipient']		= preg_split('/\,/i', $params['recipient'], -1, PREG_SPLIT_NO_EMPTY);
 				$params['recipient']		= array_map('trim', $params['recipient']);
 				$params['recipient']		= Symphony::Database()->fetch("SELECT `email`, `first_name` FROM `tbl_authors` WHERE `username` IN ('".@implode("', '", $params['recipient'])."') ");
@@ -107,21 +138,25 @@
 						$email->recipients = Array($name=>$rcp);
 						$template->addParams(Array('etm-recipient-name'=>$name));
 						$template->addParams(Array('etm-recipient-email'=>$rcp));
+						$params['sender-name']	= __sendEmailFindFormValue($fields['sender-name'], $_POST['fields'], true, NULL);
 						if(!empty($params['sender-name'])){
 							$email->sender_name = $params['sender-name'];
 							$template->addParams(Array('etm-sender-name'=>$params['sender-name']));
 						}
+						$params['sender-email']	= __sendEmailFindFormValue($fields['sender-email'], $_POST['fields'], true, NULL);
 						if(!empty($params['sender-email'])){
 							$email->sender_email = $params['sender-email'];
 							$template->addParams(Array('etm-sender-email'=>$params['sender-email']));
 						}
+						$params['reply-to-name']	= __sendEmailFindFormValue($fields['reply-to-name'], $_POST['fields'], true, NULL);
 						if(!empty($params['reply-to-name'])){
 							$email->reply_to_name = $params['reply-to-name'];
 							$template->addParams(Array('etm-reply-to-name'=>$params['reply-to-name']));
 						}
+						$params['reply-to-email']	= __sendEmailFindFormValue($fields['reply-to-email'], $_POST['fields'], true, NULL);
 						if(!empty($params['reply-to-email'])){
 							$email->reply_to_email_address = $params['reply-to-email'];
-							$template->addParams(Array('etm-reply-to-name'=>$params['reply-to-name']));
+							$template->addParams(Array('etm-reply-to-email'=>$params['reply-to-email']));
 						}
 
 						foreach((array)$context['fields'] as $name => $val){
@@ -149,4 +184,55 @@
 				$context['errors'][] = Array('etm-' . $template->getHandle(), false, 'No recipients selected, can not send emails.');
 			}
 		}
+		
+		public function AppendEventFilterDocumentation($context){
+			$templates = EmailTemplateManager::listAll();
+			foreach($templates as $template){
+				$handle = 'etm-' . $template->getHandle();
+				if(in_array($handle, $context['selected'])){
+
+					$context['documentation'][] = new XMLElement('h3', __('Send Email Using Email Template'));
+					$context['documentation'][] = new XMLElement('p', __('To use the Email Template Manager, only the recipients field has to be used, as seen below:'));
+					$context['documentation'][] = contentBlueprintsEvents::processDocumentationCode('<form action="" method="post">
+	<fieldset>
+		<input name="etm[][recipient]" value="fred" type="hidden" />
+		<input id="submit" type="submit" name="action[save-contact-form]" value="Send" />
+	</fieldset>
+</form>');
+
+					$context['documentation'][] = new XMLElement('p', __('Ofcourse, it is also possible to add more advanced features (like the default send-email filter):'));
+					$context['documentation'][] = contentBlueprintsEvents::processDocumentationCode('<form action="" method="post">
+	<fieldset>
+		<label>'.__('Name').' <input type="text" name="fields[author]" value="" /></label>
+		<label>'.__('Email').' <input type="text" name="fields[email]" value="" /></label>
+		<input name="etm[][recipient]" value="fred" type="hidden" />
+		<input name="etm[][sender-email]" value="fields[email]" type="hidden" />
+		<input name="etm[][sender-name]" value="fields[author]" type="hidden" />
+		<input name="etm[][reply-to-email]" value="fields[email]" type="hidden" />
+		<input name="etm[][reply-to-name]" value="fields[author]" type="hidden" />
+		<input id="submit" type="submit" name="action[save-contact-form]" value="Send" />
+	</fieldset>
+</form>');
+
+					$context['documentation'][] = new XMLElement('p', __('To make things even better, it is even possible to use two or more Email Template filters, with different settings:'));
+					$context['documentation'][] = contentBlueprintsEvents::processDocumentationCode('<form action="" method="post">
+	<fieldset>
+		<label>'.__('Name').' <input type="text" name="fields[author]" value="" /></label>
+		<label>'.__('Email').' <input type="text" name="fields[email]" value="" /></label>
+		
+		<input name="etm[template_1_handle][recipient]" value="fred" type="hidden" />
+		<input name="etm[template_2_handle][recipient]" value="hank" type="hidden" />
+		
+		<input name="etm[][sender-email]" value="fields[email]" type="hidden" />
+		<input name="etm[][sender-name]" value="fields[author]" type="hidden" />
+		<input name="etm[][reply-to-email]" value="fields[email]" type="hidden" />
+		<input name="etm[][reply-to-name]" value="fields[author]" type="hidden" />
+		<input id="submit" type="submit" name="action[save-contact-form]" value="Send" />
+	</fieldset>
+</form>');
+				$context['documentation'][] = new XMLElement('p', __('In the example, only the recipient setting is changed, but the same principle applies to all settings described above.'));
+			}
+			break;
+		}
 	}
+}
