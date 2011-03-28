@@ -174,7 +174,7 @@
 						$email->text_html = $content['HTML'];
 						$email->subject = $content['subject'];
 						
-						//$email->send();
+						$email->send();
 					}
 					catch(EmailValidationException $e){
 						$errors['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
