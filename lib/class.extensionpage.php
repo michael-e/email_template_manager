@@ -49,7 +49,7 @@ Class ExtensionPage extends AdministrationPage{
 				$html = $this->_XSLTProc->process($this->_XML->generate(), file_get_contents($template), $params);
 			}
 			else{
-				throw new FrontendPageNotFoundException();
+				Administration::instance()->errorPageNotFound();
 			}
 			$this->Form = null;
 			$this->Contents->setValue($html);
