@@ -164,7 +164,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 				$templates->appendChild($entry);
 			}
 			elseif(!$new){
-				throw new FrontendPageNotFoundException();
+				Administration::instance()->errorPageNotFound();
 			}
 			$this->_XML->appendChild($templates);
 			
@@ -194,7 +194,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 				$templates->appendChild($entry);
 			}
 			elseif(!$new){
-				throw new FrontendPageNotFoundException();
+				Administration::instance()->errorPageNotFound();
 			}
 			$this->_XML->appendChild($templates);
 			
@@ -209,11 +209,11 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 					$this->_XML->appendChild($layout);
 				}
 				else{
-					throw new FrontendPageNotFoundException();
+					Administration::instance()->errorPageNotFound();
 				}
 			}
 			else{
-				throw new FrontendPageNotFoundException();
+				Administration::instance()->errorPageNotFound();
 			}
 		}		
 	}
