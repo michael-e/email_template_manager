@@ -50,7 +50,7 @@ Class EmailTemplate extends XSLTPage{
 		return strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', $this->getName())));
 	}
 	
-	protected function processDatasources(){
+	public function processDatasources(){
 		if(is_null($this->_frontendPage)) $this->_frontendPage = new FrontendPage(Symphony::Engine());
 		
 		$this->_frontendPage->_param = $this->_param;

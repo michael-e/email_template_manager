@@ -112,6 +112,7 @@
 		protected function _sendEmail($template, $context){
 			ksort($_POST['etm'], SORT_STRING);
 			$fields = Array();
+			$params = Array();
 			foreach((array)$_POST['etm'] as $handle => $values){
 			
 				// Numeric handle values are not set in html (etm[][setting]) and can be regarded as
@@ -124,7 +125,7 @@
 					$fields = array_merge($params, $values);
 				}
 			}
-			$params['recipient'] = __sendEmailFindFormValue($fields['recipient'], $_POST['fields'], true);
+			$params['recipient'] = $this->__sendEmailFindFormValue($fields['recipient'], $_POST['fields'], true);
 			if(!empty($params['recipient'])){
 
 				$params['recipient']		= preg_split('/\,/i', $params['recipient'], -1, PREG_SPLIT_NO_EMPTY);
@@ -138,39 +139,42 @@
 						$email->recipients = Array($name=>$rcp);
 						$template->addParams(Array('etm-recipient-name'=>$name));
 						$template->addParams(Array('etm-recipient-email'=>$rcp));
-						$params['sender-name']	= __sendEmailFindFormValue($fields['sender-name'], $_POST['fields'], true, NULL);
+						$params['sender-name']	= $this->__sendEmailFindFormValue($fields['sender-name'], $_POST['fields'], true, NULL);
 						if(!empty($params['sender-name'])){
 							$email->sender_name = $params['sender-name'];
 							$template->addParams(Array('etm-sender-name'=>$params['sender-name']));
 						}
-						$params['sender-email']	= __sendEmailFindFormValue($fields['sender-email'], $_POST['fields'], true, NULL);
+						$params['sender-email']	= $this->__sendEmailFindFormValue($fields['sender-email'], $_POST['fields'], true, NULL);
 						if(!empty($params['sender-email'])){
 							$email->sender_email = $params['sender-email'];
 							$template->addParams(Array('etm-sender-email'=>$params['sender-email']));
 						}
-						$params['reply-to-name']	= __sendEmailFindFormValue($fields['reply-to-name'], $_POST['fields'], true, NULL);
+						$params['reply-to-name']	= $this->__sendEmailFindFormValue($fields['reply-to-name'], $_POST['fields'], true, NULL);
 						if(!empty($params['reply-to-name'])){
 							$email->reply_to_name = $params['reply-to-name'];
 							$template->addParams(Array('etm-reply-to-name'=>$params['reply-to-name']));
 						}
-						$params['reply-to-email']	= __sendEmailFindFormValue($fields['reply-to-email'], $_POST['fields'], true, NULL);
+						$params['reply-to-email']	= $this->__sendEmailFindFormValue($fields['reply-to-email'], $_POST['fields'], true, NULL);
 						if(!empty($params['reply-to-email'])){
 							$email->reply_to_email_address = $params['reply-to-email'];
 							$template->addParams(Array('etm-reply-to-email'=>$params['reply-to-email']));
 						}
-
-						foreach((array)$context['fields'] as $name => $val){
-							$flds['etm-' . $name] = implode(", ", (array)$val);
-						}
-						$template->addParams($flds);
 						
+						$xml = $template->processDatasources();
+						
+						$about = $context['event']->about();
+						
+						General::array_to_xml($xml, Array("events"=>Array($about['name'] => Array("post-values" =>$context['fields']))));
+						
+						$template->setXML($xml->generate());
+					
 						$content = $template->render();
 						
 						$email->text_plain = $content['Plain'];
 						$email->text_html = $content['HTML'];
 						$email->subject = $content['subject'];
 						
-						$email->send();
+						//$email->send();
 					}
 					catch(EmailValidationException $e){
 						$errors['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
