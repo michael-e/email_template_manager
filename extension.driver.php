@@ -170,8 +170,8 @@
 					
 						$content = $template->render();
 						
-						$email->text_plain = $content['Plain'];
-						$email->text_html = $content['HTML'];
+						$email->text_plain = $content['plain'];
+						$email->text_html = $content['html'];
 						$email->subject = $content['subject'];
 						
 						$email->send();
