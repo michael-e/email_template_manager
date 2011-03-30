@@ -13,7 +13,7 @@
 		<a class="button" href="{$root}/symphony/extension/email_templates/templates/preview/{/data/context/item[@index = 2]}/{/data/context/item[@index = 3]}/">Preview layout</a>
 		<xsl:for-each select="/data/templates/entry/layouts/*">
 			<xsl:if test="not(local-name() = /data/context/item[@index = 3])">
-				<a href="{concat(substring-before($current-url, concat('/',/data/context/item[@index = 3],'/')), '/', local-name() , '/')}" class="button">Edit <xsl:value-of select="local-name()"/> layout</a>
+				<a href="{concat(substring-before($current-url, concat('/',/data/context/item[@index = 3],'/')), '/', local-name() , '/')}" class="button">Edit <xsl:value-of select="translate(local-name(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/> layout</a>
 			</xsl:if>
 		</xsl:for-each>
 		<a class="button" href="{substring-before($current-url, concat('/',/data/context/item[@index = 3],'/'))}/">Edit configuration</a>
