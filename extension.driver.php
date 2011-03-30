@@ -163,6 +163,7 @@
 						}
 						
 						$template->addParams(Array("etm-entry-id"=>$context['entry']->get('id')));
+						Symphony::Engine()->Page()->_param["etm-entry-id"] = $context['entry']->get('id');
 						$xml = $template->processDatasources();
 						
 						$about = $context['event']->about();
