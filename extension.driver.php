@@ -80,7 +80,9 @@
 			foreach($templates as $template){
 				$handle = 'etm-' . $template->getHandle();
 				if(in_array($handle, $context['event']->eParamFILTERS)){
-					$this->_sendEmail($template, $context);
+					if($this->_sendEmail($template, $context)){
+						$context['errors'][] = Array('etm-' . $template->getHandle(), true, __('Email sent successfully'));
+					}
 				}
 			}
 		}
@@ -178,14 +180,18 @@
 					}
 					catch(EmailValidationException $e){
 						$errors['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
+						return false;
 					}
 					catch(EmailGatewayException $e){
 						$context['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
+						return false;
 					}
+					return true;
 				}	
 			}
 			else{
 				$context['errors'][] = Array('etm-' . $template->getHandle(), false, 'No recipients selected, can not send emails.');
+				return false;
 			}
 		}
 		
