@@ -66,7 +66,7 @@ Class EmailTemplate extends XSLTPage{
 		return $xml;
 	}
 	
-	public function render($layouts = Array('Plain', 'HTML')){
+	public function render($layouts = Array('plain', 'html')){
 		
 		if(!is_array($layouts)){
 			$layouts = Array($layouts);
@@ -100,7 +100,7 @@ Class EmailTemplate extends XSLTPage{
 				
 				// More advanced XPATH matching. Using both is currently not supported.
 				$replacements = array();
-				preg_match_all('/\{[^\}]+\}/', $subject, $matches);
+				preg_match_all('/\{[^\}\$]+\}/', $subject, $matches);
 				if(is_array($matches[0])){
 					$dom = new DOMDocument();
 					$dom->strictErrorChecking = false;
