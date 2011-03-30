@@ -162,6 +162,7 @@
 							$template->addParams(Array('etm-reply-to-email'=>$params['reply-to-email']));
 						}
 						
+						$template->addParams(Array("etm-entry-id"=>$context['entry']->get('id')));
 						$xml = $template->processDatasources();
 						
 						$about = $context['event']->about();
@@ -169,9 +170,9 @@
 						General::array_to_xml($xml, Array("events"=>Array($about['name'] => Array("post-values" =>$context['fields']))));
 						
 						$template->setXML($xml->generate());
-					
+
 						$content = $template->render();
-						
+
 						$email->text_plain = $content['plain'];
 						$email->text_html = $content['html'];
 						$email->subject = $content['subject'];

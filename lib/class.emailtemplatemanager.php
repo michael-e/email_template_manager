@@ -189,7 +189,7 @@ Class EmailTemplateManager extends Manager{
 	}
 	
 	public function getClassNameFromHandle($handle){
-		return sprintf('%sEmailTemplate', ucfirst(strtolower($handle)));
+		return sprintf('%sEmailTemplate', str_replace('-', '_', ucfirst(strtolower($handle))));
 	}
 	
 	public function getHandleFromFilename($filename){
@@ -201,7 +201,7 @@ Class EmailTemplateManager extends Manager{
 	}
 	
 	public function getHandleFromName($name){
-		return ltrim(strtolower(preg_replace('/[^a-zA-Z0-9_]/', '', str_replace(' ', '_', $name))), "\x49..\x58");
+		return ltrim(strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $name))), "\x49..\x58");
 	}
 	public function getFileNameFromLayout($layout = 'html'){
 		return sprintf('template.%s.xsl', strtolower($layout));
