@@ -16,7 +16,7 @@
 				<a href="{concat(substring-before($current-url, concat('/',/data/context/item[@index = 3],'/')), '/', local-name() , '/')}" class="button">Edit <xsl:value-of select="local-name()"/> layout</a>
 			</xsl:if>
 		</xsl:for-each>
-		<a class="button" href="{substring-before($current-url, concat('/',/data/context/item[@index = 3],'/'))}/">Edit Configuration</a>
+		<a class="button" href="{substring-before($current-url, concat('/',/data/context/item[@index = 3],'/'))}/">Edit configuration</a>
 	</h2>
 	<form method="post" action="{$current-url}">
 		<fieldset class="primary">
