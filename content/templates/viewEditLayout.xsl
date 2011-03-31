@@ -9,7 +9,7 @@
 
 <xsl:template match="/">
 	<h2>
-		<span><xsl:value-of select="/data/templates/entry/name" /> – <xsl:value-of select="translate(/data/context/item[@index = 3],'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" /></span>
+		<span><xsl:value-of select="/data/templates/entry/name" /> - <xsl:value-of select="translate(/data/context/item[@index = 3],'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" /></span>
 		<a class="button" href="{$root}/symphony/extension/email_templates/templates/preview/{/data/context/item[@index = 2]}/{/data/context/item[@index = 3]}/">Preview layout</a>
 		<xsl:for-each select="/data/templates/entry/layouts/*">
 			<xsl:if test="not(local-name() = /data/context/item[@index = 3])">
