@@ -1,6 +1,7 @@
 <?php
 
 	require_once(dirname(__FILE__) . '/lib/class.emailtemplatemanager.php');
+	require_once(TOOLKIT . '/class.datasourcemanager.php');
 	
 	Class extension_email_templates extends Extension{
 	
@@ -49,6 +50,11 @@
 					'delegate' => 'AppendEventFilterDocumentation',
 					'callback' => 'AppendEventFilterDocumentation'
 				),
+				array(
+					'page' => '/blueprints/datasources/',
+					'delegate' => 'DatasourcePostEdit',
+					'callback' => 'DatasourcePostEdit'
+				),
 			);
 		}
 		
@@ -62,6 +68,18 @@
 				}
 			}
 			return true;
+		}
+		
+		public function DatasourcePostEdit($file){
+			$ds_handle = DatasourceManager::__getHandleFromFileName(substr($file['file'], strrpos($file['file'], '/')+1));
+			$templates = EmailTemplateManager::listAll();
+			foreach($templates as $template){
+				$config = $template->getConfig();
+				if(($key = array_search($file['parent']->Page->_context[1], $config['datasources'])) !== false){
+					$config['datasources'][$key] = $ds_handle;
+					return EmailTemplateManager::editConfig($template->getHandle(), array_merge($template->getAbout(), $config));
+				}
+			}
 		}
 		
 		public function AppendEventFilter($context){
