@@ -65,23 +65,19 @@
 				Layouts
 				<select name="fields[layouts]">
 					<option value="both">
-						<xsl:if test="(/data/templates/entry/layouts/html) and (/data/templates/entry/layouts/plain)">
-							<xsl:attribute name="selected">
-								1
-							</xsl:attribute>
+						<xsl:if test="(/data/templates/entry/layouts/html) and (/data/templates/entry/layouts/plain) or (not(/data/templates/entry/layouts/html) and not(/data/templates/entry/layouts/plain))">
+							<xsl:attribute name="selected">1</xsl:attribute>
 						</xsl:if>
 						HTML and Plain
 					</option>
 					<option value="html">
-						<xsl:if test="not(/data/templates/entry/layouts/plain)">
-							<xsl:attribute name="selected">
-								1
-							</xsl:attribute>
+						<xsl:if test="not(/data/templates/entry/layouts/plain) and (/data/templates/entry/layouts/html)">
+							<xsl:attribute name="selected">1</xsl:attribute>
 						</xsl:if>
 						HTML only
 					</option>
 					<option value="plain">
-						<xsl:if test="not(/data/templates/entry/layouts/html)">
+						<xsl:if test="not(/data/templates/entry/layouts/html) and (/data/templates/entry/layouts/plain)">
 							<xsl:attribute name="selected">
 								1
 							</xsl:attribute>
