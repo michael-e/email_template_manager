@@ -10,7 +10,7 @@
 <xsl:template match="/">
 	<h2>
 		<span>Email Templates</span>
-		<a href="{concat($root, '/symphony/extension/email_templates/templates/new')}" class="create button">Create new</a>
+		<a href="{concat($root, '/symphony/extension/email_template_manager/template_manager/new')}" class="create button">Create new</a>
 	</h2>
 	<form method="post" action="{$current-url}">
 		<table class="selectable">
@@ -47,7 +47,7 @@
 <xsl:template match="templates/entry">
 	<tr>
 		<td>
-			<a href="{concat($root, '/symphony/extension/email_templates/templates/edit/', handle)}"><xsl:value-of select="name"/></a>
+			<a href="{concat($root, '/symphony/extension/email_template_manager/templates/edit/', handle)}"><xsl:value-of select="name"/></a>
 			<input name="items[{handle}]" type="checkbox" />
 		</td>
 		<td>
@@ -60,10 +60,10 @@
 </xsl:template>
 
 <xsl:template match="templates/entry/layouts/*" mode="edit">
-	<a href="{concat($root, '/symphony/extension/email_templates/templates/edit/', ../../handle, '/', local-name())}" style="text-transform:uppercase"><xsl:value-of select="local-name()"/></a>
+	<a href="{concat($root, '/symphony/extension/email_template_manager/templates/edit/', ../../handle, '/', local-name())}" style="text-transform:uppercase"><xsl:value-of select="local-name()"/></a>
 </xsl:template>
 
 <xsl:template match="templates/entry/layouts/*" mode="preview">
-	<a href="{concat($root, '/symphony/extension/email_templates/templates/preview/', ../../handle, '/', local-name())}" style="text-transform:uppercase"><xsl:value-of select="local-name()"/></a>
+	<a href="{concat($root, '/symphony/extension/email_template_manager/templates/preview/', ../../handle, '/', local-name())}" style="text-transform:uppercase"><xsl:value-of select="local-name()"/></a>
 </xsl:template>
 </xsl:stylesheet>

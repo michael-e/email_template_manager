@@ -1,8 +1,8 @@
 <?php
 
 require_once(TOOLKIT . '/class.administrationpage.php');
-if(!defined('ETDIR')) define('ETDIR', EXTENSIONS . "/email_templates");
-if(!defined('ETVIEWS')) define('ETVIEWS', ETDIR . "/content/templates");
+if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . "/email_template_manager");
+if(!defined('ETVIEWS')) define('ETVIEWS', ETMDIR . "/content/templates");
 
 Class ExtensionPage extends AdministrationPage{
 	

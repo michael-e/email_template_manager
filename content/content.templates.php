@@ -1,14 +1,14 @@
 <?php
 
-if(!defined('ETDIR')) define('ETDIR', EXTENSIONS . "/email_templates");
-if(!defined('ETVIEWS')) define('ETVIEWS', ETDIR . "/content/templates");
+if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . "/email_template_manager");
+if(!defined('ETVIEWS')) define('ETVIEWS', ETMDIR . "/content/templates");
 
-require_once(ETDIR . '/lib/class.extensionpage.php');
-require_once(EXTENSIONS . '/email_templates/lib/class.emailtemplate.php');
-require_once(EXTENSIONS . '/email_templates/lib/class.emailtemplatemanager.php');
+require_once(ETMDIR . '/lib/class.extensionpage.php');
+require_once(ETMDIR . '/lib/class.emailtemplate.php');
+require_once(ETMDIR . '/lib/class.emailtemplatemanager.php');
 require_once(TOOLKIT . '/class.datasourcemanager.php');
 
-Class contentExtensionemail_templatestemplates extends ExtensionPage {
+Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 	
 	protected $_type;
 	protected $_function;
@@ -34,7 +34,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 		}
 		else{
 			if(EmailTemplateManager::create($fields)){
-				redirect(SYMPHONY_URL . '/extension/email_templates/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved');
+				redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved');
 			}
 			else{
 				$this->pageAlert(
@@ -50,7 +50,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 		
 		if(isset($_POST['action']['delete'])){
 			if(EmailTemplateManager::delete($this->_context[1])){
-				redirect(SYMPHONY_URL . '/extension/email_templates/templates/');
+				redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/');
 			}
 			else{
 				$this->pageAlert(
@@ -85,7 +85,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 				}
 				
 				if(EmailTemplateManager::editConfig($this->_context[1], $fields)){
-					redirect(SYMPHONY_URL . '/extension/email_templates/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved');
+					redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved');
 				}
 				else{
 					$this->pageAlert(
@@ -105,7 +105,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 					$errors->appendChild(new XMLElement('body', __('This document is not well formed. The following error was returned: <code>%s</code>', array($error[0]['message']))));
 				}
 				elseif(EmailTemplateManager::editLayout($this->_context[1],$this->_context[2], $fields['body'])){
-					redirect(SYMPHONY_URL . '/extension/email_templates/templates/edit/' . $this->_context[1] . '/' . $this->_context[2] . '/saved');
+					redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $this->_context[1] . '/' . $this->_context[2] . '/saved');
 				}
 				else{
 					$this->pageAlert(
@@ -260,7 +260,7 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 	}
 	
 	function build(Array $context = array()){
-		$this->addScriptToHead(URL . '/extensions/email_templates/assets/admin.js', 70);
+		$this->addScriptToHead(URL . '/extensions/email_template_manager/assets/admin.js', 70);
 		parent::build($context);
 	}
 	

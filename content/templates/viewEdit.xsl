@@ -11,7 +11,7 @@
 	<h2>	
 		<span><xsl:value-of select="/data/templates/entry/name" /></span>
 		<xsl:for-each select="/data/templates/entry/layouts/*">
-			<a href="{concat($root, '/symphony/extension/email_templates/templates/edit/', ../../handle, '/', local-name())}" class="button">Edit <xsl:value-of select="translate(local-name(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/> layout</a>
+			<a href="{concat($root, '/symphony/extension/email_template_manager/templates/edit/', ../../handle, '/', local-name())}" class="button">Edit <xsl:value-of select="translate(local-name(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/> layout</a>
 		</xsl:for-each>
 	</h2>
 	<form method="post" action="{$current-url}">

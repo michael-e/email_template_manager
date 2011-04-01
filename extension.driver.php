@@ -3,11 +3,11 @@
 	require_once(dirname(__FILE__) . '/lib/class.emailtemplatemanager.php');
 	require_once(TOOLKIT . '/class.datasourcemanager.php');
 	
-	Class extension_email_templates extends Extension{
+	Class extension_email_template_manager extends Extension{
 	
 		public function about(){
 			return array(
-				'name' => 'Email Templates',
+				'name' => 'Email Template Manager',
 				'version' => '1.0',
 				'release-date' => '2011-02-04',
 				'author' => array(

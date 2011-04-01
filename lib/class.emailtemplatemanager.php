@@ -1,7 +1,7 @@
 <?php
 
 if(!defined('EMAILTEMPLATES')) define('EMAILTEMPLATES', WORKSPACE . "/email-templates");
-if(!defined('ETDIR')) define('ETDIR', EXTENSIONS . "/email_templates");
+if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . "/email_template_manager");
 require_once(TOOLKIT . '/class.manager.php');
 require_once(TOOLKIT . '/class.extensionmanager.php');
 require_once('class.emailtemplate.php');
@@ -73,8 +73,8 @@ Class EmailTemplateManager extends Manager{
 			if(!is_dir(EMAILTEMPLATES . "/$handle")){
 				mkdir(EMAILTEMPLATES . "/$handle");
 				if(!self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config), true)) return false;
-				if(!self::_writeLayout($handle, 'Plain', file_get_contents(ETDIR . '/content/templates/xsl-plain.tpl'), true)) return false;
-				if(!self::_writeLayout($handle, 'HTML',  file_get_contents(ETDIR . '/content/templates/xsl-html.tpl'), true)) return false;
+				if(!self::_writeLayout($handle, 'Plain', file_get_contents(ETMDIR . '/content/templates/xsl-plain.tpl'), true)) return false;
+				if(!self::_writeLayout($handle, 'HTML',  file_get_contents(ETMDIR . '/content/templates/xsl-html.tpl'), true)) return false;
 				return true;
 			}
 			else{
@@ -291,7 +291,7 @@ Class EmailTemplateManager extends Manager{
 		
 		$config = array_merge($default_config, $config);
 		
-		$config_template = file_get_contents(ETDIR . '/content/templates/class.tpl', $config_template);
+		$config_template = file_get_contents(ETMDIR . '/content/templates/class.tpl', $config_template);
 		
 		$config_template = str_replace('<!-- CLASS NAME -->', self::getClassNameFromHandle(self::getHandleFromName($config['name'])), $config_template);
 		$config_template = str_replace('<!-- NAME -->',	$config['name'], $config_template);
