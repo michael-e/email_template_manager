@@ -10,7 +10,7 @@
 <xsl:template match="/">
 	<h2>
 		<span>Email Templates</span>
-		<a href="{concat($root, '/symphony/extension/email_template_manager/template_manager/new')}" class="create button">Create new</a>
+		<a href="{concat($root, '/symphony/extension/email_template_manager/templates/new')}" class="create button">Create new</a>
 	</h2>
 	<form method="post" action="{$current-url}">
 		<table class="selectable">
