@@ -61,6 +61,36 @@
 				</select>
 			</label>
 			<p class="help">Layouts will be able to use these datasources to build their content.</p>
+			<label>
+				Layouts
+				<select name="fields[layouts]">
+					<option value="both">
+						<xsl:if test="(/data/templates/entry/layouts/html) and (/data/templates/entry/layouts/plain)">
+							<xsl:attribute name="selected">
+								1
+							</xsl:attribute>
+						</xsl:if>
+						HTML and Plain
+					</option>
+					<option value="html">
+						<xsl:if test="not(/data/templates/entry/layouts/plain)">
+							<xsl:attribute name="selected">
+								1
+							</xsl:attribute>
+						</xsl:if>
+						HTML only
+					</option>
+					<option value="plain">
+						<xsl:if test="not(/data/templates/entry/layouts/html)">
+							<xsl:attribute name="selected">
+								1
+							</xsl:attribute>
+						</xsl:if>
+						Plain only
+					</option>
+				</select>
+			</label>
+			<p class="help">Only the layouts selected will be emailed.</p>
 		</fieldset>
 		<fieldset class="settings">
 			<legend>Email Settings</legend>

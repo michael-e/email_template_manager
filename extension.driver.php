@@ -192,8 +192,10 @@
 
 						$content = $template->render();
 
-						$email->text_plain = $content['plain'];
-						$email->text_html = $content['html'];
+						if(isset($content['plain']))
+							$email->text_plain = $content['plain'];
+						if(isset($content['html']))
+							$email->text_html = $content['html'];
 						$email->subject = $content['subject'];
 						
 						$email->send();

@@ -74,6 +74,16 @@ Class contentExtensionemail_templatestemplates extends ExtensionPage {
 					);
 				}
 				
+				if($fields['layouts'] == 'both'){
+					unset($fields['layouts']);
+				}
+				if($fields['layouts'] == 'html'){
+					$fields['layouts'] = Array('html'=>'template.html.xsl');
+				}
+				if($fields['layouts'] == 'plain'){
+					$fields['layouts'] = Array('plain'=>'template.plain.xsl');
+				}
+				
 				if(EmailTemplateManager::editConfig($this->_context[1], $fields)){
 					redirect(SYMPHONY_URL . '/extension/email_templates/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved');
 				}
