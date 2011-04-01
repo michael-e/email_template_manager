@@ -58,6 +58,9 @@
 							<xsl:value-of select="name"/>
 						</option>
 					</xsl:for-each>
+					<xsl:if test="not(/data/datasources/entry)">
+						<option value="0" disabled="1">No datasources installed</option>
+					</xsl:if>
 				</select>
 			</label>
 			<p class="help">Layouts will be able to use these datasources to build their content.</p>
