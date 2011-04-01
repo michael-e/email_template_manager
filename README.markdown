@@ -38,8 +38,9 @@ To create a new template, click the "Create new" button. You will be presented b
 #### Email Settings
 
 **Subject**, you can set your subject here. If you want to make your subject dynamic, you can do two things:   
+
 1.	Use a variable in the param pool, like this: `{$website-name}'s newsletter of {$today}`, which will turn into something like: `Amazing website's newsletter of 2011-04-01`.
-2.	Use XPath to select the data from your XML, like so: `SALE! {/data/sale/entry/title} for only {/data/sale/entry/price}!`, which will turn into: `SALE! Websites for only &eur;10.000!`
+2.	Use XPath to select the data from your XML, like so: `SALE! {/data/sale/entry/title} for only {/data/sale/entry/price}!`, which will turn into: `SALE! Websites for only &euro;10.000!`
 
 At this point, it is not possible to mix the two syntaxes.
 
