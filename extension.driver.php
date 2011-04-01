@@ -223,7 +223,7 @@
 				$handle = 'etm-' . $template->getHandle();
 				if(in_array($handle, $context['selected'])){
 
-					$context['documentation'][] = new XMLElement('h3', __('Send Email Using Email Template'));
+					$context['documentation'][] = new XMLElement('h3', __('Send Email Using Email Templates'));
 					$context['documentation'][] = new XMLElement('p', __('To use the Email Template Manager, only the recipients field has to be used, as seen below:'));
 					$context['documentation'][] = contentBlueprintsEvents::processDocumentationCode('<form action="" method="post">
 	<fieldset>
@@ -232,7 +232,7 @@
 	</fieldset>
 </form>');
 
-					$context['documentation'][] = new XMLElement('p', __('Ofcourse, it is also possible to add more advanced features (like the default send-email filter):'));
+					$context['documentation'][] = new XMLElement('p', __('Of course, it is also possible to use more advanced features (like with the default send-email filter):'));
 					$context['documentation'][] = contentBlueprintsEvents::processDocumentationCode('<form action="" method="post">
 	<fieldset>
 		<label>'.__('Name').' <input type="text" name="fields[author]" value="" /></label>
@@ -262,7 +262,7 @@
 		<input id="submit" type="submit" name="action[save-contact-form]" value="Send" />
 	</fieldset>
 </form>');
-				$context['documentation'][] = new XMLElement('p', __('In the example, only the recipient setting is changed, but the same principle applies to all settings described above.'));
+				$context['documentation'][] = new XMLElement('p', __('In the example only the recipient setting is changed, but the same principle applies to all settings described above.'));
 			}
 			break;
 		}
