@@ -44,7 +44,7 @@ To create a new template, click the "Create new" button. You will be presented b
 
 At this point, it is not possible to mix the two syntaxes.
 
-*Congratulations!* You have now created your first Email Template.   
+**Congratulations!** You have now created your first Email Template.   
 Ofcourse, you have not yet defined the layout of your template, so let's do that now.
 
 ### Setting up the layout(s)
