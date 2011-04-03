@@ -130,7 +130,10 @@
 		}
 		
 		protected function _sendEmail($template, $context){
-			ksort((array)$_POST['etm'], SORT_STRING);
+			if(!is_array($_POST['etm'])){
+				$_POST['etm'] = Array();
+			}
+			ksort($_POST['etm'], SORT_STRING);
 			$fields = Array();
 			$params = Array();
 			foreach((array)$_POST['etm'] as $handle => $values){
