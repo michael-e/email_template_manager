@@ -33,6 +33,15 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			);
 		}
 		else{
+			if($fields['layouts'] == 'both'){
+				unset($fields['layouts']);
+			}
+			if($fields['layouts'] == 'html'){
+				$fields['layouts'] = Array('html'=>'template.html.xsl');
+			}
+			if($fields['layouts'] == 'plain'){
+				$fields['layouts'] = Array('plain'=>'template.plain.xsl');
+			}
 			if(EmailTemplateManager::create($fields)){
 				redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved');
 			}
