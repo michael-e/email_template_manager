@@ -151,7 +151,8 @@
 			$params['recipient'] = $this->__sendEmailFindFormValue($fields['recipient'], $_POST['fields'], true);
 			if(!empty($params['recipient'])){
 
-				$params = Symphony::Database()->cleanFields($params);
+				$db = Symphony::Database();
+				$params = array_map(Array($db, 'cleanValue'), $params);
 
 				$params['recipient']		= preg_split('/\,/i', $params['recipient'], -1, PREG_SPLIT_NO_EMPTY);
 				$params['recipient']		= array_map('trim', $params['recipient']);
