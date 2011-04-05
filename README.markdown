@@ -1,7 +1,7 @@
 Email Template Manager
 ===========================
 
-Version:	2.0   
+Version:	2.1   
 Author:		Huib Keemink (creativedutchmen)
 
 What's this?
@@ -9,12 +9,6 @@ What's this?
 
 Using this extension is it possible to let Symphony send pretty emails using XSLT.   
 This extension uses the Email API which is introduced in Symphony 2.2, earlier versions of Symphony are not supported.
-
-What's new in this version?
------------------------
-
- - Event filters are supported, so custom events are no longer needed to send emails.
- - It is possible to select which layouts to use (Html, Plain or both).
 
 How do I use this?
 --------------------
@@ -103,3 +97,13 @@ This is the most advanced (and interesting!) way to retrieve / access your templ
         throw new SymphonyErrorPage('Error sending email. ' . $e->getMessage());
     }
 
+Changelog
+-----------------------
+[2.1]   
+
+ - SQL Injection flaw fixed
+ 
+[2.0]   
+
+ - Event filters are supported, so custom events are no longer needed to send emails.
+ - It is possible to select which layouts to use (Html, Plain or both).

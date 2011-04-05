@@ -8,8 +8,8 @@
 		public function about(){
 			return array(
 				'name' => 'Email Template Manager',
-				'version' => '2.0',
-				'release-date' => '2011-04-01',
+				'version' => '2.1',
+				'release-date' => '2011-04-05',
 				'author' => array(
 					'name' => 'Huib Keemink',
 					'website' => 'http://www.creativedutchmen.com',
