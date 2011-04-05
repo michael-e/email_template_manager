@@ -4,7 +4,7 @@
 	require_once(TOOLKIT . '/class.datasourcemanager.php');
 	
 	Class extension_email_template_manager extends Extension{
-	
+
 		public function about(){
 			return array(
 				'name' => 'Email Template Manager',
@@ -17,7 +17,7 @@
 				)
 			);
 		}
-		
+
 		public function fetchNavigation() {
 			return array(
 				array(
@@ -27,7 +27,7 @@
 				)
 			);
 		}
-		
+
 		public function getSubscribedDelegates() {
 			return array(
 				array(
@@ -57,7 +57,7 @@
 				),
 			);
 		}
-		
+
 		public function install(){
 			if(!is_dir(WORKSPACE . '/email-templates')){
 				try{
@@ -69,7 +69,7 @@
 			}
 			return true;
 		}
-		
+
 		public function DatasourcePostEdit($file){
 			$ds_handle = DatasourceManager::__getHandleFromFileName(substr($file['file'], strrpos($file['file'], '/')+1));
 			$templates = EmailTemplateManager::listAll();
@@ -81,7 +81,7 @@
 				}
 			}
 		}
-		
+
 		public function AppendEventFilter($context){
 			$templates = EmailTemplateManager::listAll();
 			foreach($templates as $template){
@@ -92,7 +92,7 @@
 				);
 			}
 		}
-		
+
 		public function eventFinalSaveFilter($context){
 			$templates = EmailTemplateManager::listAll();
 			foreach($templates as $template){
@@ -104,7 +104,7 @@
 				}
 			}
 		}
-		
+
 		// borrowed from event.section.php
 		protected function __sendEmailFindFormValue($needle, $haystack, $discard_field_name=true, $default=NULL, $collapse=true){
 
@@ -128,7 +128,7 @@
 			return $needle;
 
 		}
-		
+
 		protected function _sendEmail($template, $context){
 			if(!is_array($_POST['etm'])){
 				$_POST['etm'] = Array();
@@ -137,13 +137,13 @@
 			$fields = Array();
 			$params = Array();
 			foreach((array)$_POST['etm'] as $handle => $values){
-			
+
 				// Numeric handle values are not set in html (etm[][setting]) and can be regarded as
 				// "global" settings. These settings will apply to all email templates sent.
 				// Named handles, on the other hand (etm[template_name][setting]) are template-specific settings.
 				// This can be useful to send an email to the user (you have been registered) and to the admin (a new user has registered) with the same form,
 				// but different templates.
-				
+
 				if(is_numeric($handle) || $template->getHandle() == $handle){
 					$fields = array_merge($params, $values);
 				}
@@ -151,10 +151,12 @@
 			$params['recipient'] = $this->__sendEmailFindFormValue($fields['recipient'], $_POST['fields'], true);
 			if(!empty($params['recipient'])){
 
+				$params = Symphony::Database()->cleanFields($params);
+
 				$params['recipient']		= preg_split('/\,/i', $params['recipient'], -1, PREG_SPLIT_NO_EMPTY);
 				$params['recipient']		= array_map('trim', $params['recipient']);
 				$params['recipient']		= Symphony::Database()->fetch("SELECT `email`, `first_name` FROM `tbl_authors` WHERE `username` IN ('".@implode("', '", $params['recipient'])."') ");
-				
+
 				foreach($params['recipient'] as $recipient){
 					$email = Email::create();
 					try{
@@ -200,7 +202,6 @@
 						if(isset($content['html']))
 							$email->text_html = $content['html'];
 						$email->subject = $content['subject'];
-						
 						$email->send();
 					}
 					catch(EmailValidationException $e){
@@ -219,7 +220,7 @@
 				return false;
 			}
 		}
-		
+
 		public function AppendEventFilterDocumentation($context){
 			$templates = EmailTemplateManager::listAll();
 			foreach($templates as $template){
