@@ -151,12 +151,11 @@
 			$params['recipient'] = $this->__sendEmailFindFormValue($fields['recipient'], $_POST['fields'], true);
 			if(!empty($params['recipient'])){
 
-				$db = Symphony::Database();
-				$params = array_map(Array($db, 'cleanValue'), $params);
+				Symphony::Database()->cleanFields($params);
 
 				$params['recipient']		= preg_split('/\,/i', $params['recipient'], -1, PREG_SPLIT_NO_EMPTY);
 				$params['recipient']		= array_map('trim', $params['recipient']);
-				$params['recipient']		= Symphony::Database()->fetch("SELECT `email`, `first_name` FROM `tbl_authors` WHERE `username` IN ('".@implode("', '", $params['recipient'])."') ");
+				$params['recipient']		= Symphony::Database()->fetch("SELECT `email`, `first_name` FROM `tbl_authors` WHERE `username` IN (".@implode(", ", $params['recipient']).") ");
 
 				foreach($params['recipient'] as $recipient){
 					$email = Email::create();
