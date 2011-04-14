@@ -45,8 +45,16 @@ Class ExtensionPage extends AdministrationPage{
 					'upload-limit' => min($upload_size_php, $upload_size_sym),
 					'symphony-version' => Symphony::Configuration()->get('version', 'symphony'),
 				);
-				
 				$html = $this->_XSLTProc->process($this->_XML->generate(), file_get_contents($template), $params);
+				if($this->_XSLTProc->isErrors()){
+					$errstr = NULL;
+
+					while (list($key, $val) = $this->_XSLTProc->getError()) {
+						$errstr .= 'Line: ' . $val['line'] . ' - ' . $val['message'] . self::CRLF;
+					}
+					
+					throw new SymphonyErrorPage(trim($errstr), NULL, 'xslt-error', array('proc' => clone $this->_XSLTProc));
+				}					
 			}
 			else{
 				Administration::instance()->errorPageNotFound();

@@ -93,30 +93,33 @@
 		</fieldset>
 		<fieldset class="settings">
 			<legend>Email Settings</legend>
-			<xsl:if test="/data/errors/subject">
-				<xsl:attribute name="class">
-					<xsl:text>invalid</xsl:text>
-				</xsl:attribute>
-			</xsl:if>
-			<label>
-				Subject
-				<input type="text" name="fields[subject]">
-					<xsl:attribute name="value">
-						<xsl:if test="/data/fields">
-							<xsl:value-of select="/data/fields/subject"/>
-						</xsl:if>
-						<xsl:if test="not(/data/fields)">
-							<xsl:value-of select="/data/templates/entry/subject"/>
-						</xsl:if>
+			<div>
+				<xsl:if test="/data/errors/subject">
+					<xsl:attribute name="class">
+						<xsl:text>invalid</xsl:text>
 					</xsl:attribute>
-				</input>
-			</label>
-			<xsl:if test="/data/errors/subject">
-				<p><xsl:value-of select="/data/errors/subject"/></p>
-			</xsl:if>
-			<xsl:if test="not(/data/errors/subject)">
-				<p class="help">Use the {$variable} and {/xpath/query} notation to include dynamic parts. It is not possible to combine the two syntaxes.</p>
-			</xsl:if>
+				</xsl:if>
+				<label>	
+					Subject
+					<input type="text" name="fields[subject]">
+						
+						<xsl:attribute name="value">
+							<xsl:if test="/data/fields">
+								<xsl:value-of select="/data/fields/subject"/>
+							</xsl:if>
+							<xsl:if test="not(/data/fields)">
+								<xsl:value-of select="/data/templates/entry/subject"/>
+							</xsl:if>
+						</xsl:attribute>
+					</input>
+				</label>
+				<xsl:if test="/data/errors/subject">
+					<p><xsl:value-of select="/data/errors/subject"/></p>
+				</xsl:if>
+				<xsl:if test="not(/data/errors/subject)">
+					<p class="help">Use the {$variable} and {/xpath/query} notation to include dynamic parts. It is not possible to combine the two syntaxes.</p>
+				</xsl:if>
+			</div>
 		</fieldset>
 		<div class="actions">
 			<input type="submit" accesskey="s" value="Save Changes" name="action[save]" />
