@@ -85,6 +85,11 @@
 		public function AppendEventFilter($context){
 			$templates = EmailTemplateManager::listAll();
 			foreach($templates as $template){
+				$tmp[$template->getHandle()] = $template;
+			}
+			$templates = $tmp;
+			ksort($templates, SORT_STRING);
+			foreach($templates as $template){
 				$handle = 'etm-' . $template->getHandle();
 				$selected = (in_array($handle, $context['selected']));
 				$context['options'][] = Array(
