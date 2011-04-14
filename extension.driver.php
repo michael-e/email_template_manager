@@ -145,7 +145,7 @@
 				// but different templates.
 
 				if(is_numeric($handle) || $template->getHandle() == $handle){
-					$fields = array_merge($params, $values);
+					$fields = array_merge($fields, $values);
 				}
 			}
 			$params['recipient'] = $this->__sendEmailFindFormValue($fields['recipient'], $_POST['fields'], true);
@@ -267,8 +267,8 @@
 	</fieldset>
 </form>');
 				$context['documentation'][] = new XMLElement('p', __('In the example only the recipient setting is changed, but the same principle applies to all settings described above.'));
+				break;
 			}
-			break;
 		}
 	}
 }

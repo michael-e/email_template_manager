@@ -52,7 +52,7 @@ Class ExtensionPage extends AdministrationPage{
 					while (list($key, $val) = $this->_XSLTProc->getError()) {
 						$errstr .= 'Line: ' . $val['line'] . ' - ' . $val['message'] . self::CRLF;
 					}
-					
+
 					throw new SymphonyErrorPage(trim($errstr), NULL, 'xslt-error', array('proc' => clone $this->_XSLTProc));
 				}					
 			}
