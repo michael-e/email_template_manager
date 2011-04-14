@@ -1,7 +1,7 @@
 Email Template Manager
 ===========================
 
-Version:	2.1   
+Version:	2.2   
 Author:		Huib Keemink (creativedutchmen)
 
 What's this?
@@ -99,6 +99,12 @@ This is the most advanced (and interesting!) way to retrieve / access your templ
 
 Changelog
 -----------------------
+[2.2]
+
+ - Fixed sorting order of event filters
+ - Fixed bug with field[] syntax in frontend
+ - Fixed bug with demo code with more than one template installed
+
 [2.1]   
 
  - SQL Injection flaw fixed
