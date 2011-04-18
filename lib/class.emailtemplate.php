@@ -252,8 +252,14 @@ Class EmailTemplate extends XSLTPage{
 					Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is empty, skipping.' , 100, true);
 				}
 			}
-			$this->_parsedProperties['recipients'] = $rcpts;
-			$this->addParams(Array('etm-recipients'=>implode(", ", $this->_parsedProperties['recipients'])));
+			if(!empty($rcpts)){
+				$this->_parsedProperties['recipients'] = $rcpts;
+				$this->addParams(Array('etm-recipients'=>implode(", ", $this->_parsedProperties['recipients'])));
+			}
+			else{
+				Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' No valid recipients are selected, can not send emails.' , 100, true);
+				return false;
+			}
 		}
 
 		if(empty($this->_parsedProperties['subject'])){
