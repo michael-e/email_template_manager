@@ -154,11 +154,11 @@
 				$email->send();
 			}
 			catch(EmailTemplateException $e){
-				$errors['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
+				$context['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
 				return false;
 			}
 			catch(EmailValidationException $e){
-				$errors['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
+				$context['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
 				return false;
 			}
 			catch(EmailGatewayException $e){
