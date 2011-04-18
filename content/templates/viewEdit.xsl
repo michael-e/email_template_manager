@@ -94,7 +94,7 @@
 		</fieldset>
 		<fieldset class="settings">
 			<legend>Email Settings</legend>
-			<p class="help">These settings are global settings for this template. They can be overwritten by extensions or custom events. <br /><br />Use the {$variable} and {/xpath/query} notation to include dynamic parts. It is not possible to combine the two syntaxes: {/xpath/$var} is not possible.</p>
+			<p class="help">These settings are global settings for this template. They can be overwritten by extensions or custom events. <br /><br />Use the {$param} and {/xpath/query} notation to include dynamic parts. It is not possible to combine the two syntaxes: {/xpath/$param} is not possible.</p>
 			<div>
 				<xsl:if test="/data/errors/subject">
 					<xsl:attribute name="class">
@@ -119,7 +119,7 @@
 					<p><xsl:value-of select="/data/errors/subject"/></p>
 				</xsl:if>
 				<xsl:if test="not(/data/errors/subject)">
-					<p class="help">Use the {$variable} and {/xpath/query} notation to include dynamic parts. It is not possible to combine the two syntaxes. If the XPath returns more than one result, only the first is used</p>
+					<p class="help">Use the {$param} and {/xpath/query} notation to include dynamic parts. It is not possible to combine the two syntaxes. If the XPath returns more than one result, only the first is used</p>
 				</xsl:if>
 			</div>
 			<div>
