@@ -295,8 +295,6 @@ Class EmailTemplateManager extends Manager{
 		
 		$config_template = str_replace('<!-- CLASS NAME -->', self::getClassNameFromHandle(self::getHandleFromName($config['name'])), $config_template);
 		$config_template = str_replace('<!-- NAME -->',	$config['name'], $config_template);
-		$config_template = str_replace('<!-- FROMNAME -->',	$config['sender-name'], $config_template);
-		$config_template = str_replace('<!-- FROMEMAIL -->',	$config['sender-email-address'], $config_template);
 		$config_template = str_replace('<!-- REPLYTONAME -->',	$config['reply-to-name'], $config_template);
 		$config_template = str_replace('<!-- REPLYTOEMAIL -->',	$config['reply-to-email-address'], $config_template);
 		$config_template = str_replace('<!-- RECIPIENTS -->',	$config['recipients'], $config_template);

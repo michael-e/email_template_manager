@@ -7,8 +7,6 @@ require_once(CORE . '/class.frontend.php');
 Class EmailTemplate extends XSLTPage{
 	
 	public $subject = "";
-	public $sender_email_address;
-	public $sender_name;
 	public $reply_to_name;
 	public $reply_to_address;
 	public $recipients;
@@ -88,16 +86,24 @@ Class EmailTemplate extends XSLTPage{
 					foreach($matches[0] as $match){
 						$results = @$xpath->evaluate(trim($match, '{}'));
 						if(is_object($results)){
-							if(count($str) == 1){
-								$str = array_fill(0, $results->length, $str[0]);
-							}
-							if(count($str) == $results->length){
-								foreach($results as $offset=>$result){
-									$str[$offset] = str_replace($match, trim($result->textContent), $str[$offset]);
+							if($results->length > 0){
+								if(count($str) == 1){
+									$str = array_fill(0, $results->length, $str[0]);
+								}
+								if(count($str) == $results->length){
+									foreach($results as $offset=>$result){
+										$str[$offset] = str_replace($match, trim($result->textContent), $str[$offset]);
+									}
+								}
+								else{
+									throw new EmailTemplateException("XPath matching failed. Number of returned values in queries do not match");
 								}
 							}
-							else{
-								throw new EmailTemplateException("XPath matching failed. Number of returned values in queries do not match");
+							elseif($results->length <= 0){
+								foreach($str as $offset=>$val){
+									$str[$offset] = '';
+								}
+								Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Xpath query '.$match.' did not return any results, skipping. ', 100, true);
 							}
 						}
 						else{
@@ -243,7 +249,7 @@ Class EmailTemplate extends XSLTPage{
 					}
 				}
 				else{
-					throw new EmailTemplateException("Empty recipient");
+					Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is empty. Skipping.' , 100, true);
 				}
 			}
 			$this->_parsedProperties['recipients'] = $rcpts;
@@ -253,16 +259,6 @@ Class EmailTemplate extends XSLTPage{
 		if(empty($this->_parsedProperties['subject'])){
 			$this->_parsedProperties['subject'] = $this->evalXPath($this->subject, false);
 			$this->addParams(Array('etm-subject'=>$this->_parsedProperties['subject']));
-		}
-
-		if(empty($this->_parsedProperties['sender_email_address'])){
-			$this->_parsedProperties['sender_email_address'] = $this->evalXPath($this->sender_email_address, false);
-			$this->addParams(Array('etm-sender-email-subject'=>$this->_parsedProperties['sender_email_address']));
-		}
-
-		if(empty($this->_parsedProperties['sender_name'])){
-			$this->_parsedProperties['sender_name'] = $this->evalXPath($this->sender_name, false);
-			$this->addParams(Array('etm-sender-name'=>$this->_parsedProperties['sender_name']));
 		}
 
 		if(empty($this->_parsedProperties['reply_to_name'])){
@@ -282,8 +278,6 @@ Class EmailTemplate extends XSLTPage{
 
 	public function getProperties(){
 		return Array(
-			'sender_name' => $this->sender_name,
-			'sender_email_address' => $this->sender_email_address,
 			'reply_to_name' => $this->reply_to_name,
 			'reply_to_email_address' => $this->reply_to_email_address,
 			'subject' => $this->subject,

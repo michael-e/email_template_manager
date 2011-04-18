@@ -122,61 +122,32 @@
 					<p class="help">Use the {$variable} and {/xpath/query} notation to include dynamic parts. It is not possible to combine the two syntaxes. If the XPath returns more than one result, only the first is used</p>
 				</xsl:if>
 			</div>
-			<div class="group">
-				<div>
-					<xsl:if test="/data/errors/sender-name">
-						<xsl:attribute name="class">
-							<xsl:text>invalid</xsl:text>
+			<div>
+				<xsl:if test="/data/errors/recipients">
+					<xsl:attribute name="class">
+						<xsl:text>invalid</xsl:text>
+					</xsl:attribute>
+				</xsl:if>
+				<label>	
+					Recipients
+					<i>optional</i>
+					<input type="text" name="fields[recipients]">
+						<xsl:attribute name="value">
+							<xsl:if test="/data/fields">
+								<xsl:value-of select="/data/fields/recipients"/>
+							</xsl:if>
+							<xsl:if test="not(/data/fields)">
+								<xsl:value-of select="/data/templates/entry/recipients"/>
+							</xsl:if>
 						</xsl:attribute>
-					</xsl:if>
-					<label>	
-						Sender Name
-						<i>optional</i>
-						<input type="text" name="fields[sender-name]">
-							<xsl:attribute name="value">
-								<xsl:if test="/data/fields">
-									<xsl:value-of select="/data/fields/sender-name"/>
-								</xsl:if>
-								<xsl:if test="not(/data/fields) and /data/templates/entry/sender-name">
-									<xsl:value-of select="/data/templates/entry/sender-name"/>
-								</xsl:if>
-								<xsl:if test="not(/data/fields) and not(/data/templates/entry/sender-name)">
-									<xsl:value-of select="/data/email-settings/from-name"/>
-								</xsl:if>
-							</xsl:attribute>
-						</input>
-					</label>
-					<xsl:if test="/data/errors/sender-name">
-						<p><xsl:value-of select="/data/errors/sender-name"/></p>
-					</xsl:if>
-				</div>
-				<div>
-					<xsl:if test="/data/errors/sender-email-address">
-						<xsl:attribute name="class">
-							<xsl:text>invalid</xsl:text>
-						</xsl:attribute>
-					</xsl:if>
-					<label>	
-						Sender Email Address
-						<i>optional</i>
-						<input type="text" name="fields[sender-email-address]">
-							<xsl:attribute name="value">
-								<xsl:if test="/data/fields">
-									<xsl:value-of select="/data/fields/sender-email-address"/>
-								</xsl:if>
-								<xsl:if test="not(/data/fields) and /data/templates/entry/sender-email-address">
-									<xsl:value-of select="/data/templates/entry/sender-email-address"/>
-								</xsl:if>
-								<xsl:if test="not(/data/fields) and not(/data/templates/entry/sender-email-address)">
-									<xsl:value-of select="/data/email-settings/from-address"/>
-								</xsl:if>
-							</xsl:attribute>
-						</input>
-					</label>
-					<xsl:if test="/data/errors/sender-email-address">
-						<p><xsl:value-of select="/data/errors/sender-email-address"/></p>
-					</xsl:if>
-				</div>
+					</input>
+				</label>
+				<xsl:if test="/data/errors/recipients">
+					<p><xsl:value-of select="/data/errors/recipients"/></p>
+				</xsl:if>
+				<xsl:if test="not(/data/errors/recipients)">
+					<p class="help">Select multiple recipients by seperating them with commas. This is also possible dynamically: <code>{/data/authors/name} &lt;{/data/authors/email}&gt;</code> will return: <code>name &lt;email@domain.com&gt;, name2 &lt;email2@domain.com&gt;</code></p>
+				</xsl:if>
 			</div>
 			<div class="group">
 				<div>
@@ -195,9 +166,6 @@
 								</xsl:if>
 								<xsl:if test="not(/data/fields) and /data/templates/entry/reply-to-name">
 									<xsl:value-of select="/data/templates/entry/reply-to-name"/>
-								</xsl:if>
-								<xsl:if test="not(/data/fields) and not(/data/templates/entry/reply-to-name)">
-									<xsl:value-of select="/data/email-settings/from-name"/>
 								</xsl:if>
 							</xsl:attribute>
 						</input>
@@ -223,9 +191,6 @@
 								<xsl:if test="not(/data/fields) and /data/templates/entry/reply-to-email-address">
 									<xsl:value-of select="/data/templates/entry/reply-to-email-address"/>
 								</xsl:if>
-								<xsl:if test="not(/data/fields) and not(/data/templates/entry/reply-to-email-address)">
-									<xsl:value-of select="/data/email-settings/from-address"/>
-								</xsl:if>
 							</xsl:attribute>
 						</input>
 					</label>
@@ -233,33 +198,6 @@
 						<p><xsl:value-of select="/data/errors/reply-to-email-address"/></p>
 					</xsl:if>
 				</div>
-			</div>
-			<div>
-				<xsl:if test="/data/errors/recipients">
-					<xsl:attribute name="class">
-						<xsl:text>invalid</xsl:text>
-					</xsl:attribute>
-				</xsl:if>
-				<label>	
-					Recipients
-					<i>optional</i>
-					<input type="text" name="fields[recipients]">
-						<xsl:attribute name="value">
-							<xsl:if test="/data/fields">
-								<xsl:value-of select="/data/fields/recipients"/>
-							</xsl:if>
-							<xsl:if test="not(/data/fields)">
-								<xsl:value-of select="/data/templates/entry/recipients"/>
-							</xsl:if>
-						</xsl:attribute>
-					</input>
-				</label>
-				<xsl:if test="/data/errors/recipients">
-					<p><xsl:value-of select="/data/errors/recipients"/></p>
-				</xsl:if>
-				<xsl:if test="not(/data/errors/recipients)">
-					<p class="help">Select multiple recipients by seperating them with commas. This is also possible dynamically: <code>&quot;{/data/authors/name}&quot; &lt;{/data/authors/email}&gt;</code> will return: <code>&quot;name&quot; &lt;email@domain.com&gt;, &quot;name2&quot; &lt;email2@domain.com&gt;</code></p>
-				</xsl:if>
 			</div>
 		</fieldset>
 		<div class="actions">

@@ -139,14 +139,6 @@
 					throw new EmailTemplateException("Can not send emails without a subject");
 				}
 
-				if(isset($properties['sender_email_address'])){
-					$email->sender_email_address = $properties['sender_email_address'];
-				}
-
-				if(isset($properties['sender_name'])){
-					$email->sender_name = $properties['sender_name'];
-				}
-
 				if(isset($properties['reply_to_name'])){
 					$email->reply_to_name = $properties['reply_to_name'];
 				}

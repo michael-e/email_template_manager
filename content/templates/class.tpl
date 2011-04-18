@@ -6,8 +6,6 @@ Class <!-- CLASS NAME --> extends EmailTemplate{
 	public $datasources = Array(<!-- DATASOURCES -->);
 	public $layouts = Array(<!-- LAYOUTS -->);
 	public $subject = '<!-- SUBJECT -->';
-	public $sender_name = '<!-- FROMNAME -->';
-	public $sender_email_address = '<!-- FROMEMAIL -->';
 	public $reply_to_name = '<!-- REPLYTONAME -->';
 	public $reply_to_email_address = '<!-- REPLYTOEMAIL -->';
 	public $recipients = '<!-- RECIPIENTS -->';
