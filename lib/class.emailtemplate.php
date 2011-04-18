@@ -244,12 +244,12 @@ Class EmailTemplate extends XSLTPage{
 							$rcpts[$author->get('first-name')] = $author->get("email");
 						}
 						else{
-							throw new EmailTemplateException("Recipient is recognised as a username, but username not found: " . $recipient);
+							Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is recognised as a username, but username not found: ' . $recipient , 100, true);
 						}
 					}
 				}
 				else{
-					Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is empty. Skipping.' , 100, true);
+					Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is empty, skipping.' , 100, true);
 				}
 			}
 			$this->_parsedProperties['recipients'] = $rcpts;
