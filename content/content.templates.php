@@ -7,6 +7,7 @@ require_once(ETMDIR . '/lib/class.extensionpage.php');
 require_once(ETMDIR . '/lib/class.emailtemplate.php');
 require_once(ETMDIR . '/lib/class.emailtemplatemanager.php');
 require_once(TOOLKIT . '/class.datasourcemanager.php');
+require_once(TOOLKIT . '/class.emailgatewaymanager.php');
 
 Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 	
@@ -148,7 +149,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		foreach(EmailTemplateManager::listAll() as $template){
 			$entry = new XMLElement("entry");
 			General::array_to_xml($entry, $template->about);
-			General::array_to_xml($entry, $template->config);
+			General::array_to_xml($entry, $template->getProperties());
 			$entry->appendChild(new XMLElement("handle", $template->getHandle()));
 			$templates->appendChild($entry);
 		}
@@ -178,7 +179,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			if($template){
 				$entry = new XMLElement("entry");
 				General::array_to_xml($entry, $template->about);
-				General::array_to_xml($entry, $template->config);
+				General::array_to_xml($entry, $template->getProperties());
 				$entry->appendChild(new XMLElement("handle", $template->getHandle()));
 				$templates->appendChild($entry);
 			}
@@ -195,6 +196,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				$datasources->appendChild($entry);
 			}
 			$this->_XML->appendChild($datasources);
+			General::array_to_xml($this->_XML, Array("email-settings" => Symphony::Configuration()->get('email_' . EmailGatewayManager::getDefaultGateway())));
 		}
 		
 		// Edit layout
@@ -208,7 +210,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			if($template){
 				$entry = new XMLElement("entry");
 				General::array_to_xml($entry, $template->about);
-				General::array_to_xml($entry, $template->config);
+				General::array_to_xml($entry, $template->getProperties());
 				$entry->appendChild(new XMLElement("handle", $template->getHandle()));
 				$templates->appendChild($entry);
 			}
@@ -223,8 +225,8 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			
 			$template = EmailTemplateManager::load($this->_context[1]);
 			if($template){
-				if($template->config['layouts'][$this->_context[2]]){
-					$layout = new XMLElement('layout', '<![CDATA[' . file_get_contents(dirname(EmailTemplateManager::find($this->_context[1])) . '/' . $template->config['layouts'][$this->_context[2]]) . ']]>');
+				if($template->layouts[$this->_context[2]]){
+					$layout = new XMLElement('layout', '<![CDATA[' . file_get_contents(dirname(EmailTemplateManager::find($this->_context[1])) . '/' . $template->layouts[$this->_context[2]]) . ']]>');
 					$this->_XML->appendChild($layout);
 				}
 				else{
