@@ -230,7 +230,7 @@ Class EmailTemplate extends XSLTPage{
 							if(strlen($name) == 0){
 								$name = count((array)$rcpts);
 							}
-							$rcpts[$name] = trim(substr($recipient, $start+1, $stop - ($start+1)));
+							$rcpts[trim($name)] = trim(substr($recipient, $start+1, $stop - ($start+1)));
 						}
 						// email@domain
 						else{
@@ -241,7 +241,7 @@ Class EmailTemplate extends XSLTPage{
 					else{
 						$author = AuthorManager::fetchByUserName(trim($recipient));
 						if(!is_null($author)){
-							$rcpts[$author->get('first-name')] = $author->get("email");
+							$rcpts[trim($author->get('first_name') . ' '. $author->get('last_name'))] = $author->get("email");
 						}
 						else{
 							Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is recognised as a username, but the user can not be found: ' . $recipient , 100, true);
