@@ -244,7 +244,7 @@ Class EmailTemplate extends XSLTPage{
 							$rcpts[$author->get('first-name')] = $author->get("email");
 						}
 						else{
-							Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is recognised as a username, but username not found: ' . $recipient , 100, true);
+							Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is recognised as a username, but the user can not be found: ' . $recipient , 100, true);
 						}
 					}
 				}
