@@ -123,28 +123,27 @@
 				$template->setXML($xml->generate());
 
 				$content = $template->render();
-				$properties = $template->getParsedProperties();
 
-				if(isset($properties['recipients'])){
-					$email->recipients = $properties['recipients'];
+				if(isset($content['recipients'])){
+					$email->recipients = $content['recipients'];
 				}
 				else{
 					throw new EmailTemplateException("Can not send an email to nobody, please set a recipient.");
 				}
 
-				if(isset($properties['subject'])){
-					$email->subject = $properties['subject'];
+				if(isset($content['subject'])){
+					$email->subject = $content['subject'];
 				}
 				else{
 					throw new EmailTemplateException("Can not send emails without a subject");
 				}
 
-				if(isset($properties['reply_to_name'])){
-					$email->reply_to_name = $properties['reply_to_name'];
+				if(isset($content['reply-to-name'])){
+					$email->reply_to_name = $content['reply-to-name'];
 				}
 
-				if(isset($properties['reply_to_email_address'])){
-					$email->reply_to_email_address = $properties['reply_to_email_address'];
+				if(isset($content['reply-to-email-address'])){
+					$email->reply_to_email_address = $content['reply-to-email-address'];
 				}
 
 				if(isset($content['plain']))

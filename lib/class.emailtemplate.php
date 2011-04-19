@@ -172,6 +172,7 @@ Class EmailTemplate extends XSLTPage{
 			}
 
 			$this->parseProperties();
+			$properties = $this->getParsedProperties();
 
 			foreach($this->layouts as $type=>$layout){
 				if(in_array(strtolower($type), array_map("strtolower", $layouts))){
@@ -187,7 +188,7 @@ Class EmailTemplate extends XSLTPage{
 					
 				}
 			}
-			return $result;
+			return array_merge($result, $properties);
 		}
 	}
 	
@@ -267,14 +268,14 @@ Class EmailTemplate extends XSLTPage{
 			$this->addParams(Array('etm-subject'=>$this->_parsedProperties['subject']));
 		}
 
-		if(empty($this->_parsedProperties['reply_to_name'])){
-			$this->_parsedProperties['reply_to_name'] = $this->evalXPath($this->reply_to_name, false);
-			$this->addParams(Array('etm-reply-to-name'=>$this->_parsedProperties['reply_to_name']));
+		if(empty($this->_parsedProperties['reply-to_name'])){
+			$this->_parsedProperties['reply-to-name'] = $this->evalXPath($this->reply_to_name, false);
+			$this->addParams(Array('etm-reply-to-name'=>$this->_parsedProperties['reply-to-name']));
 		}
 
-		if(empty($this->_parsedProperties['reply_to_email_address'])){
-			$this->_parsedProperties['reply_to_email_address'] = $this->evalXPath($this->reply_to_email_address, false);
-			$this->addParams(Array('etm-reply-to-email-address'=>$this->_parsedProperties['reply_to_email_address']));
+		if(empty($this->_parsedProperties['reply-to-email-address'])){
+			$this->_parsedProperties['reply-to-email-address'] = $this->evalXPath($this->reply_to_email_address, false);
+			$this->addParams(Array('etm-reply-to-email-address'=>$this->_parsedProperties['reply-to-email-address']));
 		}
 	}
 
@@ -284,8 +285,8 @@ Class EmailTemplate extends XSLTPage{
 
 	public function getProperties(){
 		return Array(
-			'reply_to_name' => $this->reply_to_name,
-			'reply_to_email_address' => $this->reply_to_email_address,
+			'reply-to-name' => $this->reply_to_name,
+			'reply-to-email-address' => $this->reply_to_email_address,
 			'subject' => $this->subject,
 			'recipients' => $this->recipients,
 			'datasources' => $this->datasources,
