@@ -121,7 +121,7 @@ Class EmailTemplateManager extends Manager{
 	
 	public function editLayout($handle, $layout, $content){
 		if($template = self::load($handle)){
-			if(in_array($layout, array_keys($template->config['layouts']), true)){
+			if(in_array($layout, array_keys($template->layouts), true)){
 				return self::_writeLayout($handle, $layout, $content);
 			}
 			else{
