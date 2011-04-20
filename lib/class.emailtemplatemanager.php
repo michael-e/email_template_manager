@@ -168,7 +168,7 @@ Class EmailTemplateManager extends Manager{
 		foreach(new DirectoryIterator(EMAILTEMPLATES) as $dir){
 			if($dir->isDir() && !$dir->isDot()){
 				if(file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))){
-					$result[] = self::load($dir->getFileName());
+					$result[$dir->getFileName()] = self::load($dir->getFileName());
 				}
 			}	
 		}
