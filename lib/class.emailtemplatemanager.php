@@ -178,13 +178,14 @@ Class EmailTemplateManager extends Manager{
 				foreach(new DirectoryIterator(EXTENSIONS . '/' . $extension . "/email-templates") as $dir){
 					if($dir->isDir() && !$dir->isDot()){
 						if(file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))){
-							$result[] = self::load($dir->getFileName());
+							$result[$dir->getFileName()] = self::load($dir->getFileName());
 						}
 					}	
 				}
 			}
 		}
 		
+		ksort($result, SORT_STRING);
 		return $result;
 	}
 	
