@@ -9,7 +9,7 @@
 
 <xsl:template match="/">
 	<h2>	
-		<span><xsl:value-of select="/data/templates/entry/name" /></span>
+		<span><xsl:choose><xsl:when test="/data/templates/entry/name"><xsl:value-of select="/data/templates/entry/name" /></xsl:when><xsl:otherwise>New Template</xsl:otherwise></xsl:choose></span>
 		<xsl:for-each select="/data/templates/entry/layouts/*">
 			<a href="{concat($root, '/symphony/extension/email_template_manager/templates/edit/', ../../handle, '/', local-name())}" class="button">Edit <xsl:value-of select="translate(local-name(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/> layout</a>
 		</xsl:for-each>
@@ -201,7 +201,14 @@
 			</div>
 		</fieldset>
 		<div class="actions">
-			<input type="submit" accesskey="s" value="Save Changes" name="action[save]" />
+			<input type="submit" accesskey="s" name="action[save]">
+				<xsl:attribute name="value">
+					<xsl:choose>
+						<xsl:when test="/data/templates/entry/name">Save Changes</xsl:when>
+						<xsl:otherwise>Create Template</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+			</input>
 			<xsl:if test="not(/data/context/item[@index=1] = 'new')" >
 				<button accesskey="d" title="Delete this page" class="button confirm delete" name="action[delete]">Delete</button>
 			</xsl:if>
