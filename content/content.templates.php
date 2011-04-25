@@ -29,7 +29,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		if(!$this->_validateConfig($fields, false, true)){
 			$this->_XML->appendChild($this->_validateConfig($fields, true, true));
 			$this->pageAlert(
-				__('Could not save, please correct errors below'),
+				__('Could not save. Please correct errors below.'),
 				Alert::ERROR
 			);
 		}
@@ -79,7 +79,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				if(!$this->_validateConfig($fields)){
 					$this->_XML->appendChild($this->_validateConfig($fields, true, true));
 					$this->pageAlert(
-						__('Could not save, please correct errors below'),
+						__('Could not save. Please correct errors below.'),
 						Alert::ERROR
 					);
 				}
@@ -109,7 +109,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			else{
 				$errors = new XMLElement('errors');
 				if(!isset($fields['body']) || trim($fields['body']) == '') {
-					$errors->appendChild(new XMLElement('body', 'Body is a required field'));
+					$errors->appendChild(new XMLElement('body', __('Body is a required field')));
 				}
 				elseif(!General::validateXML($fields['body'], $error, false, new XSLTProcess())) {
 					$errors->appendChild(new XMLElement('body', __('This document is not well formed. The following error was returned: <code>%s</code>', array($error[0]['message']))));
@@ -163,7 +163,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		if($this->_context[2] == 'saved' || $this->_context[3] == 'saved'){
 			$this->pageAlert(
 				__(
-					'Template updated at %1$s.', 
+					__('Template updated at %1$s.'),
 					array(
 						DateTimeObj::getTimeAgo(__SYM_TIME_FORMAT__), 
 					)
@@ -279,16 +279,16 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		$errors = new XMLElement('errors');
 		if(!empty($config['name'])){
 			if($unique_name && EmailTemplateManager::find(EmailTemplateManager::getHandleFromName($config['name']))){
-				$errors->appendChild(new XMLElement('name', 'A template with this name already exists.'));
+				$errors->appendChild(new XMLElement('name', __('A template with this name already exists.')));
 				if(!$as_xml) return false;
 			}
 		}
 		else{
-			$errors->appendChild(new XMLElement('name', 'This field can not be empty'));
+			$errors->appendChild(new XMLElement('name', __('This field can not be empty')));
 			if(!$as_xml) return false;
 		}
 		if(empty($config['subject'])){
-			$errors->appendChild(new XMLElement('subject', 'This field can not be empty'));
+			$errors->appendChild(new XMLElement('subject', __('This field can not be empty')));
 			if(!$as_xml) return false;
 		}
 		
