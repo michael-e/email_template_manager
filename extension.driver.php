@@ -104,7 +104,7 @@
 				$handle = 'etm-' . $template->getHandle();
 				if(in_array($handle, $context['event']->eParamFILTERS)){
 					if($this->_sendEmail($template, $context)){
-						$context['errors'][] = Array('etm-' . $template->getHandle(), true, __('Email sent successfully'));
+						$context['errors'][] = Array('etm-' . $template->getHandle(), true, __('Email sent successfully.'));
 					}
 				}
 			}
