@@ -103,8 +103,8 @@
 			foreach($templates as $template){
 				$handle = 'etm-' . $template->getHandle();
 				if(in_array($handle, $context['event']->eParamFILTERS)){
-					if($this->_sendEmail($template, $context)){
-						$context['errors'][] = Array('etm-' . $template->getHandle(), true, __('Email sent successfully.'));
+					if(($response = $this->_sendEmail($template, $context)) !== false){
+						$context['errors'][] = Array('etm-' . $template->getHandle(), ($response['sent']>0), sprintf(__('%d out of %d emails have been sent successfully.'), $response['sent'], $response['total']));
 					}
 				}
 			}
@@ -112,7 +112,6 @@
 
 		protected function _sendEmail($template, $context){
 			try{
-				$email = Email::create();
 				$template->addParams(Array("etm-entry-id"=>$context['entry']->get('id')));
 				Symphony::Engine()->Page()->_param["etm-entry-id"] = $context['entry']->get('id');
 				$xml = $template->processDatasources();
@@ -122,35 +121,68 @@
 				
 				$template->setXML($xml->generate());
 
-				$content = $template->render();
+				$template->parseProperties();
+				$properties = $template->getParsedProperties();
+				$recipients = $properties['recipients'];
 
-				if(isset($content['recipients'])){
-					$email->recipients = $content['recipients'];
+				$sent = 0;
+				if(count($recipients) > 0){
+					foreach((array)$recipients as $name => $emailaddr){
+						try{
+							$email = Email::create();
+							$template->addParams(array('etm-recipient' => $emailaddr));
+							$xml = $template->processDatasources();
+
+							$about = $context['event']->about();
+							General::array_to_xml($xml, Array("events"=>Array($about['name'] => Array("post-values" =>$context['fields']))));
+
+							$template->setXML($xml->generate());
+					
+							$content = $template->render();
+
+							if(!empty($content['subject'])){
+								$email->subject = $content['subject'];
+							}
+							else{
+								throw new EmailTemplateException("Can not send emails without a subject");
+							}
+
+							if(isset($content['reply-to-name'])){
+								$email->reply_to_name = $content['reply-to-name'];
+							}
+
+							if(isset($content['reply-to-email-address'])){
+								$email->reply_to_email_address = $content['reply-to-email-address'];
+							}
+
+							if(isset($content['plain']))
+								$email->text_plain = $content['plain'];
+							if(isset($content['html']))
+								$email->text_html = $content['html'];
+
+							require_once(TOOLKIT . '/util.validators.php');
+							if(General::validateString($emailaddr, $validators['email'])){
+								$email->recipients = array($name => $emailaddr);
+							}
+							else{
+								throw new EmailTemplateException("Email address invalid: $emailaddr");
+							}
+							var_dump($emailaddr);
+
+							$email->send();
+							var_dump($email);
+							$sent++;
+						}
+						catch(Exception $e){
+							$context['errors'][] = Array('etm-' . $template->getHandle() . '-' . Lang::createHandle($emailaddr), false, $e->getMessage());
+							continue;
+						}
+					}
+					die();
 				}
 				else{
 					throw new EmailTemplateException("Can not send an email to nobody, please set a recipient.");
 				}
-
-				if(isset($content['subject'])){
-					$email->subject = $content['subject'];
-				}
-				else{
-					throw new EmailTemplateException("Can not send emails without a subject");
-				}
-
-				if(isset($content['reply-to-name'])){
-					$email->reply_to_name = $content['reply-to-name'];
-				}
-
-				if(isset($content['reply-to-email-address'])){
-					$email->reply_to_email_address = $content['reply-to-email-address'];
-				}
-
-				if(isset($content['plain']))
-					$email->text_plain = $content['plain'];
-				if(isset($content['html']))
-					$email->text_html = $content['html'];
-				$email->send();
 			}
 			catch(EmailTemplateException $e){
 				$context['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
@@ -164,6 +196,6 @@
 				$context['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
 				return false;
 			}
-			return true;
+			return array('total'=>count($recipients), 'sent'=>$sent);
 		}
 	}

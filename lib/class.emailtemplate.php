@@ -293,6 +293,11 @@ Class EmailTemplate extends XSLTPage{
 			'layouts' => $this->layouts
 		);
 	}
+	
+	public function setXML($xml){
+		$this->_parsedProperties = Array();
+		return parent::setXML($xml);
+	}
 }
 
 Class EmailTemplateException extends Exception{
