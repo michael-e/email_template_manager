@@ -4,13 +4,13 @@ Email Template Manager
 Version:	3.0beta   
 Author:		Huib Keemink (creativedutchmen)
 
-1. What's this?
+1\. What's this?
 ------------------------
 
 Using this extension is it possible to let Symphony send pretty emails using XSLT.   
 Currently only S2.2.1 is supported.
 
-2. How do I use this?
+2\. How do I use this?
 --------------------
 
 ### 2.1. Setting up the template
@@ -59,7 +59,7 @@ To preview, simply click on the "Preview template" button. Because getting it ju
 
 This is also possible, by appending ?debug to your URL (assuming you have the Debug Devkit installed!).
 
-3. Sending emails using the Members extension
+3\. Sending emails using the Members extension
 -------------------------
 
 Since v3 it is possible to use the ETM together with the Members extension.
@@ -68,7 +68,7 @@ Since v3 it is possible to use the ETM together with the Members extension.
 
 Forthcoming (due to changes in Members API)
 
-4. Sending emails
+4\. Sending emails
 --------------------
 
 ### 4.1. Using an event filter
@@ -118,16 +118,16 @@ Changelog
 
 [3.0]
 	
-	Added looping over recipients, so multiple customised emails are possible
-	Moved filter preferences from POST values to configuration menu
-	Added recipients and reply-to values to generate() function
-	Added compatibility with the Members extension
+ - Added looping over recipients, so multiple customised emails are possible
+ - Moved filter preferences from POST values to configuration menu
+ - Added recipients and reply-to values to generate() function
+ - Added compatibility with the Members extension
 
 [2.2]
 
-    Fixed sorting order of event filters
-    Fixed bug with field[] syntax in frontend
-    Fixed bug with demo code with more than one template installed
+ - Fixed sorting order of event filters
+ - Fixed bug with field[] syntax in frontend
+ - Fixed bug with demo code with more than one template installed
 
 [2.1]   
 
