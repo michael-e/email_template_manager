@@ -137,6 +137,7 @@
 							General::array_to_xml($xml, Array("events"=>Array($about['name'] => Array("post-values" =>$context['fields']))));
 
 							$template->setXML($xml->generate());
+							$template->recipients = $emailaddr;
 					
 							$content = $template->render();
 
