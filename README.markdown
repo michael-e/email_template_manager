@@ -43,12 +43,12 @@ Also, you can mix sources by combining queries with a comma: `username, email@do
 
 If you are using filters, the ETM will automatically add a few parameters that you can use to filter your datasources:
 
-	-	`$etm-entry-id` will contain the id of the entry inserted by the event.
-		You can use this parameter to filter a datasource and to email the data entered by the user.
-		We will see this in action in the Contact Form in the Tutorials section of this manual.
-	-	`$etm-recipient` will contain the email address of the recipient of the email.
-		If you are sending to more than one person, the ETM will loop over your recipients, and set this value for every email.
-		Again, you will be able to filter your datasources with this parameter to include more information about the recipient.
+-	`$etm-entry-id` will contain the id of the entry inserted by the event.
+	You can use this parameter to filter a datasource and to email the data entered by the user.
+	We will see this in action in the Contact Form in the Tutorials section of this manual.
+-	`$etm-recipient` will contain the email address of the recipient of the email.
+	If you are sending to more than one person, the ETM will loop over your recipients, and set this value for every email.
+	Again, you will be able to filter your datasources with this parameter to include more information about the recipient.
 
 3\. Tutorials
 --------------
