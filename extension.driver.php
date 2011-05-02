@@ -104,7 +104,7 @@
 				$handle = 'etm-' . $template->getHandle();
 				if(in_array($handle, $context['event']->eParamFILTERS)){
 					if(($response = $this->_sendEmail($template, $context)) !== false){
-						$context['errors'][] = Array('etm-' . $template->getHandle(), ($response['sent']>0), sprintf(__('%d out of %d emails have been sent successfully.'), $response['sent'], $response['total']));
+						$context['errors'][] = Array('etm-' . $template->getHandle(), ($response['sent']>0), null, $response);
 					}
 				}
 			}
@@ -167,17 +167,16 @@
 							else{
 								throw new EmailTemplateException("Email address invalid: $emailaddr");
 							}
-							var_dump($emailaddr);
 
 							$email->send();
 							$sent++;
 						}
-						catch(Exception $e){
-							$context['errors'][] = Array('etm-' . $template->getHandle() . '-' . Lang::createHandle($emailaddr), false, $e->getMessage());
+						catch(EmailTemplateException $e){
+							Symphony::$Log->pushToLog(__('Email Template Manager: ') . $e->getMessage(), null, true);
+							//$context['errors'][] = Array('etm-' . $template->getHandle() . '-' . Lang::createHandle($emailaddr), false, $e->getMessage());
 							continue;
 						}
 					}
-					die();
 				}
 				else{
 					throw new EmailTemplateException("Can not send an email to nobody, please set a recipient.");
