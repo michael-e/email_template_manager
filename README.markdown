@@ -118,6 +118,7 @@ Changelog
 
 [3.0]
 	
+	Added looping over recipients, so multiple customised emails are possible
 	Moved filter preferences from POST values to configuration menu
 	Added recipients and reply-to values to generate() function
 	Added compatibility with the Members extension

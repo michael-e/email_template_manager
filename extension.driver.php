@@ -170,7 +170,6 @@
 							var_dump($emailaddr);
 
 							$email->send();
-							var_dump($email);
 							$sent++;
 						}
 						catch(Exception $e){
