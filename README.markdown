@@ -36,8 +36,6 @@ For the recipients field, on the other hand, you can select more than one recipi
 You can use the `Name <email@domain.com>`, `username`, `<email@domain.com>` and `"Name" <email@domain.com>` syntaxes.
 Also, you can mix sources by combining queries with a comma: `username, email@domain.com, {/data/recipients/entry/email}` will create a valid list.
 
-**Warning: when selecting recipients with a name and email: `{/data/recipients/name} <{/data/recipients/email}>`, both the name and email xpaths should return the same number of results**
-
 **Warning: it is not possible to mix the parameters and xpath syntax in one query: `{/data/$param}` will not work**   
 
 ###2.3 Parameters (event filters only!)###
