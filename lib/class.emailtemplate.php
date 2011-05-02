@@ -72,12 +72,13 @@ Class EmailTemplate extends XSLTPage{
 		$dom->loadXML($this->getXML());
 		$xpath = new DOMXPath($dom);
 		if($multiple == true){
-			$xpath_strings = explode(", ", $xpath_string);
+			$xpath_strings = explode(",", $xpath_string);
 			foreach(array_keys($this->_param) as $param){
 				$search_strings[] = '{$' . $param . '}';
 			}
 			$ret = Array();
 			foreach($xpath_strings as $xpath_string){
+				$xpath_string = trim($xpath_string);
 				$str = str_replace($search_strings, $this->_param, $xpath_string);
 				$replacements = array();
 				preg_match_all('/\{[^\}\$]+\}/', $str, $matches);
