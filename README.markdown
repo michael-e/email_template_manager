@@ -129,12 +129,57 @@ In the `Body` textarea, you can insert your XSLT that will eventually be sent to
 	</xsl:template>
 	</xsl:stylesheet>
 
-####3.1.2 Setting up the event####
+####3.1.4 Setting up the second template settings (thank you message)#####
+
+First, create a new email template, and name it `Response Thankyou`.
+For this template, we can do pretty much all you want, the only thing that is really important is the `recipients` setting.
+Because we want this template to be sent to the sender of the form, we can use some XPath to select the email from the event.
+
+The ETM does not directly include the POST data in the event XML, so `{/data/events/_eventname_/post-data}` will not work.
+
+However, since we have already filtered the Responses datasource to only display this piece of information, we can use that.
+So, in the recipients pane, type: `{/data/responses/entry/name} <{/data/responses/entry/email}>`.
+
+####3.1.4 Setting up the second template layout (thank you message)#####
+
+We have now setup this template, all we need to do is edit the layout of this email.
+
+If you have selected to use only a Plain layout, as you did with the notification template, you can use something like this for the layout XSLT:
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<xsl:stylesheet version="1.0"
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+	<xsl:output method="text"
+		omit-xml-declaration="yes"
+		encoding="UTF-8"
+		indent="no" />
+
+	<xsl:template match="/">
+		Dear <xsl:value-of select="/data/responses/entry/name" />,
+		
+		Thank you for your interest in <xsl:value-of select="$website-name"/>.
+		We have received your inquiry, and will respond as quick as we can - usually within 24 hours.
+		
+		Regards,
+		
+		The ETeaM
+	</xsl:template>
+	</xsl:stylesheet>
+
+####3.1.5 Setting up the event####
 
 Ok, so we have setup our section, our datasource and our template, let's make it work!
 
+In the event editor, select your templates in the list of event filters (they will be named `Send Email Template: Response-Notification` and `Send Email Template: Response Thankyou`).
+Now we are nearly done setting everything up, all we need to do is attach the event to a page and include the form (as usual).
 
+If everything went OK, submitting the form with a valid email should send out two emails: one to an author on the website, and one to the sender of the form. If it doesn't, please report your bugs at the [bugtracker](https://github.com/creativedutchmen/email_template_manager/issues)
 
+####3.1.6 Conclusion####
+
+In this (short) tutorial, we have looked at some of the basics of the ETM: creating templates, editing the layouts, setting dynamic recipients, subjects and reply-to headers.
+This tutorial has been written with the questions asked on the forum in mind. If you feel some parts have not been explained well, or should be added, feel free to [post your remarks](http://symphony-cms.com/discuss/thread/64323/).
 
 Changelog
 -----------------------
