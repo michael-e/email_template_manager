@@ -8,7 +8,7 @@
 		public function about(){
 			return array(
 				'name' => 'Email Template Manager',
-				'version' => '3.0beta',
+				'version' => '3.0',
 				'release-date' => '2011-04-05',
 				'author' => array(
 					'name' => 'Huib Keemink',
