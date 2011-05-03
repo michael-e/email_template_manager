@@ -196,7 +196,7 @@
 						
 						$about = $context['event']->about();
 						
-						General::array_to_xml($xml, Array("events"=>Array($about['name'] => Array("post-values" =>$context['fields']))));
+						General::array_to_xml($xml, Array("events"=>Array(Lang::createHandle($about['name']) => Array("post-values" =>$context['fields']))));
 						
 						$template->setXML($xml->generate());
 
