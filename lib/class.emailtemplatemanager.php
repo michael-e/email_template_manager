@@ -90,7 +90,7 @@ Class EmailTemplateManager extends Manager{
 	
 	public function editConfig($handle, $config){
 		if($template = self::load($handle)){
-			if($template->config['editable'] == true){
+			if($template->editable == true){
 				if(self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config))){
 
 					$old_dir = dirname(self::find($handle));
@@ -121,7 +121,7 @@ Class EmailTemplateManager extends Manager{
 	
 	public function editLayout($handle, $layout, $content){
 		if($template = self::load($handle)){
-			if(in_array($layout, array_keys($template->config['layouts']), true)){
+			if(in_array($layout, array_keys($template->layouts), true)){
 				return self::_writeLayout($handle, $layout, $content);
 			}
 			else{
@@ -168,7 +168,7 @@ Class EmailTemplateManager extends Manager{
 		foreach(new DirectoryIterator(EMAILTEMPLATES) as $dir){
 			if($dir->isDir() && !$dir->isDot()){
 				if(file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))){
-					$result[] = self::load($dir->getFileName());
+					$result[$dir->getFileName()] = self::load($dir->getFileName());
 				}
 			}	
 		}
@@ -178,13 +178,14 @@ Class EmailTemplateManager extends Manager{
 				foreach(new DirectoryIterator(EXTENSIONS . '/' . $extension . "/email-templates") as $dir){
 					if($dir->isDir() && !$dir->isDot()){
 						if(file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))){
-							$result[] = self::load($dir->getFileName());
+							$result[$dir->getFileName()] = self::load($dir->getFileName());
 						}
 					}	
 				}
 			}
 		}
 		
+		ksort($result, SORT_STRING);
 		return $result;
 	}
 	
@@ -295,6 +296,9 @@ Class EmailTemplateManager extends Manager{
 		
 		$config_template = str_replace('<!-- CLASS NAME -->', self::getClassNameFromHandle(self::getHandleFromName($config['name'])), $config_template);
 		$config_template = str_replace('<!-- NAME -->',	$config['name'], $config_template);
+		$config_template = str_replace('<!-- REPLYTONAME -->',	$config['reply-to-name'], $config_template);
+		$config_template = str_replace('<!-- REPLYTOEMAIL -->',	$config['reply-to-email-address'], $config_template);
+		$config_template = str_replace('<!-- RECIPIENTS -->',	$config['recipients'], $config_template);
 		$config_template = str_replace('<!-- VERSION -->', '1.0', $config_template);
 		$config_template = str_replace('<!-- AUTHOR NAME -->', Administration::instance()->Author->getFullName(), $config_template);
 		$config_template = str_replace('<!-- AUTHOR WEBSITE -->', URL, $config_template);
