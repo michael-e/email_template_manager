@@ -256,7 +256,6 @@ Class EmailTemplate extends XSLTPage{
 			}
 			if(!empty($rcpts)){
 				$this->_parsedProperties['recipients'] = $rcpts;
-				$this->addParams(Array('etm-recipients'=>implode(", ", $this->_parsedProperties['recipients'])));
 			}
 			else{
 				Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' No valid recipients are selected, can not send emails.' , 100, true);
@@ -266,17 +265,17 @@ Class EmailTemplate extends XSLTPage{
 
 		if(empty($this->_parsedProperties['subject'])){
 			$this->_parsedProperties['subject'] = $this->evalXPath($this->subject, false);
-			$this->addParams(Array('etm-subject'=>$this->_parsedProperties['subject']));
+			//$this->addParams(Array('etm-subject'=>$this->_parsedProperties['subject']));
 		}
 
 		if(empty($this->_parsedProperties['reply-to_name'])){
 			$this->_parsedProperties['reply-to-name'] = $this->evalXPath($this->reply_to_name, false);
-			$this->addParams(Array('etm-reply-to-name'=>$this->_parsedProperties['reply-to-name']));
+			//$this->addParams(Array('etm-reply-to-name'=>$this->_parsedProperties['reply-to-name']));
 		}
 
 		if(empty($this->_parsedProperties['reply-to-email-address'])){
 			$this->_parsedProperties['reply-to-email-address'] = $this->evalXPath($this->reply_to_email_address, false);
-			$this->addParams(Array('etm-reply-to-email-address'=>$this->_parsedProperties['reply-to-email-address']));
+			//$this->addParams(Array('etm-reply-to-email-address'=>$this->_parsedProperties['reply-to-email-address']));
 		}
 	}
 
