@@ -102,7 +102,7 @@
 			$templates = EmailTemplateManager::listAll();
 			foreach($templates as $template){
 				$handle = 'etm-' . $template->getHandle();
-				if(in_array($handle, $context['event']->eParamFILTERS)){
+				if(in_array($handle, (array)$context['event']->eParamFILTERS)){
 					if(($response = $this->_sendEmail($template, $context)) !== false){
 						$context['errors'][] = Array('etm-' . $template->getHandle(), ($response['sent']>0), null, $response);
 					}
