@@ -1,12 +1,11 @@
 <?php
 
 require_once(TOOLKIT . '/class.administrationpage.php');
-if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . "/email_template_manager");
-if(!defined('ETVIEWS')) define('ETVIEWS', ETMDIR . "/content/templates");
 
 Class ExtensionPage extends AdministrationPage{
 	
 	protected $_useTemplate = null;
+	public $viewDir = '';
 
 	function __switchboard($type = 'view'){
 		$this->_type = $type;
@@ -24,7 +23,7 @@ Class ExtensionPage extends AdministrationPage{
 	
 	function generate(){
 		if($this->_useTemplate !== false){
-			$template = ETVIEWS . '/' . (empty($this->_useTemplate)?$this->_getTemplate($this->_type, $this->_function):$this->_useTemplate . '.xsl');
+			$template = $this->viewDir . '/' . (empty($this->_useTemplate)?$this->_getTemplate($this->_type, $this->_function):$this->_useTemplate . '.xsl');
 			
 			if(file_exists($template)){
 				$current_path = explode(dirname($_SERVER['SCRIPT_NAME']), $_SERVER['REQUEST_URI'], 2);
