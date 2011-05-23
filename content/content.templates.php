@@ -3,7 +3,9 @@
 if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . "/email_template_manager");
 if(!defined('ETVIEWS')) define('ETVIEWS', ETMDIR . "/content/templates");
 
-require_once(ETMDIR . '/lib/class.extensionpage.php');
+if(!class_exists('ExtensionPage')){
+	require_once(ETMDIR . '/lib/class.extensionpage.php');
+}
 require_once(ETMDIR . '/lib/class.emailtemplate.php');
 require_once(ETMDIR . '/lib/class.emailtemplatemanager.php');
 require_once(TOOLKIT . '/class.datasourcemanager.php');
@@ -21,6 +23,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		$this->_XSLTProc = new XsltProcess();
 		$this->_XML = new XMLElement("data");
 		parent::__construct(Symphony::Engine());
+		$this->viewDir = ETVIEWS;
 	}
 	
 	function __actionNew(){

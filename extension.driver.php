@@ -88,7 +88,7 @@
 			foreach($templates as $template){
 				$tmp[$template->getHandle()] = $template;
 			}
-			$templates = $tmp;
+			$templates = is_array($tmp)?$tmp:array();
 			ksort($templates, SORT_STRING);
 			foreach($templates as $template){
 				$handle = 'etm-' . $template->getHandle();
