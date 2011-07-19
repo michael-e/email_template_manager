@@ -16,11 +16,9 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 	protected $_type;
 	protected $_function;
 	
-	protected $_XSLTProc;
 	protected $_XML;
 	
 	function __construct(){
-		$this->_XSLTProc = new XsltProcess();
 		$this->_XML = new XMLElement("data");
 		parent::__construct(Symphony::Engine());
 		$this->viewDir = ETVIEWS;
