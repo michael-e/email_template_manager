@@ -4,6 +4,17 @@ Email Template Manager
 Version:	3.0   
 Author:		Huib Keemink (creativedutchmen)
 
+Contents
+------------
+- 1\. What's this?
+- 2\. Understanding the basics
+- 2.1 Templates and layouts
+- 2.2 Subject, recipients and reply-to
+- 2.3 Parameters
+- 3\. Tutorials
+- 3.1 Contact Form
+
+
 1\. What's this?
 ------------------------
 
