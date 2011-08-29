@@ -6,11 +6,11 @@ require_once(TOOLKIT . '/class.manager.php');
 require_once(TOOLKIT . '/class.extensionmanager.php');
 require_once('class.emailtemplate.php');
 
-Class EmailTemplateManager extends Manager{
+Class EmailTemplateManager{
 
 	static $errorMsg = "";
 	
-	public function load($handle){
+	public static function load($handle){
 		$classname = self::getClassNameFromHandle($handle);
 		if(self::find($handle)){
 			return new $classname;
@@ -20,7 +20,7 @@ Class EmailTemplateManager extends Manager{
 		}
 	}
 	
-	public function find($handle){
+	public static function find($handle){
 		$filename = self::getFileNameFromHandle($handle);
 		$classname = self::getClassNameFromHandle($handle);
 		if(is_dir(EMAILTEMPLATES . "/$handle")){
@@ -67,7 +67,7 @@ Class EmailTemplateManager extends Manager{
 		}
 	}
 	
-	public function create($config){
+	public static function create($config){
 		$handle = self::getHandleFromName($config['name']);
 		if(!self::find($handle)){
 			if(!is_dir(EMAILTEMPLATES . "/$handle")){
@@ -75,6 +75,9 @@ Class EmailTemplateManager extends Manager{
 				if(!self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config), true)) return false;
 				if(!self::_writeLayout($handle, 'Plain', file_get_contents(ETMDIR . '/content/templates/xsl-plain.tpl'), true)) return false;
 				if(!self::_writeLayout($handle, 'HTML',  file_get_contents(ETMDIR . '/content/templates/xsl-html.tpl'), true)) return false;
+				
+				Symphony::ExtensionManager()->notifyMembers('EmailTemplatePostCreate', '/', array('config'=>$config));
+				
 				return true;
 			}
 			else{
@@ -88,7 +91,7 @@ Class EmailTemplateManager extends Manager{
 		}
 	}
 	
-	public function editConfig($handle, $config){
+	public static function editConfig($handle, $config){
 		if($template = self::load($handle)){
 			if($template->editable == true){
 				if(self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config))){
@@ -99,6 +102,9 @@ Class EmailTemplateManager extends Manager{
 					if(self::getHandleFromName($config['name']) != $handle){
 						if(!is_dir($new_dir)){
 							if(!rename($old_dir, $new_dir)) return false;
+							
+							Symphony::ExtensionManager()->notifyMembers('EmailTemplatePostSave','/', array('old_handle' =>$handle, 'config'=>$config));
+							
 							return rename($new_dir . '/' . self::getFileNameFromHandle($handle), $new_dir . '/' . self::getFileNameFromHandle(self::getHandleFromName($config['name'])));
 						}
 					}
@@ -119,7 +125,7 @@ Class EmailTemplateManager extends Manager{
 		}
 	}
 	
-	public function editLayout($handle, $layout, $content){
+	public static function editLayout($handle, $layout, $content){
 		if($template = self::load($handle)){
 			if(in_array($layout, array_keys($template->layouts), true)){
 				return self::_writeLayout($handle, $layout, $content);
@@ -135,7 +141,7 @@ Class EmailTemplateManager extends Manager{
 		}
 	}
 	
-	public function delete($handle){
+	public static function delete($handle){
 		$dir = dirname(self::find($handle));
 		if(is_dir($dir) && is_writeable($dir)){
 			try{
@@ -162,7 +168,7 @@ Class EmailTemplateManager extends Manager{
 		}
 	}
 	
-	public function listAll(){
+	public static function listAll(){
 		$result = Array();
 		
 		foreach(new DirectoryIterator(EMAILTEMPLATES) as $dir){
@@ -189,23 +195,41 @@ Class EmailTemplateManager extends Manager{
 		return $result;
 	}
 	
-	public function getClassNameFromHandle($handle){
+	public static function getClassNameFromHandle($handle){
 		return sprintf('%sEmailTemplate', str_replace('-', '_', ucfirst(strtolower($handle))));
 	}
 	
-	public function getHandleFromFilename($filename){
+	public static function getHandleFromFilename($filename){
 		return sscanf($filename, 'class.%[^.php].php');
 	}
 	
-	public function getFileNameFromHandle($handle){
+	public static function getFileNameFromHandle($handle){
 		return sprintf('class.%s.php', strtolower($handle));
 	}
 	
-	public function getHandleFromName($name){
+	public static function getHandleFromName($name){
 		return ltrim(strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $name))), "\x49..\x58");
 	}
-	public function getFileNameFromLayout($layout = 'html'){
+	public static function getFileNameFromLayout($layout = 'html'){
 		return sprintf('template.%s.xsl', strtolower($layout));
+	}
+	
+	public static function about($name){
+
+		$classname = self::__getClassName($name);
+		$path = self::__getDriverPath($name);
+
+		if(!@file_exists($path)) return false;
+
+		require_once($path);
+
+		$handle = self::__getHandleFromFilename(basename($path));
+
+		if(is_callable(array($classname, 'about'))){
+			$about = call_user_func(array($classname, 'about'));
+			return array_merge($about, array('handle' => $handle));
+		}
+
 	}
 
 	/**
