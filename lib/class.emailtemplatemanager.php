@@ -76,7 +76,7 @@ Class EmailTemplateManager{
 				if(!self::_writeLayout($handle, 'Plain', file_get_contents(ETMDIR . '/content/templates/xsl-plain.tpl'), true)) return false;
 				if(!self::_writeLayout($handle, 'HTML',  file_get_contents(ETMDIR . '/content/templates/xsl-html.tpl'), true)) return false;
 				
-				Symphony::ExtensionManager()->notifyMembers('EmailTemplatePostCreate', '/', array('config'=>$config));
+				Symphony::ExtensionManager()->notifyMembers('EmailTemplatePostCreate', '/extension/email_template_manager/', array('config'=>$config));
 				
 				return true;
 			}
@@ -103,7 +103,7 @@ Class EmailTemplateManager{
 						if(!is_dir($new_dir)){
 							if(!rename($old_dir, $new_dir)) return false;
 							
-							Symphony::ExtensionManager()->notifyMembers('EmailTemplatePostSave','/', array('old_handle' =>$handle, 'config'=>$config));
+							Symphony::ExtensionManager()->notifyMembers('EmailTemplatePostSave','/extension/email_template_manager/', array('old_handle' =>$handle, 'config'=>$config));
 							
 							return rename($new_dir . '/' . self::getFileNameFromHandle($handle), $new_dir . '/' . self::getFileNameFromHandle(self::getHandleFromName($config['name'])));
 						}
