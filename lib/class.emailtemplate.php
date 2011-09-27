@@ -242,7 +242,7 @@ Class EmailTemplate extends XSLTPage{
 					// username
 					else{
 						$author = AuthorManager::fetchByUserName(trim($recipient));
-						if(!is_null($author) && !empty($author)){
+						if(is_a($author, 'Author')){
 							$rcpts[trim($author->get('first_name') . ' '. $author->get('last_name'))] = $author->get("email");
 						}
 						else{
