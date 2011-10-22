@@ -89,7 +89,7 @@
 				$tmp[$template->getHandle()] = $template;
 			}
 			$templates = is_array($tmp)?$tmp:array();
-			ksort((array)$templates, SORT_STRING);
+			ksort($templates, SORT_STRING);
 			foreach($templates as $template){
 				$handle = 'etm-' . $template->getHandle();
 				$selected = (in_array($handle, $context['selected']));
