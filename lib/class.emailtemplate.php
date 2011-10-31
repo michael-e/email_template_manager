@@ -215,7 +215,7 @@ Class EmailTemplate extends XSLTPage{
 		if(property_exists($this, $var)){
 			if(is_public($this->$var)){
 				$this->$var = $val;
-				unset($this->_parsedProperties[$val]);
+				unset($this->_parsedProperties[$var]);
 			}
 		}
 	}
