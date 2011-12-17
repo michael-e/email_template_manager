@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension id="email_template_manager" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+	<name>Email Template Manager</name>
+	<description>Emails need pages no more</description>
+	<repo type="github">https://github.com/creativedutchmen/email_template_manager</repo>
+	<url type="discuss">http://symphony-cms.com/discuss/thread/64323/</url>
+	<types />
+	<authors>
+		<author>
+			<name github="creativedutchmen" symphony="creativedutchmen">Huib Keemink</name>
+			<website>http://www.creativedutchmen.com</website>
+		</author>
+	</authors>
+	<media>
+		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
+	</media>
+	<releases>
+		<release version="3.0" date="2011-05-03" min="2.2.1" />
+	</releases>
+</extension>
