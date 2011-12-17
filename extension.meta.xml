@@ -4,7 +4,9 @@
 	<description>Emails need pages no more</description>
 	<repo type="github">https://github.com/creativedutchmen/email_template_manager</repo>
 	<url type="discuss">http://symphony-cms.com/discuss/thread/64323/</url>
-	<types />
+	<types>
+		<type>Email</type>
+	</types>
 	<authors>
 		<author>
 			<name github="creativedutchmen" symphony="creativedutchmen">Huib Keemink</name>
