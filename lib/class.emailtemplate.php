@@ -8,7 +8,7 @@ Class EmailTemplate extends XSLTPage{
 	
 	public $subject = "";
 	public $reply_to_name;
-	public $reply_to_address;
+	public $reply_to_email_address;
 	public $recipients;
 	
 	public $datasources = Array();
