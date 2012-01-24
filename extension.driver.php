@@ -84,6 +84,7 @@
 
 		public function AppendEventFilter($context){
 			$templates = EmailTemplateManager::listAll();
+			if( empty($templates) ) return;
 			foreach($templates as $template){
 				$tmp[$template->getHandle()] = $template;
 			}
