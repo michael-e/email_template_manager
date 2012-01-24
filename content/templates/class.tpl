@@ -8,7 +8,7 @@ Class <!-- CLASS NAME --> extends EmailTemplate{
 	public $subject = '<!-- SUBJECT -->';
 	public $reply_to_name = '<!-- REPLYTONAME -->';
 	public $reply_to_email_address = '<!-- REPLYTOEMAIL -->';
-	public $recipients = '<!-- RECIPIENTS -->';
+	public $recipients = "<!-- RECIPIENTS -->";
 	
 	public $editable = true;
 
