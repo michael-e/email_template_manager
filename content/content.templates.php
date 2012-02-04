@@ -249,10 +249,11 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		$this->_useTemplate = false;
 		list(,$handle, $template) = $this->_context;
 		$templates = EmailTemplateManager::load($handle);
+		$output =  $templates->preview($template);
 		if($template == 'plain'){
 			header('Content-Type:text/plain; charset=utf-8');
 		}
-		echo $templates->preview($template);
+		echo $output;
 		exit;
 	}
 	
