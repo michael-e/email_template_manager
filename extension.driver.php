@@ -148,17 +148,17 @@
 								throw new EmailTemplateException("Can not send emails without a subject");
 							}
 
-							if(isset($content['reply-to-name'])){
+							if(!empty($content['reply-to-name'])){
 								$email->reply_to_name = $content['reply-to-name'];
 							}
 
-							if(isset($content['reply-to-email-address'])){
+							if(!empty($content['reply-to-email-address'])){
 								$email->reply_to_email_address = $content['reply-to-email-address'];
 							}
 
-							if(isset($content['plain']))
+							if(!empty($content['plain']))
 								$email->text_plain = $content['plain'];
-							if(isset($content['html']))
+							if(!empty($content['html']))
 								$email->text_html = $content['html'];
 
 							require_once(TOOLKIT . '/util.validators.php');
