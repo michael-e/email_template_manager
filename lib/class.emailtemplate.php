@@ -268,7 +268,7 @@ Class EmailTemplate extends XSLTPage{
 			//$this->addParams(Array('etm-subject'=>$this->_parsedProperties['subject']));
 		}
 
-		if(empty($this->_parsedProperties['reply-to_name'])){
+		if(empty($this->_parsedProperties['reply-to-name'])){
 			$this->_parsedProperties['reply-to-name'] = $this->evalXPath($this->reply_to_name, false);
 			//$this->addParams(Array('etm-reply-to-name'=>$this->_parsedProperties['reply-to-name']));
 		}
