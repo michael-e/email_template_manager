@@ -1,8 +1,8 @@
 Email Template Manager
 ===========================
 
-Version:	3.0
-Author:		Huib Keemink (creativedutchmen)
+Version: 4
+Author: Huib Keemink (creativedutchmen)
 
 Contents
 ------------
@@ -193,7 +193,7 @@ This tutorial has been written with the questions asked on the forum in mind. If
 Changelog
 -----------------------
 
-[3.1]
+[4.0]
 
 - Made template inlcude paths work as expected. Requires updating include paths!
 
