@@ -177,7 +177,11 @@ Class EmailTemplate extends XSLTPage{
 
 			foreach($this->layouts as $type=>$layout){
 				if(in_array(strtolower($type), array_map("strtolower", $layouts))){
-					$this->setXSL(dirname(EmailTemplateManager::find($this->getHandle())) . '/' . $layout, true);
+					$xsl = '<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:import href="./workspace/email-templates/' . $this->getHandle() . '/' . $layout.'"/>
+</xsl:stylesheet>';
+					$this->setXSL($xsl, false);
 					$res = $this->generate();
 					if($res){
 						$result[strtolower($type)] = $res;

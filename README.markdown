@@ -193,6 +193,10 @@ This tutorial has been written with the questions asked on the forum in mind. If
 Changelog
 -----------------------
 
+[3.1]
+
+- Made template inlcude paths work as expected. Requires updating include paths!
+
 [3.0]
 
  - Added looping over recipients, so multiple customised emails are possible
