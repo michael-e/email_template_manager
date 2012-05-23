@@ -8,7 +8,7 @@
 	indent="yes" />
 
 <xsl:template match="/">
-	<h2>	
+	<h2>
 		<span><xsl:choose><xsl:when test="/data/templates/entry/name"><xsl:value-of select="/data/templates/entry/name" /></xsl:when><xsl:otherwise>New Template</xsl:otherwise></xsl:choose></span>
 		<xsl:for-each select="/data/templates/entry/layouts/*">
 			<a href="{concat($root, '/symphony/extension/email_template_manager/templates/edit/', ../../handle, '/', local-name())}" class="button">Edit <xsl:value-of select="translate(local-name(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/> layout</a>
@@ -101,10 +101,10 @@
 						<xsl:text>invalid</xsl:text>
 					</xsl:attribute>
 				</xsl:if>
-				<label>	
+				<label>
 					Subject
 					<input type="text" name="fields[subject]">
-						
+
 						<xsl:attribute name="value">
 							<xsl:if test="/data/fields">
 								<xsl:value-of select="/data/fields/subject"/>
@@ -128,7 +128,7 @@
 						<xsl:text>invalid</xsl:text>
 					</xsl:attribute>
 				</xsl:if>
-				<label>	
+				<label>
 					Recipients
 					<i>optional</i>
 					<input type="text" name="fields[recipients]">
@@ -156,7 +156,7 @@
 							<xsl:text>invalid</xsl:text>
 						</xsl:attribute>
 					</xsl:if>
-					<label>	
+					<label>
 						Reply-To Name
 						<i>optional</i>
 						<input type="text" name="fields[reply-to-name]">
@@ -180,7 +180,7 @@
 							<xsl:text>invalid</xsl:text>
 						</xsl:attribute>
 					</xsl:if>
-					<label>	
+					<label>
 						Reply-To Email Address
 						<i>optional</i>
 						<input type="text" name="fields[reply-to-email-address]">

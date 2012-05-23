@@ -1,7 +1,7 @@
 Email Template Manager
 ===========================
 
-Version:	3.0   
+Version:	3.0
 Author:		Huib Keemink (creativedutchmen)
 
 Contents
@@ -18,7 +18,7 @@ Contents
 1\. What's this?
 ------------------------
 
-Using this extension is it possible to let Symphony send pretty emails using XSLT.   
+Using this extension is it possible to let Symphony send pretty emails using XSLT.
 Currently only S2.2.1 is supported.
 
 2\. Understanding the basics
@@ -47,7 +47,7 @@ For the recipients field, on the other hand, you can select more than one recipi
 You can use the `Name <email@domain.com>`, `username`, `<email@domain.com>` and `"Name" <email@domain.com>` syntaxes.
 Also, you can mix sources by combining queries with a comma: `username, email@domain.com, {/data/recipients/entry/email}` will create a valid list.
 
-**Warning: it is not possible to mix the parameters and xpath syntax in one query: `{/data/$param}` will not work**   
+**Warning: it is not possible to mix the parameters and xpath syntax in one query: `{/data/$param}` will not work**
 
 ###2.3 Parameters (event filters only!)###
 
@@ -127,14 +127,14 @@ In the `Body` textarea, you can insert your XSLT that will eventually be sent to
 
 	<xsl:template match="/">
 		Woohoo! Somebody wants information from us!
-		
+
 		To be more precise, <xsl:value-of select="/data/responses/entry/name" /> asked this:
-		
+
 		<xsl:value-of select="/data/respones/entry/body" />
-		
+
 		---------------------------
 		To respond, you can send an email to: <xsl:value-of select="/data/responses/entry/email"/> or reply to this email.
-		
+
 	</xsl:template>
 	</xsl:stylesheet>
 
@@ -166,12 +166,12 @@ If you have selected to use only a Plain layout, as you did with the notificatio
 
 	<xsl:template match="/">
 		Dear <xsl:value-of select="/data/responses/entry/name" />,
-		
+
 		Thank you for your interest in <xsl:value-of select="$website-name"/>.
 		We have received your inquiry, and will respond as quick as we can - usually within 24 hours.
-		
+
 		Regards,
-		
+
 		The ETeaM
 	</xsl:template>
 	</xsl:stylesheet>
@@ -194,7 +194,7 @@ Changelog
 -----------------------
 
 [3.0]
-	
+
  - Added looping over recipients, so multiple customised emails are possible
  - Moved filter preferences from POST values to configuration menu
  - Added recipients and reply-to values to generate() function
@@ -206,11 +206,11 @@ Changelog
  - Fixed bug with field[] syntax in frontend
  - Fixed bug with demo code with more than one template installed
 
-[2.1]   
+[2.1]
 
  - SQL Injection flaw fixed
- 
-[2.0]   
+
+[2.0]
 
  - Event filters are supported, so custom events are no longer needed to send emails.
  - It is possible to select which layouts to use (Html, Plain or both).

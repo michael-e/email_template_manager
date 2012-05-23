@@ -19,7 +19,7 @@
 				}
 			});
 		}).blur();
-		
+
 		$('#utilities li').unbind('click');
 		$('#utilities li').click(function(event) {
 			if ($(event.target).is('a')) return;

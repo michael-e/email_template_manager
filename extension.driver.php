@@ -2,7 +2,7 @@
 
 	require_once(dirname(__FILE__) . '/lib/class.emailtemplatemanager.php');
 	require_once(TOOLKIT . '/class.datasourcemanager.php');
-	
+
 	Class extension_email_template_manager extends Extension{
 
 		public function about(){
@@ -119,7 +119,7 @@
 
 				$about = $context['event']->about();
 				General::array_to_xml($xml, Array("events"=>Array($about['name'] => Array("post-values" =>$context['fields']))));
-				
+
 				$template->setXML($xml->generate());
 
 				$template->parseProperties();
@@ -139,7 +139,7 @@
 
 							$template->setXML($xml->generate());
 							$template->recipients = $emailaddr;
-					
+
 							$content = $template->render();
 
 							if(!empty($content['subject'])){

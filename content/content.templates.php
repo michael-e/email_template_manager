@@ -12,21 +12,21 @@ require_once(TOOLKIT . '/class.datasourcemanager.php');
 require_once(TOOLKIT . '/class.emailgatewaymanager.php');
 
 Class contentExtensionemail_template_managertemplates extends ExtensionPage {
-	
+
 	protected $_type;
 	protected $_function;
-	
+
 	protected $_XML;
-	
+
 	function __construct(){
 		$this->_XML = new XMLElement("data");
 		parent::__construct(Symphony::Engine());
 		$this->viewDir = ETVIEWS;
 	}
-	
+
 	function __actionNew(){
 		$fields = $_POST['fields'];
-		
+
 		if(!$this->_validateConfig($fields, false, true)){
 			$this->_XML->appendChild($this->_validateConfig($fields, true, true));
 			$this->pageAlert(
@@ -55,10 +55,10 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			}
 		}
 	}
-	
+
 	function __actionEdit(){
 		$fields = $_POST['fields'];
-		
+
 		if(isset($_POST['action']['delete'])){
 			if(EmailTemplateManager::delete($this->_context[1])){
 				redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/');
@@ -71,12 +71,12 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				return;
 			}
 		}
-		
+
 		else{
-		
+
 			// Config editing
 			if(empty($this->_context[2]) || ($this->_context[2] == 'saved')){
-				
+
 				if(!$this->_validateConfig($fields)){
 					$this->_XML->appendChild($this->_validateConfig($fields, true, true));
 					$this->pageAlert(
@@ -84,7 +84,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 						Alert::ERROR
 					);
 				}
-				
+
 				if($fields['layouts'] == 'both'){
 					unset($fields['layouts']);
 				}
@@ -94,7 +94,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				if($fields['layouts'] == 'plain'){
 					$fields['layouts'] = Array('plain'=>'template.plain.xsl');
 				}
-				
+
 				if(EmailTemplateManager::editConfig($this->_context[1], $fields)){
 					redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved');
 				}
@@ -105,7 +105,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 					);
 				}
 			}
-			
+
 			// Layout editing
 			else{
 				$errors = new XMLElement('errors');
@@ -128,7 +128,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			}
 		}
 	}
-	
+
 	function __actionIndex(){
 		if($_POST['with-selected'] == 'delete'){
 			foreach((array)$_POST['items'] as $item=>$status){
@@ -145,7 +145,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 	function __viewIndex(){
 		$this->setPageType('index');
 		$this->setTitle(__("Symphony - Email Templates"));
-		
+
 		$templates = new XMLElement("templates");
 		foreach(EmailTemplateManager::listAll() as $template){
 			$entry = new XMLElement("entry");
@@ -156,23 +156,23 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		}
 		$this->_XML->appendChild($templates);
 	}
-	
+
 	function __viewEdit($new = false){
 		$this->setPageType('form');
 		$this->setTitle(sprintf(__("Symphony - Email Templates - %s", Array(), false), ucfirst($this->_context[1])));
-		
+
 		if($this->_context[2] == 'saved' || $this->_context[3] == 'saved'){
 			$this->pageAlert(
 				__(
 					__('Template updated at %1$s.'),
 					array(
-						DateTimeObj::getTimeAgo(__SYM_TIME_FORMAT__), 
+						DateTimeObj::getTimeAgo(__SYM_TIME_FORMAT__),
 					)
 				),
 				Alert::SUCCESS
 			);
 		}
-		
+
 		// Edit config
 		if(empty($this->_context[2]) || ($this->_context[2] == 'saved')){
 			$templates = new XMLElement("templates");
@@ -188,7 +188,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				Administration::instance()->errorPageNotFound();
 			}
 			$this->_XML->appendChild($templates);
-			
+
 			$datasources = new XMLElement("datasources");
 			$dsmanager = new DatasourceManager($this);
 			foreach($dsmanager->listAll() as $datasource){
@@ -199,13 +199,13 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			$this->_XML->appendChild($datasources);
 			General::array_to_xml($this->_XML, Array("email-settings" => Symphony::Configuration()->get('email_' . EmailGatewayManager::getDefaultGateway())));
 		}
-		
+
 		// Edit layout
 		else{
 			$this->_useTemplate = 'viewEditLayout';
 			$utils = General::listStructure(UTILITIES, array('xsl'), false, 'asc', UTILITIES);
 			$utils = (array)$utils['filelist'];
-			
+
 			$templates = new XMLElement("templates");
 			$template = EmailTemplateManager::load($this->_context[1]);
 			if($template){
@@ -219,11 +219,11 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				Administration::instance()->errorPageNotFound();
 			}
 			$this->_XML->appendChild($templates);
-			
+
 			$utilities = new XMLElement('utilities');
 			General::array_to_xml($utilities, $utils);
 			$this->_XML->appendChild($utilities);
-			
+
 			$template = EmailTemplateManager::load($this->_context[1]);
 			if($template){
 				if($template->layouts[$this->_context[2]]){
@@ -237,15 +237,15 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			else{
 				Administration::instance()->errorPageNotFound();
 			}
-		}		
+		}
 	}
-	
+
 	function __viewNew(){
 		$this->_context[1] = 'New';
 		$this->_useTemplate = 'viewEdit';
 		$this->__viewEdit(true);
 	}
-	
+
 	public function __viewPreview(){
 		$this->_useTemplate = false;
 		list(,$handle, $template) = $this->_context;
@@ -257,14 +257,14 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		echo $output;
 		exit;
 	}
-	
+
 	function view(){
 		$context = new XMLElement('context');
 		General::array_to_xml($context, $this->_context);
 		$this->_XML->appendChild($context);
 		parent::view();
 	}
-	
+
 	function action(){
 		if($this->_context[2] == 'saved'){
 			$this->_context[2] = null;
@@ -274,12 +274,12 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		$this->_XML->appendChild($fields);
 		parent::action();
 	}
-	
+
 	function build(Array $context = array()){
 		$this->addScriptToHead(URL . '/extensions/email_template_manager/assets/admin.js', 140);
 		parent::build($context);
 	}
-	
+
 	protected function _validateConfig($config, $as_xml = false, $unique_name = false){
 		$errors = new XMLElement('errors');
 		if(!empty($config['name'])){
@@ -296,7 +296,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			$errors->appendChild(new XMLElement('subject', __('This field can not be empty')));
 			if(!$as_xml) return false;
 		}
-		
+
 		return $errors;
 	}
 }

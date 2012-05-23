@@ -15,40 +15,40 @@
 	 */
 	$dictionary = array(
 
-		'Email Templates' => 
+		'Email Templates' =>
 		false,
 
-		'Email sent successfully.' => 
+		'Email sent successfully.' =>
 		'E-Mail erfolgreich verschickt.',
 
-		'Could not save. Please correct errors below.' => 
+		'Could not save. Please correct errors below.' =>
 		'Speichern fehlgeschlagen; Bitte die unten stehenden Fehler korrigieren.',
 
-		'Could not save: ' => 
+		'Could not save: ' =>
 		'Speichern fehlgeschlagen: ',
 
-		'Could not delete: ' => 
+		'Could not delete: ' =>
 		'Löschen fehlgeschlagen: ',
 
-		'Body is a required field' => 
+		'Body is a required field' =>
 		'Body ist ein Pflichtfeld',
 
-		'Symphony - Email Templates' => 
+		'Symphony - Email Templates' =>
 		false,
 
-		'Symphony - Email Templates - %s' => 
+		'Symphony - Email Templates - %s' =>
 		false,
 
-		'Template updated at %1$s.' => 
+		'Template updated at %1$s.' =>
 		'Template um %1$s aktualisiert.',
 
-		'A template with this name already exists.' => 
+		'A template with this name already exists.' =>
 		'Ein Template mit diesem Namen existiert bereits.',
 
-		'This field can not be empty' => 
+		'This field can not be empty' =>
 		'Dieses Feld darf nicht leer sein',
 
-		'Email Template Manager' => 
+		'Email Template Manager' =>
 		false,
 
 	);
