@@ -17,7 +17,41 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
-		<release version="4.0" date="2012-05-23" min="2.2.1" max="2.2.x"/>
-		<release version="3.0" date="2011-05-03" min="2.2.1" max="2.2.x"/>
+		<release version="4.0" date="2012-05-23" min="2.2.1" max="2.2.x">
+			<![CDATA[
+- Made template inlcude paths work as expected. Requires updating include paths!
+			]]>
+		</release>
+		<release version="3.0" date="2011-05-03" min="2.2.1" max="2.2.x">
+			<![CDATA[
+ - Added looping over recipients, so multiple customised emails are possible
+ - Moved filter preferences from POST values to configuration menu
+ - Added recipients and reply-to values to generate() function
+ - Added compatibility with the Members extension
+			]]>
+		</release>
+		<release version="2.2" date="2011-04-15" min="2.2.1" max="2.2.x">
+			<![CDATA[
+ - Fixed sorting order of event filters
+ - Fixed bug with field[] syntax in frontend
+ - Fixed bug with demo code with more than one template installed
+			]]>
+		</release>
+		<release version="2.1" date="2011-04-06" min="2.2.1" max="2.2.x">
+			<![CDATA[
+ - SQL Injection flaw fixed
+			]]>
+		</release>
+		<release version="2.0" date="2011-04-02" min="2.2.1" max="2.2.x">
+			<![CDATA[
+ - Event filters are supported, so custom events are no longer needed to send emails.
+ - It is possible to select which layouts to use (Html, Plain or both).
+			]]>
+		</release>
+		<release version="1.0" date="2011-03-15" min="2.2.1" max="2.2.x">
+			<![CDATA[
+- Initial release.
+			]]>
+		</release>
 	</releases>
 </extension>

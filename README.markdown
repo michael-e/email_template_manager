@@ -1,8 +1,8 @@
 Email Template Manager
 ===========================
 
-Version: 4
-Author: Huib Keemink (creativedutchmen)
+- Version: 4
+- Author: Huib Keemink (creativedutchmen)
 
 Contents
 ------------
@@ -189,32 +189,3 @@ If everything went OK, submitting the form with a valid email should send out tw
 
 In this (short) tutorial, we have looked at some of the basics of the ETM: creating templates, editing the layouts, setting dynamic recipients, subjects and reply-to headers.
 This tutorial has been written with the questions asked on the forum in mind. If you feel some parts have not been explained well, or should be added, feel free to [post your remarks](http://symphony-cms.com/discuss/thread/64323/).
-
-Changelog
------------------------
-
-[4.0]
-
-- Made template inlcude paths work as expected. Requires updating include paths!
-
-[3.0]
-
- - Added looping over recipients, so multiple customised emails are possible
- - Moved filter preferences from POST values to configuration menu
- - Added recipients and reply-to values to generate() function
- - Added compatibility with the Members extension
-
-[2.2]
-
- - Fixed sorting order of event filters
- - Fixed bug with field[] syntax in frontend
- - Fixed bug with demo code with more than one template installed
-
-[2.1]
-
- - SQL Injection flaw fixed
-
-[2.0]
-
- - Event filters are supported, so custom events are no longer needed to send emails.
- - It is possible to select which layouts to use (Html, Plain or both).
