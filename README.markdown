@@ -18,8 +18,7 @@ Contents
 1\. What's this?
 ------------------------
 
-Using this extension is it possible to let Symphony send pretty emails using XSLT.
-Currently only S2.2.1 is supported.
+Using this extension it is possible to let Symphony send pretty emails using XSLT. Currently only S2.2.x is supported.
 
 2\. Understanding the basics
 ----------------------------
@@ -40,7 +39,7 @@ For each layout, you will be able to set an XSLT template.
 
 ###2.2 Subject, recipients and reply-to###
 
-The subject and reply-to settings in the config panel can contain XpPath and parameters.
+The subject and reply-to settings in the config panel can contain XPath and parameters.
 If your XPath returns more than one piece of data, only the first result is used - you can not have more than one subject.
 
 For the recipients field, on the other hand, you can select more than one recipient with a single piece of XPath.
