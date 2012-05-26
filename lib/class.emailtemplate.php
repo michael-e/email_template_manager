@@ -5,18 +5,18 @@ require_once(TOOLKIT . '/class.frontendpage.php');
 require_once(CORE . '/class.frontend.php');
 
 Class EmailTemplate extends XSLTPage{
-	
+
 	public $subject = "";
 	public $reply_to_name;
 	public $reply_to_email_address;
 	public $recipients;
-	
+
 	public $datasources = Array();
 	public $layouts = Array();
-	
-	protected $_parsedProperties = Array();	
+
+	protected $_parsedProperties = Array();
 	protected $_frontendPage;
-	
+
 	public function __construct(){
 		parent::__construct();
 		//needed for debug devkit.
@@ -32,29 +32,29 @@ Class EmailTemplate extends XSLTPage{
 			'workspace' => URL . '/workspace'
 		));
 	}
-		
+
 	public function addParams($params = array()){
 		if(!is_array($params)) return false;
 		return ($this->setRuntimeParam(array_merge($this->_param, $params)));
 	}
-	
+
 	public function getAbout(){
 		return $this->about;
 	}
-	
+
 	public function getName(){
 		return $this->about['name'];
 	}
-	
+
 	public function getHandle(){
 		return strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $this->getName())));
 	}
-	
+
 	public function processDatasources(){
 		if(is_null($this->_frontendPage)) $this->_frontendPage = new FrontendPage(Symphony::Engine());
-		
+
 		$this->_frontendPage->_param = $this->_param;
-		
+
 		$xml = new XMLElement('data');
 		$xml->setIncludeHeader(true);
 		$this->_frontendPage->processDatasources(implode(', ',$this->datasources), $xml);
@@ -149,19 +149,19 @@ Class EmailTemplate extends XSLTPage{
 	}
 
 	public function render($layouts = Array('plain', 'html')){
-		
+
 		if(!is_array($layouts)){
 			$layouts = Array($layouts);
 		}
 		if(isset($this->datasources) && isset($this->layouts)){
 			$result = Array();
-			
+
 			if(is_array($_GET) && !empty($_GET)){
 				foreach($_GET as $key => $val){
 					if(!in_array($key, array('symphony-page', 'debug', 'profile'))) $this->_param['url-' . $key] = $val;
 				}
 			}
-			
+
 			if(is_null($this->getXML())){
 				try{
 					$this->setXML($this->processDatasources()->generate(true, 0));
@@ -190,13 +190,13 @@ Class EmailTemplate extends XSLTPage{
 						$error = $this->getError();
 						throw new EmailTemplateException('Error compiling xml with xslt: ' . $error[1]['message']);
 					}
-					
+
 				}
 			}
 			return array_merge($result, $properties);
 		}
 	}
-	
+
 	public function preview($template){
 		$output = $this->render($template);
 		$output = $output[$template];
@@ -214,7 +214,7 @@ Class EmailTemplate extends XSLTPage{
 		}
 		return $output;
 	}
-	
+
 	public function __set($var, $val){
 		if(property_exists($this, $var)){
 			if(is_public($this->$var)){
@@ -297,7 +297,7 @@ Class EmailTemplate extends XSLTPage{
 			'layouts' => $this->layouts
 		);
 	}
-	
+
 	public function setXML($xml){
 		$this->_parsedProperties = Array();
 		return parent::setXML($xml);

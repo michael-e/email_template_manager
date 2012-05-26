@@ -9,7 +9,7 @@ require_once('class.emailtemplate.php');
 Class EmailTemplateManager{
 
 	static $errorMsg = "";
-	
+
 	public static function load($handle){
 		$classname = self::getClassNameFromHandle($handle);
 		if(self::find($handle)){
@@ -19,7 +19,7 @@ Class EmailTemplateManager{
 			return false;
 		}
 	}
-	
+
 	public static function find($handle){
 		$filename = self::getFileNameFromHandle($handle);
 		$classname = self::getClassNameFromHandle($handle);
@@ -66,7 +66,7 @@ Class EmailTemplateManager{
 			}
 		}
 	}
-	
+
 	public static function create($config){
 		$handle = self::getHandleFromName($config['name']);
 		if(!self::find($handle)){
@@ -75,9 +75,9 @@ Class EmailTemplateManager{
 				if(!self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config), true)) return false;
 				if(!self::_writeLayout($handle, 'Plain', file_get_contents(ETMDIR . '/content/templates/xsl-plain.tpl'), true)) return false;
 				if(!self::_writeLayout($handle, 'HTML',  file_get_contents(ETMDIR . '/content/templates/xsl-html.tpl'), true)) return false;
-				
+
 				Symphony::ExtensionManager()->notifyMembers('EmailTemplatePostCreate', '/extension/email_template_manager/', array('config'=>$config));
-				
+
 				return true;
 			}
 			else{
@@ -90,7 +90,7 @@ Class EmailTemplateManager{
 			return false;
 		}
 	}
-	
+
 	public static function editConfig($handle, $config){
 		if($template = self::load($handle)){
 			if($template->editable == true){
@@ -98,13 +98,13 @@ Class EmailTemplateManager{
 
 					$old_dir = dirname(self::find($handle));
 					$new_dir = dirname($old_dir) . '/' . self::getHandleFromName($config['name']);
-					
+
 					if(self::getHandleFromName($config['name']) != $handle){
 						if(!is_dir($new_dir)){
 							if(!rename($old_dir, $new_dir)) return false;
-							
+
 							Symphony::ExtensionManager()->notifyMembers('EmailTemplatePostSave','/extension/email_template_manager/', array('old_handle' =>$handle, 'config'=>$config));
-							
+
 							return rename($new_dir . '/' . self::getFileNameFromHandle($handle), $new_dir . '/' . self::getFileNameFromHandle(self::getHandleFromName($config['name'])));
 						}
 					}
@@ -124,7 +124,7 @@ Class EmailTemplateManager{
 			return false;
 		}
 	}
-	
+
 	public static function editLayout($handle, $layout, $content){
 		if($template = self::load($handle)){
 			if(in_array($layout, array_keys($template->layouts), true)){
@@ -140,7 +140,7 @@ Class EmailTemplateManager{
 			return false;
 		}
 	}
-	
+
 	public static function delete($handle){
 		$dir = dirname(self::find($handle));
 		if(is_dir($dir) && is_writeable($dir)){
@@ -167,18 +167,18 @@ Class EmailTemplateManager{
 			return false;
 		}
 	}
-	
+
 	public static function listAll(){
 		$result = Array();
-		
+
 		foreach(new DirectoryIterator(EMAILTEMPLATES) as $dir){
 			if($dir->isDir() && !$dir->isDot()){
 				if(file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))){
 					$result[$dir->getFileName()] = self::load($dir->getFileName());
 				}
-			}	
+			}
 		}
-		
+
 		foreach(ExtensionManager::listInstalledHandles() as $extension){
 			if(is_dir(EXTENSIONS . '/' . $extension . "/email-templates")){
 				foreach(new DirectoryIterator(EXTENSIONS . '/' . $extension . "/email-templates") as $dir){
@@ -186,34 +186,34 @@ Class EmailTemplateManager{
 						if(file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))){
 							$result[$dir->getFileName()] = self::load($dir->getFileName());
 						}
-					}	
+					}
 				}
 			}
 		}
-		
+
 		ksort($result, SORT_STRING);
 		return $result;
 	}
-	
+
 	public static function getClassNameFromHandle($handle){
 		return sprintf('%sEmailTemplate', str_replace('-', '_', ucfirst(strtolower($handle))));
 	}
-	
+
 	public static function getHandleFromFilename($filename){
 		return sscanf($filename, 'class.%[^.php].php');
 	}
-	
+
 	public static function getFileNameFromHandle($handle){
 		return sprintf('class.%s.php', strtolower($handle));
 	}
-	
+
 	public static function getHandleFromName($name){
 		return ltrim(strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $name))), "\x49..\x58");
 	}
 	public static function getFileNameFromLayout($layout = 'html'){
 		return sprintf('template.%s.xsl', strtolower($layout));
 	}
-	
+
 	public static function about($name){
 
 		$classname = self::__getClassName($name);
@@ -234,7 +234,7 @@ Class EmailTemplateManager{
 
 	/**
 	 * Writes configuration values to the template configuration file.
-	 * 
+	 *
 	 * The name of the template to write configuration values to
 	 * @param string $handle
 	 * The configuration to write
@@ -267,10 +267,10 @@ Class EmailTemplateManager{
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Writes the layout to the layout file.
-	 * 
+	 *
 	 * The name of the template containing the layout
 	 * @param string $handle
 	 * The layout to write to
@@ -302,9 +302,9 @@ Class EmailTemplateManager{
 			return false;
 		}
 	}
-	
+
 	protected function _parseConfigTemplate($handle, $config){
-		
+
 		$default_config = Array(
 			'datasources'=>Array(
 			),
@@ -313,11 +313,11 @@ Class EmailTemplateManager{
 				'plain'=>'template.plain.xsl'
 			)
 		);
-		
+
 		$config = array_merge($default_config, $config);
-		
+
 		$config_template = file_get_contents(ETMDIR . '/content/templates/class.tpl', $config_template);
-		
+
 		$config_template = str_replace('<!-- CLASS NAME -->', self::getClassNameFromHandle(self::getHandleFromName($config['name'])), $config_template);
 		$config_template = str_replace('<!-- NAME -->',	addslashes($config['name']), $config_template);
 		$config_template = str_replace('<!-- REPLYTONAME -->',	addslashes($config['reply-to-name']), $config_template);
@@ -329,19 +329,19 @@ Class EmailTemplateManager{
 		$config_template = str_replace('<!-- AUTHOR EMAIL -->', addslashes(Administration::instance()->Author->get('email')), $config_template);
 		$config_template = str_replace('<!-- RELEASE DATE -->', DateTimeObj::getGMT('c'), $config_template);
 		$config_template = str_replace('<!-- SUBJECT -->', addslashes($config['subject']), $config_template);
-		
+
 		foreach($config['datasources'] as $ds){
 			$datasources .= "\r\n \t\t\t'".addslashes($ds)."',";
 		}
-		
-		
+
+
 		$config_template = str_replace('<!-- DATASOURCES -->', $datasources, $config_template);
-		
+
 		foreach($config['layouts'] as $tp => $lt){
 			$layouts .= "\r\n \t\t\t'$tp' => '".addslashes($lt)."',";
 		}
 		$config_template = str_replace('<!-- LAYOUTS -->', $layouts, $config_template);
-		
+
 		return $config_template;
  	}
 }
