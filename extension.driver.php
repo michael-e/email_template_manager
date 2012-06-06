@@ -5,19 +5,6 @@
 
 	Class extension_email_template_manager extends Extension{
 
-		public function about(){
-			return array(
-				'name' => 'Email Template Manager',
-				'version' => '4.0',
-				'release-date' => '2012-05-23',
-				'author' => array(
-					'name' => 'Huib Keemink',
-					'website' => 'http://www.creativedutchmen.com',
-					'email' => 'huib.keemink@creativedutchmen.com'
-				)
-			);
-		}
-
 		public function fetchNavigation() {
 			return array(
 				array(
