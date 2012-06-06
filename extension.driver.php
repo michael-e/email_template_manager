@@ -174,8 +174,7 @@
 							$sent++;
 						}
 						catch(EmailTemplateException $e){
-							Symphony::$Log->pushToLog(__('Email Template Manager: ') . $e->getMessage(), null, true);
-							//$context['errors'][] = Array('etm-' . $template->getHandle() . '-' . Lang::createHandle($emailaddr), false, $e->getMessage());
+							Symphony::Log()->pushToLog(__('Email Template Manager: ') . $e->getMessage(), null, true);
 							continue;
 						}
 					}
