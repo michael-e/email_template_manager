@@ -6,15 +6,19 @@ require_once(CORE . '/class.frontend.php');
 
 Class EmailTemplate extends XSLTPage{
 
-	public $subject = "";
+	public $about;
+	public $subject = '';
 	public $reply_to_name;
 	public $reply_to_email_address;
 	public $recipients;
 
-	public $datasources = Array();
-	public $layouts = Array();
+	public $datasources = array();
+	public $layouts = array();
 
-	protected $_parsedProperties = Array();
+	protected $_parsedProperties = array();
+	/**
+	 * @var FrontendPage
+	 */
 	protected $_frontendPage;
 
 	public function __construct(){
@@ -34,8 +38,12 @@ Class EmailTemplate extends XSLTPage{
 	}
 
 	public function addParams($params = array()){
-		if(!is_array($params)) return false;
-		return ($this->setRuntimeParam(array_merge($this->_param, $params)));
+
+		if (!is_array($params)) {
+			return false;
+		}
+		$this->setRuntimeParam(array_merge($this->_param, $params));
+		return true;
 	}
 
 	public function getAbout(){
@@ -43,7 +51,10 @@ Class EmailTemplate extends XSLTPage{
 	}
 
 	public function getName(){
-		return $this->about['name'];
+		if(array_key_exists('name', $this->about)) {
+			return $this->about['name'];
+		}
+		return null;
 	}
 
 	public function getHandle(){
@@ -51,7 +62,10 @@ Class EmailTemplate extends XSLTPage{
 	}
 
 	public function processDatasources(){
-		if(is_null($this->_frontendPage)) $this->_frontendPage = new FrontendPage(Symphony::Engine());
+
+		if (is_null($this->_frontendPage)) {
+			$this->_frontendPage = new FrontendPage(Symphony::Engine());
+		}
 
 		$this->_frontendPage->_param = $this->_param;
 
@@ -73,16 +87,17 @@ Class EmailTemplate extends XSLTPage{
 		$xpath = new DOMXPath($dom);
 		if($multiple == true){
 			$xpath_strings = explode(",", $xpath_string);
+			$search_strings = array();
 			foreach(array_keys($this->_param) as $param){
 				$search_strings[] = '{$' . $param . '}';
 			}
-			$ret = Array();
+			$ret = array();
 			foreach($xpath_strings as $xpath_string){
 				$xpath_string = trim($xpath_string);
 				$str = str_replace($search_strings, $this->_param, $xpath_string);
 				$replacements = array();
 				preg_match_all('/\{[^\}\$]+\}/', $str, $matches);
-				$str = Array($str);
+				$str = array($str);
 				if(is_array($matches[0]) && !empty($matches[0])){
 					foreach($matches[0] as $match){
 						$results = @$xpath->evaluate(trim($match, '{}'));
@@ -104,7 +119,7 @@ Class EmailTemplate extends XSLTPage{
 								foreach($str as $offset=>$val){
 									$str[$offset] = '';
 								}
-								Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Xpath query '.$match.' did not return any results, skipping. ', 100, true);
+								Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' Xpath query '.$match.' did not return any results, skipping. ', 100, true);
 							}
 						}
 						else{
@@ -122,7 +137,7 @@ Class EmailTemplate extends XSLTPage{
 			return $ret;
 		}
 		else{
-			$search_strings = Array();
+			$search_strings = array();
 			foreach(array_keys($this->_param) as $param){
 				$search_strings[] = '{$' . $param . '}';
 			}
@@ -148,17 +163,19 @@ Class EmailTemplate extends XSLTPage{
 		}
 	}
 
-	public function render($layouts = Array('plain', 'html')){
+	public function render($layouts = array('plain', 'html')){
 
 		if(!is_array($layouts)){
-			$layouts = Array($layouts);
+			$layouts = array($layouts);
 		}
 		if(isset($this->datasources) && isset($this->layouts)){
-			$result = Array();
+			$result = array();
 
 			if(is_array($_GET) && !empty($_GET)){
 				foreach($_GET as $key => $val){
-					if(!in_array($key, array('symphony-page', 'debug', 'profile'))) $this->_param['url-' . $key] = $val;
+					if (!in_array($key, array('symphony-page', 'debug', 'profile'))) {
+						$this->_param['url-'.$key] = $val;
+					}
 				}
 			}
 
@@ -209,7 +226,7 @@ Class EmailTemplate extends XSLTPage{
 			)
 		);
 		if (!is_null($devkit)) {
-			$devkit->prepare($this, Array('filelocation'=>dirname(EmailTemplateManager::find($this->getHandle())) . '/' . EmailTemplateManager::getFileNameFromLayout($template)), $this->_xml, $this->_param, $output);
+			$devkit->prepare($this, array('filelocation'=>dirname(EmailTemplateManager::find($this->getHandle())) . '/' . EmailTemplateManager::getFileNameFromLayout($template)), $this->_xml, $this->_param, $output);
 			return $devkit->build();
 		}
 		return $output;
@@ -250,36 +267,36 @@ Class EmailTemplate extends XSLTPage{
 							$rcpts[trim($author->get('first_name') . ' '. $author->get('last_name'))] = $author->get("email");
 						}
 						else{
-							Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is recognised as a username, but the user can not be found: ' . $recipient , 100, true);
+							Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is recognised as a username, but the user can not be found: ' . $recipient , 100, true);
 						}
 					}
 				}
 				else{
-					Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is empty, skipping.' , 100, true);
+					Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is empty, skipping.' , 100, true);
 				}
 			}
 			if(!empty($rcpts)){
 				$this->_parsedProperties['recipients'] = $rcpts;
 			}
 			else{
-				Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' No valid recipients are selected, can not send emails.' , 100, true);
+				Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' No valid recipients are selected, can not send emails.' , 100, true);
 				return false;
 			}
 		}
 
 		if(empty($this->_parsedProperties['subject'])){
 			$this->_parsedProperties['subject'] = $this->evalXPath($this->subject, false);
-			//$this->addParams(Array('etm-subject'=>$this->_parsedProperties['subject']));
+			//$this->addParams(array('etm-subject'=>$this->_parsedProperties['subject']));
 		}
 
 		if(empty($this->_parsedProperties['reply-to-name'])){
 			$this->_parsedProperties['reply-to-name'] = $this->evalXPath($this->reply_to_name, false);
-			//$this->addParams(Array('etm-reply-to-name'=>$this->_parsedProperties['reply-to-name']));
+			//$this->addParams(array('etm-reply-to-name'=>$this->_parsedProperties['reply-to-name']));
 		}
 
 		if(empty($this->_parsedProperties['reply-to-email-address'])){
 			$this->_parsedProperties['reply-to-email-address'] = $this->evalXPath($this->reply_to_email_address, false);
-			//$this->addParams(Array('etm-reply-to-email-address'=>$this->_parsedProperties['reply-to-email-address']));
+			//$this->addParams(array('etm-reply-to-email-address'=>$this->_parsedProperties['reply-to-email-address']));
 		}
 	}
 
@@ -288,7 +305,7 @@ Class EmailTemplate extends XSLTPage{
 	}
 
 	public function getProperties(){
-		return Array(
+		return array(
 			'reply-to-name' => $this->reply_to_name,
 			'reply-to-email-address' => $this->reply_to_email_address,
 			'subject' => $this->subject,
@@ -299,8 +316,8 @@ Class EmailTemplate extends XSLTPage{
 	}
 
 	public function setXML($xml){
-		$this->_parsedProperties = Array();
-		return parent::setXML($xml);
+		$this->_parsedProperties = array();
+		parent::setXML($xml);
 	}
 }
 

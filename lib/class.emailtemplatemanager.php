@@ -2,11 +2,11 @@
 
 if(!defined('EMAILTEMPLATES')) define('EMAILTEMPLATES', WORKSPACE . "/email-templates");
 if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . "/email_template_manager");
-require_once(TOOLKIT . '/class.manager.php');
+
 require_once(TOOLKIT . '/class.extensionmanager.php');
 require_once('class.emailtemplate.php');
 
-Class EmailTemplateManager{
+Class EmailTemplateManager {
 
 	static $errorMsg = "";
 
