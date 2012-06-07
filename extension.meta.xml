@@ -22,11 +22,12 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
-        <release version="4.0" date="2012-06-10" min="2.3.x">
-            <![CDATA[
-- Updated for Symphony 2.3
+		<release version="4.1" date="2012-06-10" min="2.3.x">
+			<![CDATA[
+ - Updated for Symphony 2.3
 			]]>
-        </release>
+		</release>
+		<release version="4.0.1" date="2012-06-06" min="2.2.1" max="2.2.x"/>
 		<release version="4.0" date="2012-05-23" min="2.2.1" max="2.2.x">
 			<![CDATA[
 - Made template include paths work as expected. Requires updating include paths!
