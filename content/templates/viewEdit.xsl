@@ -8,12 +8,6 @@
 	indent="yes" />
 
 <xsl:template match="/">
-	<h2>
-		<span><xsl:choose><xsl:when test="/data/templates/entry/name"><xsl:value-of select="/data/templates/entry/name" /></xsl:when><xsl:otherwise>New Template</xsl:otherwise></xsl:choose></span>
-		<xsl:for-each select="/data/templates/entry/layouts/*">
-			<a href="{concat($root, '/symphony/extension/email_template_manager/templates/edit/', ../../handle, '/', local-name())}" class="button">Edit <xsl:value-of select="translate(local-name(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/> layout</a>
-		</xsl:for-each>
-	</h2>
 	<form method="post" action="{$current-url}">
 		<fieldset class="settings">
 			<legend>Template Settings</legend>

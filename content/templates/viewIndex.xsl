@@ -8,10 +8,6 @@
 	indent="yes" />
 
 <xsl:template match="/">
-	<h2>
-		<span>Email Templates</span>
-		<a href="{concat($root, '/symphony/extension/email_template_manager/templates/new')}" class="create button">Create New</a>
-	</h2>
 	<form method="post" action="{$current-url}">
 		<table class="selectable">
 			<thead>
@@ -34,13 +30,17 @@
 				</xsl:if>
 			</tbody>
 		</table>
-		<div class="actions">
-			<select name="with-selected">
-				<option value="">With Selected...</option>
-				<option class="confirm" value="delete">Delete</option>
-			</select>
-			<input type="submit" value="Apply" name="action[apply]" />
-		</div>
+	    <div class="actions">
+	        <fieldset class="apply">
+	            <div>
+	                <select name="with-selected">
+	                    <option value="">With Selected...</option>
+	                    <option class="confirm" value="delete">Delete</option>
+	                </select>
+	            </div>
+	            <button type="submit" name="action[apply]">Apply</button>
+	        </fieldset>
+	    </div>
 	</form>
 </xsl:template>
 

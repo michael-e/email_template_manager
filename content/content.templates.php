@@ -146,6 +146,11 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 		$this->setPageType('index');
 		$this->setTitle(__("Symphony - Email Templates"));
 
+		$this->appendSubheading(__('Email Templates'), Widget::Anchor(
+			__('Create New'), SYMPHONY_URL . '/extension/email_template_manager/templates/new/',
+			__('Create a new email template'), 'create button'
+		));
+
 		$templates = new XMLElement("templates");
 		foreach(EmailTemplateManager::listAll() as $template){
 			$entry = new XMLElement("entry");
@@ -173,16 +178,34 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			);
 		}
 
+		// Default page context
+		$title = __('New Template');
+		$buttons = array();
+		$breadcrumbs = array(
+			Widget::Anchor(__('Email Templates'), SYMPHONY_URL . '/extension/email_template_manager/templates/')
+		);
+
 		// Edit config
 		if(empty($this->_context[2]) || ($this->_context[2] == 'saved')){
 			$templates = new XMLElement("templates");
 			$template = EmailTemplateManager::load($this->_context[1]);
 			if($template){
+				$properties = $template->getProperties();
+				$title = $template->about['name'];			
 				$entry = new XMLElement("entry");
 				General::array_to_xml($entry, $template->about);
-				General::array_to_xml($entry, $template->getProperties());
+				General::array_to_xml($entry, $properties);
 				$entry->appendChild(new XMLElement("handle", $template->getHandle()));
 				$templates->appendChild($entry);
+				
+				// Create layout buttons
+				$properties = $template->getProperties();
+				foreach($properties['layouts'] as $layout => $file) {
+					$buttons[] = Widget::Anchor(
+						__('Edit %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/' . $layout,
+						__('Edit %s layout', array($layout)), 'button'
+					);
+				}
 			}
 			elseif(!$new){
 				Administration::instance()->errorPageNotFound();
@@ -209,11 +232,32 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			$templates = new XMLElement("templates");
 			$template = EmailTemplateManager::load($this->_context[1]);
 			if($template){
+				$properties = $template->getProperties();
+				$title = ($this->_context[2] == 'plain' ? __('Plain') : __('HTML'));			
 				$entry = new XMLElement("entry");
 				General::array_to_xml($entry, $template->about);
-				General::array_to_xml($entry, $template->getProperties());
+				General::array_to_xml($entry, $properties);
 				$entry->appendChild(new XMLElement("handle", $template->getHandle()));
 				$templates->appendChild($entry);
+
+				// Add template to breadcrumbs
+				$breadcrumbs[] = Widget::Anchor($template->about['name'], SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle());
+				
+				// Create layout buttons
+				foreach($properties['layouts'] as $layout => $file) {
+					if($layout == $this->_context[2]) {
+						$buttons[] = Widget::Anchor(
+							__('Preview %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/preview/' . $template->getHandle() . '/' . $layout,
+							__('Preview %s layout', array($layout)), 'button'
+						);
+					}
+					else {
+						$buttons[] = Widget::Anchor(
+							__('Edit %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/' . $layout,
+							__('Edit %s layout', array($layout)), 'button'
+						);
+					}
+				}
 			}
 			elseif(!$new){
 				Administration::instance()->errorPageNotFound();
@@ -238,6 +282,10 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				Administration::instance()->errorPageNotFound();
 			}
 		}
+
+		// Add page context
+		$this->appendSubheading($title, $buttons);
+		$this->insertBreadcrumbs($breadcrumbs);
 	}
 
 	function __viewNew(){
