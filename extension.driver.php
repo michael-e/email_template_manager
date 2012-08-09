@@ -5,19 +5,6 @@
 
 	Class extension_email_template_manager extends Extension{
 
-		public function about(){
-			return array(
-				'name' => 'Email Template Manager',
-				'version' => '4.0',
-				'release-date' => '2012-05-23',
-				'author' => array(
-					'name' => 'Huib Keemink',
-					'website' => 'http://www.creativedutchmen.com',
-					'email' => 'huib.keemink@creativedutchmen.com'
-				)
-			);
-		}
-
 		public function fetchNavigation() {
 			return array(
 				array(
@@ -33,12 +20,12 @@
 				array(
 				'page' => '/blueprints/events/edit/',
 				'delegate' => 'AppendEventFilter',
-				'callback' => 'AppendEventFilter'
+				'callback' => 'appendEventFilter'
 				),
 				array(
 				'page' => '/blueprints/events/new/',
 				'delegate' => 'AppendEventFilter',
-				'callback' => 'AppendEventFilter'
+				'callback' => 'appendEventFilter'
 				),
 				array(
 					'page' => '/frontend/',
@@ -48,12 +35,12 @@
 				array(
 					'page' => '/blueprints/events/edit/',
 					'delegate' => 'AppendEventFilterDocumentation',
-					'callback' => 'AppendEventFilterDocumentation'
+					'callback' => 'appendEventFilterDocumentation'
 				),
 				array(
 					'page' => '/blueprints/datasources/',
 					'delegate' => 'DatasourcePostEdit',
-					'callback' => 'DatasourcePostEdit'
+					'callback' => 'datasourcePostEdit'
 				),
 			);
 		}
@@ -70,8 +57,18 @@
 			return true;
 		}
 
-		public function DatasourcePostEdit($file){
-			$ds_handle = DatasourceManager::__getHandleFromFileName(substr($file['file'], strrpos($file['file'], '/')+1));
+		public function uninstall(){
+			try{
+				General::deleteDirectory(WORKSPACE.'/email-templates');
+			}
+			catch(Exception $e){
+				return false;
+			}
+			return true;
+		}
+
+		public function datasourcePostEdit($file){
+			$ds_handle = DatasourceManager::__getHandleFromFileName(basename($file['file']));
 			$templates = EmailTemplateManager::listAll();
 			foreach($templates as $template){
 				$config = $template->getProperties();
@@ -82,7 +79,7 @@
 			}
 		}
 
-		public function AppendEventFilter($context){
+		public function appendEventFilter($context){
 			$templates = EmailTemplateManager::listAll();
 			if( empty($templates) ) return;
 			foreach($templates as $template){
@@ -146,7 +143,7 @@
 								$email->subject = $content['subject'];
 							}
 							else{
-								throw new EmailTemplateException("Can not send emails without a subject");
+								throw new EmailTemplateException(__('Can not send emails without a subject'));
 							}
 
 							if(isset($content['reply-to-name'])){
@@ -167,14 +164,14 @@
 								$email->recipients = array($name => $emailaddr);
 							}
 							else{
-								throw new EmailTemplateException("Email address invalid: $emailaddr");
+								throw new EmailTemplateException(__("Email address invalid:") . ' ' . $emailaddr);
 							}
 
 							$email->send();
 							$sent++;
 						}
 						catch(EmailTemplateException $e){
-							Symphony::$Log->pushToLog(__('Email Template Manager: ') . $e->getMessage(), null, true);
+							Symphony::Log()->pushToLog(__('Email Template Manager: ') . $e->getMessage(), null, true);
 							//$context['errors'][] = Array('etm-' . $template->getHandle() . '-' . Lang::createHandle($emailaddr), false, $e->getMessage());
 							continue;
 						}
