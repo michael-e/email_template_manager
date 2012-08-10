@@ -104,7 +104,7 @@ Class EmailTemplate extends XSLTPage{
 								foreach($str as $offset=>$val){
 									$str[$offset] = '';
 								}
-								Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Xpath query '.$match.' did not return any results, skipping. ', 100, true);
+								Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' Xpath query '.$match.' did not return any results, skipping. ', 100, true);
 							}
 						}
 						else{
@@ -255,14 +255,14 @@ Class EmailTemplate extends XSLTPage{
 					}
 				}
 				else{
-					Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is empty, skipping.' , 100, true);
+					Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is empty, skipping.' , 100, true);
 				}
 			}
 			if(!empty($rcpts)){
 				$this->_parsedProperties['recipients'] = $rcpts;
 			}
 			else{
-				Symphony::$Log->pushToLog(__('Email Template Manager') . ': ' . ' No valid recipients are selected, can not send emails.' , 100, true);
+				Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' No valid recipients are selected, can not send emails.' , 100, true);
 				return false;
 			}
 		}
