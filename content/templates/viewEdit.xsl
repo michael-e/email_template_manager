@@ -140,7 +140,7 @@
 					<p><xsl:value-of select="/data/errors/recipients"/></p>
 				</xsl:if>
 				<xsl:if test="not(/data/errors/recipients)">
-					<p class="help">Select multiple recipients by seperating them with commas. This is also possible dynamically: <code>{/data/authors/name} &lt;{/data/authors/email}&gt;</code> will return: <code>name &lt;email@domain.com&gt;, name2 &lt;email2@domain.com&gt;</code></p>
+					<p class="help">Select multiple recipients by seperating them with commas. This is also possible dynamically: <code>{/data/authors/author/name} &lt;{/data/authors/author/email}&gt;</code> will return: <code>name &lt;email@domain.com&gt;, name2 &lt;email2@domain.com&gt;</code></p>
 				</xsl:if>
 			</div>
 			<div class="group">
