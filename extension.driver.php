@@ -193,7 +193,7 @@
 				return false;
 			}
 			catch(EmailGatewayException $e){
-				$context['errors'][] = Array('etm-' . $template->getHandle(), false, $e->getMessage());
+				$context['errors'][] = Array('etm-' . $template->getHandle(), false, General::sanitize($e->getMessage()));
 				return false;
 			}
 			return array('total'=>count($recipients), 'sent'=>$sent);
