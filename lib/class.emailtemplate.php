@@ -209,7 +209,7 @@ Class EmailTemplate extends XSLTPage{
 			)
 		);
 		if (!is_null($devkit)) {
-			$devkit->prepare($this, Array('filelocation'=>dirname(EmailTemplateManager::find($this->getHandle())) . '/' . EmailTemplateManager::getFileNameFromLayout($template)), $this->_xml, $this->_param, $output);
+			$devkit->prepare($this, Array('title' => $this->getName(), 'filelocation'=>dirname(EmailTemplateManager::find($this->getHandle())) . '/' . EmailTemplateManager::getFileNameFromLayout($template)), $this->_xml, $this->_param, $output);
 			return $devkit->build();
 		}
 		return $output;
