@@ -1,8 +1,7 @@
 Email Template Manager
 ===========================
 
-- Version: 4
-- Author: Huib Keemink (creativedutchmen)
+Author: Huib Keemink (creativedutchmen)
 
 Contents
 ------------
