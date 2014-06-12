@@ -195,6 +195,9 @@
 			</div>
 		</fieldset>
 		<div class="actions">
+			<xsl:if test="/data/xsrf_input">
+				<xsl:copy-of select="/data/xsrf_input/*"/>
+			</xsl:if>
 			<input type="submit" accesskey="s" name="action[save]">
 				<xsl:attribute name="value">
 					<xsl:choose>
