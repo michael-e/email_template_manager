@@ -45,7 +45,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				$fields['layouts'] = Array('plain'=>'template.plain.xsl');
 			}
 			if(EmailTemplateManager::create($fields)){
-				redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved');
+				redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved/');
 			}
 			else{
 				$this->pageAlert(
@@ -96,7 +96,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				}
 
 				if(EmailTemplateManager::editConfig($this->_context[1], $fields)){
-					redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved');
+					redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved/');
 				}
 				else{
 					$this->pageAlert(
@@ -116,7 +116,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 					$errors->appendChild(new XMLElement('body', __('This document is not well formed. The following error was returned: <code>%s</code>', array($error[0]['message']))));
 				}
 				elseif(EmailTemplateManager::editLayout($this->_context[1],$this->_context[2], $fields['body'])){
-					redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $this->_context[1] . '/' . $this->_context[2] . '/saved');
+					redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $this->_context[1] . '/' . $this->_context[2] . '/saved/');
 				}
 				else{
 					$this->pageAlert(
@@ -171,7 +171,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				__(
 					__('Template updated at %1$s.'),
 					array(
-						DateTimeObj::getTimeAgo(__SYM_TIME_FORMAT__),
+						Widget::Time()->generate(),
 					)
 				),
 				Alert::SUCCESS
@@ -202,7 +202,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				$properties = $template->getProperties();
 				foreach($properties['layouts'] as $layout => $file) {
 					$buttons[] = Widget::Anchor(
-						__('Edit %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/' . $layout,
+						__('Edit %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/' . $layout . '/',
 						__('Edit %s layout', array($layout)), 'button'
 					);
 				}
@@ -241,19 +241,19 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				$templates->appendChild($entry);
 
 				// Add template to breadcrumbs
-				$breadcrumbs[] = Widget::Anchor($template->about['name'], SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle());
+				$breadcrumbs[] = Widget::Anchor($template->about['name'], SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/');
 				
 				// Create layout buttons
 				foreach($properties['layouts'] as $layout => $file) {
 					if($layout == $this->_context[2]) {
 						$buttons[] = Widget::Anchor(
-							__('Preview %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/preview/' . $template->getHandle() . '/' . $layout,
+							__('Preview %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/preview/' . $template->getHandle() . '/' . $layout . '/',
 							__('Preview %s layout', array($layout)), 'button'
 						);
 					}
 					else {
 						$buttons[] = Widget::Anchor(
-							__('Edit %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/' . $layout,
+							__('Edit %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/' . $layout . '/',
 							__('Edit %s layout', array($layout)), 'button'
 						);
 					}
