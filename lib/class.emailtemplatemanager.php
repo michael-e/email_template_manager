@@ -207,7 +207,7 @@ Class EmailTemplateManager{
 	}
 
 	public static function getHandleFromName($name){
-		return ltrim(strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $name))), "\x49..\x58");
+		return Lang::createHandle($name);
 	}
 	public static function getFileNameFromLayout($layout = 'html'){
 		return sprintf('template.%s.xsl', strtolower($layout));
