@@ -9,7 +9,7 @@
 
 <xsl:template match="/">
 	<form method="post" action="{$current-url}">
-		<table class="selectable">
+		<table class="selectable" data-interactive="data-interactive">
 			<thead>
 				<tr>
 					<th scope="col">Name</th>
