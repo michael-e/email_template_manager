@@ -47,7 +47,7 @@ Class EmailTemplate extends XSLTPage{
 	}
 
 	public function getHandle(){
-		return strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', str_replace(' ', '-', $this->getName())));
+		return Lang::createHandle($this->getName());
 	}
 
 	public function processDatasources(){
