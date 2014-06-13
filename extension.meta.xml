@@ -17,6 +17,12 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="6.0" date="2014-06-13" min="2.4">
+			<![CDATA[
+- Bugfixes
+- Symphony 2.4 compatibility
+			]]>
+		</release>
 		<release version="5.1" date="2014-03-21" min="2.3">
 			<![CDATA[
 - Include Post Data as Params (thanks @korelogic)
