@@ -178,6 +178,16 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			);
 		}
 
+		// Fix for 2.4 and XSRF
+		if ((Symphony::Configuration()->get("enable_xsrf", "symphony") == "yes") &&
+			(class_exists('XSRF'))) {
+			$xsrf_input = new XMLElement('xsrf_input');
+			$xsrf_input->appendChild(XSRF::formToken());
+			$this->_XML->appendChild(
+				$xsrf_input
+			);
+		}
+
 		// Default page context
 		$title = __('New Template');
 		$buttons = array();
