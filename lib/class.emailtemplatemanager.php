@@ -323,9 +323,9 @@ Class EmailTemplateManager{
 		$config_template = str_replace('<!-- REPLYTOEMAIL -->',	addslashes($config['reply-to-email-address']), $config_template);
 		$config_template = str_replace('<!-- RECIPIENTS -->',	addslashes($config['recipients']), $config_template);
 		$config_template = str_replace('<!-- VERSION -->', '1.0', $config_template);
-		$config_template = str_replace('<!-- AUTHOR NAME -->', addslashes(Administration::instance()->Author->getFullName()), $config_template);
+		$config_template = str_replace('<!-- AUTHOR NAME -->', addslashes(Administration::instance()->Author()->getFullName()), $config_template);
 		$config_template = str_replace('<!-- AUTHOR WEBSITE -->', addslashes(URL), $config_template);
-		$config_template = str_replace('<!-- AUTHOR EMAIL -->', addslashes(Administration::instance()->Author->get('email')), $config_template);
+		$config_template = str_replace('<!-- AUTHOR EMAIL -->', addslashes(Administration::instance()->Author()->get('email')), $config_template);
 		$config_template = str_replace('<!-- RELEASE DATE -->', DateTimeObj::getGMT('c'), $config_template);
 		$config_template = str_replace('<!-- SUBJECT -->', addslashes($config['subject']), $config_template);
 
