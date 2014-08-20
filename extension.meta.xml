@@ -17,6 +17,11 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="6.0.1" date="2014-08-20" min="2.4">
+			<![CDATA[
+- Bugfix: Fatal error when saving templates
+			]]>
+		</release>
 		<release version="6.0" date="2014-06-13" min="2.4">
 			<![CDATA[
 - Bugfixes
