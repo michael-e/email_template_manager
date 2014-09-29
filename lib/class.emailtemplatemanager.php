@@ -124,6 +124,7 @@ Class EmailTemplateManager{
 		}
 	}
 
+	// No longer used in 7.0
 	public static function editLayout($handle, $layout, $content){
 		if($template = self::load($handle)){
 			if(in_array($layout, array_keys($template->layouts), true)){

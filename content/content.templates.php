@@ -105,27 +105,6 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 					);
 				}
 			}
-
-			// Layout editing
-			else{
-				$errors = new XMLElement('errors');
-				if(!isset($fields['body']) || trim($fields['body']) == '') {
-					$errors->appendChild(new XMLElement('body', __('Body is a required field')));
-				}
-				elseif(!General::validateXML($fields['body'], $error, false, new XSLTProcess())) {
-					$errors->appendChild(new XMLElement('body', __('This document is not well formed. The following error was returned: <code>%s</code>', array($error[0]['message']))));
-				}
-				elseif(EmailTemplateManager::editLayout($this->_context[1],$this->_context[2], $fields['body'])){
-					redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $this->_context[1] . '/' . $this->_context[2] . '/saved/');
-				}
-				else{
-					$this->pageAlert(
-						__('Could not save: ') .  __(EmailTemplateManager::$errorMsg),
-						Alert::ERROR
-					);
-				}
-				$this->_XML->appendChild($errors);
-			}
 		}
 	}
 
@@ -233,64 +212,8 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			General::array_to_xml($this->_XML, Array("email-settings" => Symphony::Configuration()->get('email_' . EmailGatewayManager::getDefaultGateway())));
 		}
 
-		// Edit layout
 		else{
-			$this->_useTemplate = 'viewEditLayout';
-			$utils = General::listStructure(UTILITIES, array('xsl'), false, 'asc', UTILITIES);
-			$utils = (array)$utils['filelist'];
-
-			$templates = new XMLElement("templates");
-			$template = EmailTemplateManager::load($this->_context[1]);
-			if($template){
-				$properties = $template->getProperties();
-				$title = ($this->_context[2] == 'plain' ? __('Plain') : __('HTML'));
-				$entry = new XMLElement("entry");
-				General::array_to_xml($entry, $template->about);
-				General::array_to_xml($entry, $properties);
-				$entry->appendChild(new XMLElement("handle", $template->getHandle()));
-				$templates->appendChild($entry);
-
-				// Add template to breadcrumbs
-				$breadcrumbs[] = Widget::Anchor($template->about['name'], SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/');
-
-				// Create layout buttons
-				foreach($properties['layouts'] as $layout => $file) {
-					if($layout == $this->_context[2]) {
-						$buttons[] = Widget::Anchor(
-							__('Preview %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/preview/' . $template->getHandle() . '/' . $layout . '/',
-							__('Preview %s layout', array($layout)), 'button'
-						);
-					}
-					else {
-						$buttons[] = Widget::Anchor(
-							__('Edit %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/' . $layout . '/',
-							__('Edit %s layout', array($layout)), 'button'
-						);
-					}
-				}
-			}
-			elseif(!$new){
-				Administration::instance()->errorPageNotFound();
-			}
-			$this->_XML->appendChild($templates);
-
-			$utilities = new XMLElement('utilities');
-			General::array_to_xml($utilities, $utils);
-			$this->_XML->appendChild($utilities);
-
-			$template = EmailTemplateManager::load($this->_context[1]);
-			if($template){
-				if($template->layouts[$this->_context[2]]){
-					$layout = new XMLElement('layout', '<![CDATA[' . file_get_contents(dirname(EmailTemplateManager::find($this->_context[1])) . '/' . $template->layouts[$this->_context[2]]) . ']]>');
-					$this->_XML->appendChild($layout);
-				}
-				else{
-					Administration::instance()->errorPageNotFound();
-				}
-			}
-			else{
-				Administration::instance()->errorPageNotFound();
-			}
+			Administration::instance()->errorPageNotFound();
 		}
 
 		// Add page context
