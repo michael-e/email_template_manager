@@ -13,7 +13,6 @@
 			<thead>
 				<tr>
 					<th scope="col">Name</th>
-					<th scope="col">Layouts</th>
 					<th scope="col">Preview</th>
 				</tr>
 			</thead>
@@ -51,16 +50,9 @@
 			<input name="items[{handle}]" type="checkbox" />
 		</td>
 		<td>
-			<xsl:apply-templates select="layouts/*" mode="edit"/>
-		</td>
-		<td>
 			<xsl:apply-templates select="layouts/*" mode="preview"/>
 		</td>
 	</tr>
-</xsl:template>
-
-<xsl:template match="templates/entry/layouts/*" mode="edit">
-	<a href="{concat($root, '/symphony/extension/email_template_manager/templates/edit/', ../../handle, '/', local-name(), '/')}" style="text-transform:uppercase"><xsl:value-of select="local-name()"/></a>
 </xsl:template>
 
 <xsl:template match="templates/entry/layouts/*" mode="preview">
