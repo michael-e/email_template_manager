@@ -149,7 +149,7 @@ So, in the recipients pane, type: `{/data/responses/entry/name} <{/data/response
 
 ####3.1.4 Setting up the second template layout (thank you message)#####
 
-We have now setup this template, all we need to do is edit the layout of this email.
+We have now setup this template, all we need to do is edit the layout of this email. (The corresponding XSLT files are in `/workspace/email-templates`.)
 
 If you have selected to use only a Plain layout, as you did with the notification template, you can use something like this for the layout XSLT:
 
