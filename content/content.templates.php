@@ -208,12 +208,12 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				$entry->appendChild(new XMLElement("handle", $template->getHandle()));
 				$templates->appendChild($entry);
 
-				// Create layout buttons
+				// Create preview buttons
 				$properties = $template->getProperties();
 				foreach($properties['layouts'] as $layout => $file) {
 					$buttons[] = Widget::Anchor(
-						__('Edit %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/' . $layout . '/',
-						__('Edit %s layout', array($layout)), 'button'
+						__('Preview %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/preview/' . $template->getHandle() . '/' . $layout . '/',
+						__('Preview %s layout', array($layout)), 'button'
 					);
 				}
 			}
