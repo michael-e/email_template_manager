@@ -201,13 +201,13 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			$template = EmailTemplateManager::load($this->_context[1]);
 			if($template){
 				$properties = $template->getProperties();
-				$title = $template->about['name'];			
+				$title = $template->about['name'];
 				$entry = new XMLElement("entry");
 				General::array_to_xml($entry, $template->about);
 				General::array_to_xml($entry, $properties);
 				$entry->appendChild(new XMLElement("handle", $template->getHandle()));
 				$templates->appendChild($entry);
-				
+
 				// Create layout buttons
 				$properties = $template->getProperties();
 				foreach($properties['layouts'] as $layout => $file) {
@@ -243,7 +243,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 			$template = EmailTemplateManager::load($this->_context[1]);
 			if($template){
 				$properties = $template->getProperties();
-				$title = ($this->_context[2] == 'plain' ? __('Plain') : __('HTML'));			
+				$title = ($this->_context[2] == 'plain' ? __('Plain') : __('HTML'));
 				$entry = new XMLElement("entry");
 				General::array_to_xml($entry, $template->about);
 				General::array_to_xml($entry, $properties);
@@ -252,7 +252,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 
 				// Add template to breadcrumbs
 				$breadcrumbs[] = Widget::Anchor($template->about['name'], SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . $template->getHandle() . '/');
-				
+
 				// Create layout buttons
 				foreach($properties['layouts'] as $layout => $file) {
 					if($layout == $this->_context[2]) {
