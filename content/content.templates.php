@@ -257,7 +257,6 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 	}
 
 	function build(Array $context = array()){
-		$this->addScriptToHead(URL . '/extensions/email_template_manager/assets/admin.js', 140);
 		parent::build($context);
 	}
 
