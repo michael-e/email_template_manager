@@ -213,7 +213,7 @@ Class contentExtensionemail_template_managertemplates extends ExtensionPage {
 				foreach($properties['layouts'] as $layout => $file) {
 					$buttons[] = Widget::Anchor(
 						__('Preview %s layout', array($layout)), SYMPHONY_URL . '/extension/email_template_manager/templates/preview/' . $template->getHandle() . '/' . $layout . '/',
-						__('Preview %s layout', array($layout)), 'button'
+						__('Preview %s layout', array($layout)), 'button', null, array('target' => '_blank')
 					);
 				}
 			}

@@ -56,6 +56,7 @@
 </xsl:template>
 
 <xsl:template match="templates/entry/layouts/*" mode="preview">
-	<a href="{concat($root, '/symphony/extension/email_template_manager/templates/preview/', ../../handle, '/', local-name(), '/')}" style="text-transform:uppercase"><xsl:value-of select="local-name()"/></a>
+	<a href="{concat($root, '/symphony/extension/email_template_manager/templates/preview/', ../../handle, '/', local-name(), '/')}" style="text-transform:uppercase" target="_blank"><xsl:value-of select="local-name()"/></a>
 </xsl:template>
+
 </xsl:stylesheet>
