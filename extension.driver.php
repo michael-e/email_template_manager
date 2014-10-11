@@ -137,11 +137,11 @@ class extension_email_template_manager extends Extension
 
             $template->parseProperties();
             $properties = $template->getParsedProperties();
-            $recipients = array_unique($properties['recipients']);
+            $recipients = array_unique((array) $properties['recipients']);
 
             $sent = 0;
             if (count($recipients) > 0) {
-                foreach ((array) $recipients as $name => $emailaddr) {
+                foreach ($recipients as $name => $emailaddr) {
                     try {
                         $email = Email::create();
                         $template->addParams(array('etm-recipient' => $emailaddr));
