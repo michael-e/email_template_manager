@@ -336,8 +336,8 @@ class EmailTemplateManager
         $config_template = file_get_contents(ETMDIR . '/content/templates/class.tpl', $config_template);
 
         // Author: Use the accessor function if available (Symphony 2.5)
-        if (method_exists(Administration::instance(), 'Author')) {
-            $author = Administration::instance()->Author();
+        if (is_callable(array('Symphony', 'Author'))) {
+            $author = Symphony::Author();
         } else {
             $author = Administration::instance()->Author;
         }
