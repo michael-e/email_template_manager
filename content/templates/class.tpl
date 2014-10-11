@@ -1,6 +1,6 @@
 <?php
 
-Class <!-- CLASS NAME --> extends EmailTemplate
+class <!-- CLASS NAME --> extends EmailTemplate
 {
     public $datasources = Array(<!-- DATASOURCES -->);
     public $layouts = Array(<!-- LAYOUTS -->);
