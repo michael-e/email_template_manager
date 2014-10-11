@@ -11,8 +11,8 @@ require_once(ETMDIR . '/lib/class.emailtemplatemanager.php');
 require_once(TOOLKIT . '/class.datasourcemanager.php');
 require_once(TOOLKIT . '/class.emailgatewaymanager.php');
 
-class contentExtensionemail_template_managertemplates extends ExtensionPage {
-
+class contentExtensionemail_template_managertemplates extends ExtensionPage
+{
     protected $_type;
     protected $_function;
 

@@ -5,9 +5,9 @@
 <xsl:output method="xml"
 	omit-xml-declaration="yes"
 	encoding="UTF-8"
-	indent="yes" />
+	indent="yes"/>
 
 <xsl:template match="/">
-	<xsl:copy-of select="." />
+	<xsl:copy-of select="."/>
 </xsl:template>
 </xsl:stylesheet>

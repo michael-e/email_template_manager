@@ -121,14 +121,14 @@ In the `Body` textarea, you can insert your XSLT that will eventually be sent to
 	<xsl:output method="text"
 		omit-xml-declaration="yes"
 		encoding="UTF-8"
-		indent="no" />
+		indent="no"/>
 
 	<xsl:template match="/">
 		Woohoo! Somebody wants information from us!
 
-		To be more precise, <xsl:value-of select="/data/responses/entry/name" /> asked this:
+		To be more precise, <xsl:value-of select="/data/responses/entry/name"/> asked this:
 
-		<xsl:value-of select="/data/respones/entry/body" />
+		<xsl:value-of select="/data/respones/entry/body"/>
 
 		---------------------------
 		To respond, you can send an email to: <xsl:value-of select="/data/responses/entry/email"/> or reply to this email.
@@ -160,10 +160,10 @@ If you have selected to use only a Plain layout, as you did with the notificatio
 	<xsl:output method="text"
 		omit-xml-declaration="yes"
 		encoding="UTF-8"
-		indent="no" />
+		indent="no"/>
 
 	<xsl:template match="/">
-		Dear <xsl:value-of select="/data/responses/entry/name" />,
+		Dear <xsl:value-of select="/data/responses/entry/name"/>,
 
 		Thank you for your interest in <xsl:value-of select="$website-name"/>.
 		We have received your inquiry, and will respond as quick as we can - usually within 24 hours.

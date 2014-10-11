@@ -5,7 +5,7 @@
 <xsl:output method="xml"
 	omit-xml-declaration="yes"
 	encoding="UTF-8"
-	indent="yes" />
+	indent="yes"/>
 
 <xsl:template match="/">
 	<form method="post" action="{$current-url}">

@@ -5,7 +5,7 @@
 <xsl:output method="xml"
 	omit-xml-declaration="yes"
 	encoding="UTF-8"
-	indent="yes" />
+	indent="yes"/>
 
 <xsl:template match="/">
 	<form method="post" action="{$current-url}">
@@ -47,7 +47,7 @@
 	<tr>
 		<td>
 			<a href="{concat($root, '/symphony/extension/email_template_manager/templates/edit/', handle, '/')}"><xsl:value-of select="name"/></a>
-			<input name="items[{handle}]" type="checkbox" />
+			<input name="items[{handle}]" type="checkbox"/>
 		</td>
 		<td>
 			<xsl:apply-templates select="layouts/*" mode="preview"/>
