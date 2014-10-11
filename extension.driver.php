@@ -137,7 +137,7 @@ class extension_email_template_manager extends Extension
 
             $template->parseProperties();
             $properties = $template->getParsedProperties();
-            $recipients = $properties['recipients'];
+            $recipients = array_unique($properties['recipients']);
 
             $sent = 0;
             if (count($recipients) > 0) {
