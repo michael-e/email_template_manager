@@ -81,50 +81,50 @@ class EmailTemplate extends XSLTPage
         $dom->loadXML($this->getXML());
         $xpath = new DOMXPath($dom);
         if ($multiple == true) {
-            $xpath_strings = explode(",", $xpath_string);
+
             foreach (array_keys($this->_param) as $param) {
                 $search_strings[] = '{$' . $param . '}';
             }
-            $ret = Array();
-            foreach ($xpath_strings as $xpath_string) {
-                $xpath_string = trim($xpath_string);
-                $str = str_replace($search_strings, $this->_param, $xpath_string);
-                $replacements = array();
-                preg_match_all('/\{[^\}\$]+\}/', $str, $matches);
-                $str = Array($str);
-                if (is_array($matches[0]) && !empty($matches[0])) {
-                    foreach ($matches[0] as $match) {
-                        $results = @$xpath->evaluate(trim($match, '{}'));
-                        if (is_object($results)) {
-                            if ($results->length > 0) {
-                                if (count($str) == 1) {
-                                    $str = array_fill(0, $results->length, $str[0]);
-                                }
-                                if (count($str) == $results->length) {
-                                    foreach ($results as $offset=>$result) {
-                                        $str[$offset] = str_replace($match, trim($result->textContent), $str[$offset]);
-                                    }
-                                } else {
-                                    throw new EmailTemplateException("XPath matching failed. Number of returned values in queries do not match");
-                                }
-                            } elseif ($results->length <= 0) {
-                                foreach ($str as $offset=>$val) {
-                                    $str[$offset] = '';
-                                }
-                                Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' Xpath query '.$match.' did not return any results, skipping. ', 100, true);
+
+            $xpath_string = trim($xpath_string);
+            $str = str_replace($search_strings, $this->_param, $xpath_string);
+            $replacements = array();
+            preg_match_all('/\{[^\}\$]+\}/', $str, $matches);
+            $str = Array($str);
+            if (is_array($matches[0]) && !empty($matches[0])) {
+                foreach ($matches[0] as $match) {
+                    $results = @$xpath->evaluate(trim($match, '{}'));
+                    if (is_object($results)) {
+                        if ($results->length > 0) {
+                            if (count($str) == 1) {
+                                $str = array_fill(0, $results->length, $str[0]);
                             }
-                        } else {
-                            if (empty($results)) {
-                                $results = '';
+                            if (count($str) == $results->length) {
+                                foreach ($results as $offset=>$result) {
+                                    $str[$offset] = str_replace($match, trim($result->textContent), $str[$offset]);
+                                }
+                            } else {
+                                throw new EmailTemplateException("XPath matching failed. Number of returned values in queries do not match");
                             }
+                        } elseif ($results->length <= 0) {
                             foreach ($str as $offset=>$val) {
-                                $str[$offset] = str_replace($match, trim($results), $str[$offset]);
+                                $str[$offset] = '';
                             }
+                            Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' Xpath query '.$match.' did not return any results, skipping. ', 100, true);
+                        }
+                    } else {
+                        if (empty($results)) {
+                            $results = '';
+                        }
+                        foreach ($str as $offset=>$val) {
+                            $str[$offset] = str_replace($match, trim($results), $str[$offset]);
                         }
                     }
                 }
-                $ret = array_merge($ret, $str);
             }
+
+            //split the results at the end otherwise it might split an xpath concat function
+            $ret = explode(",", implode(',', $str));
 
             return $ret;
         } else {
