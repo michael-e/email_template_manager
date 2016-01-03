@@ -145,7 +145,7 @@
 			</div>
 			<div class="group">
 				<div>
-					<xsl:if test="/data/errors/sender-name">
+					<xsl:if test="/data/errors/reply-to-name">
 						<xsl:attribute name="class">
 							<xsl:text>invalid</xsl:text>
 						</xsl:attribute>
@@ -169,7 +169,7 @@
 					</xsl:if>
 				</div>
 				<div>
-					<xsl:if test="/data/errors/sender-email-address">
+					<xsl:if test="/data/errors/reply-to-email-address">
 						<xsl:attribute name="class">
 							<xsl:text>invalid</xsl:text>
 						</xsl:attribute>
