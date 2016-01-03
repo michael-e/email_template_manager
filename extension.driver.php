@@ -169,10 +169,12 @@ class extension_email_template_manager extends Extension
                             $email->reply_to_email_address = $content['reply-to-email-address'];
                         }
 
-                        if(isset($content['plain']))
+                        if (isset($content['plain'])) {
                             $email->text_plain = $content['plain'];
-                        if(isset($content['html']))
+                        }
+                        if (isset($content['html'])) {
                             $email->text_html = $content['html'];
+                        }
 
                         require_once(TOOLKIT . '/util.validators.php');
                         if (General::validateString($emailaddr, $validators['email'])) {
