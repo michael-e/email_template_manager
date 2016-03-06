@@ -17,6 +17,13 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="7.2.0" date="2016-03-06" min="2.4.x" max="2.x.x">
+			<![CDATA[
+- Code formatting and minor fixes
+- Added support for different admin URL
+- Marked as compatible with Symphony 2.x.x
+			]]>
+		</release>
 		<release version="7.1.1" date="2014-10-11" min="2.4">
 			<![CDATA[
 - Be more careful with variable type.
