@@ -124,8 +124,16 @@ class extension_email_template_manager extends Extension
 
             //Add POST as page parameters
             foreach ($context['fields'] as $field => $val) {
-                $template->addParams(Array("etm-post-".$field => $val));
-                Symphony::Engine()->Page()->_param["etm-post-".$field] = $val;
+                if (is_array($val)){
+                    foreach ($val as $key => $value) {
+                        if (is_array($value)) $value = implode($value,',');
+                        $template->addParams(Array("etm-post-".$field.'.'.$key => $value));
+                        Symphony::Engine()->Page()->_param["etm-post-".$field.'.'.$key] = $value;
+                    }
+                } else {
+                    $template->addParams(Array("etm-post-".$field => $val));
+                    Symphony::Engine()->Page()->_param["etm-post-".$field] = $val;
+                }
             }
 
             $xml = $template->processDatasources();
