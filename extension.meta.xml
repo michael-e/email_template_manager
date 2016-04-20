@@ -17,6 +17,12 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="7.2.1" date="2016-04-20" min="2.4.x" max="2.x.x">
+			<![CDATA[
+- Fix for adding POST parameters when field has an array/complicated structure (thanks @jonmifsud)
+- Fix recipients parsing; split string after (not before) XPath parsing (thanks @jonmifsud)
+			]]>
+		</release>
 		<release version="7.2.0" date="2016-03-06" min="2.4.x" max="2.x.x">
 			<![CDATA[
 - Code formatting and minor fixes
