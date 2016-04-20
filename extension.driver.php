@@ -124,7 +124,7 @@ class extension_email_template_manager extends Extension
 
             //Add POST as page parameters
             foreach ($context['fields'] as $field => $val) {
-                if (is_array($val)){
+                if (is_array($val)) {
                     foreach ($val as $key => $value) {
                         if (is_array($value)) $value = implode($value,',');
                         $template->addParams(Array("etm-post-".$field.'.'.$key => $value));
