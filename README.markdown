@@ -37,14 +37,15 @@ For each layout, you will be able to set an XSLT template.
 
 **Warning: although it is possible, sending HTML-only templates is not recommended!**
 
-### 2.2 Subject, recipients and reply-to
+### 2.2 Subject, recipients, reply-to and attachments
 
 The subject and reply-to settings in the config panel can contain XPath and parameters.
-If your XPath returns more than one piece of data, only the first result is used - you can not have more than one subject.
 
-For the recipients field, on the other hand, you can select more than one recipient with a single piece of XPath.
-You can use the `Name <email@domain.com>`, `username`, `<email@domain.com>` and `"Name" <email@domain.com>` syntaxes.
-Also, you can mix sources by combining queries with a comma: `username, email@domain.com, {/data/recipients/entry/email}` will create a valid list.
+For the subject and reply-to settings, if your XPath returns more than one piece of data, only the first result is used - you can not have more than one subject, for example.
+
+For the recipients field, on the other hand, you can select more than one recipient with a single piece of XPath. You can use the `Name <email@domain.com>`, `username`, `<email@domain.com>` and `"Name" <email@domain.com>` syntaxes. Also, you can mix sources by combining queries with a comma: `username, email@domain.com, {/data/recipients/entry/email}` will create a valid list.
+
+For attachments, you may specify a comma-separated list of local file paths starting from the DOCROOT, e.g. `/workspace/media/foo.pdf`. It is also possible to include dynamic parts, e.g. using a (filtered) datasource: `/workspace/media/order-confirmations/order-{/data/order-confirmations/entry/@id}.pdf`. Like with the subject or reply-to settings, only the first matching node of an XPath expression is used.
 
 **Warning: it is not possible to mix the parameters and xpath syntax in one query: `{/data/$param}` will not work**
 
