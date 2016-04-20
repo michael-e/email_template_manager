@@ -193,6 +193,33 @@
 					</xsl:if>
 				</div>
 			</div>
+			<div>
+				<xsl:if test="/data/errors/attachments">
+					<xsl:attribute name="class">
+						<xsl:text>invalid</xsl:text>
+					</xsl:attribute>
+				</xsl:if>
+				<label>
+					Attachments
+					<i>optional</i>
+					<input type="text" name="fields[attachments]">
+						<xsl:attribute name="value">
+							<xsl:if test="/data/fields">
+								<xsl:value-of select="/data/fields/attachments"/>
+							</xsl:if>
+							<xsl:if test="not(/data/fields) and /data/templates/entry/attachments">
+								<xsl:value-of select="/data/templates/entry/attachments"/>
+							</xsl:if>
+						</xsl:attribute>
+					</input>
+				</label>
+				<xsl:if test="/data/errors/attachments">
+					<p><xsl:value-of select="/data/errors/attachments"/></p>
+				</xsl:if>
+				<xsl:if test="not(/data/errors/recipients)">
+					<p class="help">Select multiple attachments by separating them with commas. For each file define a local path starting from the DOCROOT, e.g. <code>/workspace/media/foo.pdf</code>. It is also possible to include dynamic parts.</p>
+				</xsl:if>
+			</div>
 		</fieldset>
 		<div class="actions">
 			<xsl:if test="/data/xsrf_input">

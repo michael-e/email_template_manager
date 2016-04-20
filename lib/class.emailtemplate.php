@@ -10,6 +10,7 @@ class EmailTemplate extends XSLTPage
     public $reply_to_name;
     public $reply_to_email_address;
     public $recipients;
+    public $attachments;
 
     public $datasources = Array();
     public $layouts = Array();
@@ -289,6 +290,15 @@ class EmailTemplate extends XSLTPage
             $this->_parsedProperties['reply-to-email-address'] = $this->evalXPath($this->reply_to_email_address, false);
             //$this->addParams(Array('etm-reply-to-email-address'=>$this->_parsedProperties['reply-to-email-address']));
         }
+
+        if (empty($this->_parsedProperties['attachments'])) {
+            $atts = !empty($this->attachments) ? explode(',', $this->attachments) : array();
+            $atts_eval = array();
+            foreach ($atts as $att) {
+                $atts_eval[] = DOCROOT . $this->evalXPath($att, false);
+            }
+            $this->_parsedProperties['attachments'] = $atts_eval;
+        }
     }
 
     public function getParsedProperties()
@@ -301,6 +311,7 @@ class EmailTemplate extends XSLTPage
         return Array(
             'reply-to-name' => $this->reply_to_name,
             'reply-to-email-address' => $this->reply_to_email_address,
+            'attachments' => $this->attachments,
             'subject' => $this->subject,
             'recipients' => $this->recipients,
             'datasources' => $this->datasources,

@@ -183,6 +183,9 @@ class extension_email_template_manager extends Extension
                         if (isset($content['html'])) {
                             $email->text_html = $content['html'];
                         }
+                        if (!empty($content['attachments'])) {
+                            $email->attachments = $content['attachments'];
+                        }
 
                         require_once(TOOLKIT . '/util.validators.php');
                         if (General::validateString($emailaddr, $validators['email'])) {

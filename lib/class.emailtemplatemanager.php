@@ -346,6 +346,7 @@ class EmailTemplateManager
         $config_template = str_replace('<!-- NAME -->', addslashes($config['name']), $config_template);
         $config_template = str_replace('<!-- REPLYTONAME -->', addslashes($config['reply-to-name']), $config_template);
         $config_template = str_replace('<!-- REPLYTOEMAIL -->', addslashes($config['reply-to-email-address']), $config_template);
+        $config_template = str_replace('<!-- ATTACHMENTS -->', addslashes($config['attachments']), $config_template);
         $config_template = str_replace('<!-- RECIPIENTS -->', addslashes($config['recipients']), $config_template);
         $config_template = str_replace('<!-- VERSION -->', '1.0', $config_template);
         $config_template = str_replace('<!-- AUTHOR NAME -->', addslashes($author->getFullName()), $config_template);
