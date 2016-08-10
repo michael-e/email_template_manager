@@ -19,6 +19,13 @@
 	<releases>
 		<release version="7.3.0" date="2016-04-20" min="2.4.x" max="2.x.x">
 			<![CDATA[
+- Supported on PHP 7
+- Fix compilation error with preview for Windows and Unix (see ##2375)
+- Fix params when override parent
+			]]>
+		</release>
+		<release version="7.3.0" date="2016-04-20" min="2.4.x" max="2.x.x">
+			<![CDATA[
 - Implement attachments logic
 			]]>
 		</release>
