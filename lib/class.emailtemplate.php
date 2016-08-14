@@ -184,9 +184,9 @@ class EmailTemplate extends XSLTPage
             foreach ($this->layouts as $type=>$layout) {
                 if (in_array(strtolower($type), array_map("strtolower", $layouts))) {
                     $xsl = '<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:import href="' . WORKSPACE . '/email-templates/' . $this->getHandle() . '/' . $layout.'"/>
-</xsl:stylesheet>';
+                    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                        <xsl:import href="/' . rawurlencode(ltrim(WORKSPACE, '/')) . '/email-templates/' . $this->getHandle() . '/' . $layout.'"/>
+                    </xsl:stylesheet>';
                     $this->setXSL($xsl, false);
                     $res = $this->generate();
                     if ($res) {
@@ -319,7 +319,7 @@ class EmailTemplate extends XSLTPage
         );
     }
 
-    public function setXML($xml)
+    public function setXML($xml, $isFile = false)
     {
         $this->_parsedProperties = Array();
 
