@@ -12,10 +12,10 @@ class EmailTemplate extends XSLTPage
     public $recipients;
     public $attachments;
 
-    public $datasources = Array();
-    public $layouts = Array();
+    public $datasources = array();
+    public $layouts = array();
 
-    protected $_parsedProperties = Array();
+    protected $_parsedProperties = array();
     protected $_frontendPage;
 
     public function __construct()
@@ -91,7 +91,7 @@ class EmailTemplate extends XSLTPage
             $str = str_replace($search_strings, $this->_param, $xpath_string);
             $replacements = array();
             preg_match_all('/\{[^\}\$]+\}/', $str, $matches);
-            $str = Array($str);
+            $str = array($str);
             if (is_array($matches[0]) && !empty($matches[0])) {
                 foreach ($matches[0] as $match) {
                     $results = @$xpath->evaluate(trim($match, '{}'));
@@ -129,7 +129,7 @@ class EmailTemplate extends XSLTPage
 
             return $ret;
         } else {
-            $search_strings = Array();
+            $search_strings = array();
             foreach (array_keys($this->_param) as $param) {
                 $search_strings[] = '{$' . $param . '}';
             }
@@ -155,13 +155,13 @@ class EmailTemplate extends XSLTPage
         }
     }
 
-    public function render($layouts = Array('plain', 'html'))
+    public function render($layouts = array('plain', 'html'))
     {
         if (!is_array($layouts)) {
-            $layouts = Array($layouts);
+            $layouts = array($layouts);
         }
         if (isset($this->datasources) && isset($this->layouts)) {
-            $result = Array();
+            $result = array();
 
             if (is_array($_GET) && !empty($_GET)) {
                 foreach ($_GET as $key => $val) {
@@ -216,7 +216,7 @@ class EmailTemplate extends XSLTPage
             )
         );
         if (!is_null($devkit)) {
-            $devkit->prepare($this, Array('title' => $this->getName(), 'filelocation'=>dirname(EmailTemplateManager::find($this->getHandle())) . '/' . EmailTemplateManager::getFileNameFromLayout($template)), $this->_xml, $this->_param, $output);
+            $devkit->prepare($this, array('title' => $this->getName(), 'filelocation'=>dirname(EmailTemplateManager::find($this->getHandle())) . '/' . EmailTemplateManager::getFileNameFromLayout($template)), $this->_xml, $this->_param, $output);
 
             return $devkit->build();
         }
@@ -278,17 +278,17 @@ class EmailTemplate extends XSLTPage
 
         if (empty($this->_parsedProperties['subject'])) {
             $this->_parsedProperties['subject'] = $this->evalXPath($this->subject, false);
-            //$this->addParams(Array('etm-subject'=>$this->_parsedProperties['subject']));
+            //$this->addParams(array('etm-subject'=>$this->_parsedProperties['subject']));
         }
 
         if (empty($this->_parsedProperties['reply-to-name'])) {
             $this->_parsedProperties['reply-to-name'] = $this->evalXPath($this->reply_to_name, false);
-            //$this->addParams(Array('etm-reply-to-name'=>$this->_parsedProperties['reply-to-name']));
+            //$this->addParams(array('etm-reply-to-name'=>$this->_parsedProperties['reply-to-name']));
         }
 
         if (empty($this->_parsedProperties['reply-to-email-address'])) {
             $this->_parsedProperties['reply-to-email-address'] = $this->evalXPath($this->reply_to_email_address, false);
-            //$this->addParams(Array('etm-reply-to-email-address'=>$this->_parsedProperties['reply-to-email-address']));
+            //$this->addParams(array('etm-reply-to-email-address'=>$this->_parsedProperties['reply-to-email-address']));
         }
 
         if (empty($this->_parsedProperties['attachments'])) {
@@ -308,7 +308,7 @@ class EmailTemplate extends XSLTPage
 
     public function getProperties()
     {
-        return Array(
+        return array(
             'reply-to-name' => $this->reply_to_name,
             'reply-to-email-address' => $this->reply_to_email_address,
             'attachments' => $this->attachments,
@@ -321,7 +321,7 @@ class EmailTemplate extends XSLTPage
 
     public function setXML($xml, $isFile = false)
     {
-        $this->_parsedProperties = Array();
+        $this->_parsedProperties = array();
 
         return parent::setXML($xml);
     }

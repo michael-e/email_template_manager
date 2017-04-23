@@ -40,10 +40,10 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
                 unset($fields['layouts']);
             }
             if ($fields['layouts'] == 'html') {
-                $fields['layouts'] = Array('html'=>'template.html.xsl');
+                $fields['layouts'] = array('html'=>'template.html.xsl');
             }
             if ($fields['layouts'] == 'plain') {
-                $fields['layouts'] = Array('plain'=>'template.plain.xsl');
+                $fields['layouts'] = array('plain'=>'template.plain.xsl');
             }
             if (EmailTemplateManager::create($fields)) {
                 redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved/');
@@ -88,10 +88,10 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
                     unset($fields['layouts']);
                 }
                 if ($fields['layouts'] == 'html') {
-                    $fields['layouts'] = Array('html'=>'template.html.xsl');
+                    $fields['layouts'] = array('html'=>'template.html.xsl');
                 }
                 if ($fields['layouts'] == 'plain') {
-                    $fields['layouts'] = Array('plain'=>'template.plain.xsl');
+                    $fields['layouts'] = array('plain'=>'template.plain.xsl');
                 }
 
                 if (EmailTemplateManager::editConfig($this->_context[1], $fields)) {
@@ -144,7 +144,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
     public function __viewEdit($new = false)
     {
         $this->setPageType('form');
-        $this->setTitle(sprintf(__("Symphony - Email Templates - %s", Array(), false), ucfirst($this->_context[1])));
+        $this->setTitle(sprintf(__("Symphony - Email Templates - %s", array(), false), ucfirst($this->_context[1])));
 
         if ($this->_context[2] == 'saved' || $this->_context[3] == 'saved') {
             $this->pageAlert(
@@ -209,7 +209,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
                 $datasources->appendChild($entry);
             }
             $this->_XML->appendChild($datasources);
-            General::array_to_xml($this->_XML, Array("email-settings" => Symphony::Configuration()->get('email_' . EmailGatewayManager::getDefaultGateway())));
+            General::array_to_xml($this->_XML, array("email-settings" => Symphony::Configuration()->get('email_' . EmailGatewayManager::getDefaultGateway())));
         } else {
             Administration::instance()->errorPageNotFound();
         }
@@ -258,7 +258,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
         parent::action();
     }
 
-    public function build(Array $context = array())
+    public function build(array $context = array())
     {
         parent::build($context);
     }

@@ -176,7 +176,7 @@ class EmailTemplateManager
 
     public static function listAll()
     {
-        $result = Array();
+        $result = array();
 
         foreach (new DirectoryIterator(EMAILTEMPLATES) as $dir) {
             if ($dir->isDir() && !$dir->isDot()) {
@@ -322,10 +322,10 @@ class EmailTemplateManager
 
     protected function _parseConfigTemplate($handle, $config)
     {
-        $default_config = Array(
-            'datasources'=>Array(
+        $default_config = array(
+            'datasources'=>array(
             ),
-            'layouts' => Array(
+            'layouts' => array(
                 'html'=>'template.html.xsl',
                 'plain'=>'template.plain.xsl'
             )
