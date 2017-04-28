@@ -76,9 +76,7 @@
 					</option>
 					<option value="plain">
 						<xsl:if test="not(/data/templates/entry/layouts/html) and (/data/templates/entry/layouts/plain)">
-							<xsl:attribute name="selected">
-								1
-							</xsl:attribute>
+							<xsl:attribute name="selected">1</xsl:attribute>
 						</xsl:if>
 						Plain only
 					</option>
@@ -239,4 +237,5 @@
 		</div>
 		</form>
 </xsl:template>
+
 </xsl:stylesheet>

@@ -20,14 +20,14 @@ class extension_email_template_manager extends Extension
     {
         return array(
             array(
-            'page' => '/blueprints/events/edit/',
-            'delegate' => 'AppendEventFilter',
-            'callback' => 'appendEventFilter'
+                'page' => '/blueprints/events/edit/',
+                'delegate' => 'AppendEventFilter',
+                'callback' => 'appendEventFilter'
             ),
             array(
-            'page' => '/blueprints/events/new/',
-            'delegate' => 'AppendEventFilter',
-            'callback' => 'appendEventFilter'
+                'page' => '/blueprints/events/new/',
+                'delegate' => 'AppendEventFilter',
+                'callback' => 'appendEventFilter'
             ),
             array(
                 'page' => '/frontend/',

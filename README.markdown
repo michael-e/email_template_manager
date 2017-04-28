@@ -136,6 +136,7 @@ In the `Body` textarea, you can insert your XSLT that will eventually be sent to
 		To respond, you can send an email to: <xsl:value-of select="/data/responses/entry/email"/> or reply to this email.
 
 	</xsl:template>
+
 	</xsl:stylesheet>
 
 #### 3.1.4 Setting up the second template settings (thank you message)
@@ -174,6 +175,7 @@ If you have selected to use only a Plain layout, as you did with the notificatio
 
 		The ETeaM
 	</xsl:template>
+
 	</xsl:stylesheet>
 
 #### 3.1.5 Setting up the event
