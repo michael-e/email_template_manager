@@ -2,8 +2,10 @@
 
 class <!-- CLASS NAME --> extends EmailTemplate
 {
-    public $datasources = array(<!-- DATASOURCES -->);
-    public $layouts = array(<!-- LAYOUTS -->);
+    public $datasources = array(<!-- DATASOURCES -->
+    );
+    public $layouts = array(<!-- LAYOUTS -->
+    );
     public $subject = '<!-- SUBJECT -->';
     public $reply_to_name = '<!-- REPLYTONAME -->';
     public $reply_to_email_address = '<!-- REPLYTOEMAIL -->';

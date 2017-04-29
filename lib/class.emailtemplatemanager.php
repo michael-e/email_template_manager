@@ -323,7 +323,7 @@ class EmailTemplateManager
     protected function _parseConfigTemplate($handle, $config)
     {
         $default_config = array(
-            'datasources'=>array(
+            'datasources' => array(
             ),
             'layouts' => array(
                 'html'=>'template.html.xsl',
@@ -356,13 +356,12 @@ class EmailTemplateManager
         $config_template = str_replace('<!-- SUBJECT -->', addslashes($config['subject']), $config_template);
 
         foreach ($config['datasources'] as $ds) {
-            $datasources .= "\r\n \t\t\t'".addslashes($ds)."',";
+            $datasources .= PHP_EOL . "        '" . addslashes($ds) ."',";
         }
-
         $config_template = str_replace('<!-- DATASOURCES -->', $datasources, $config_template);
 
         foreach ($config['layouts'] as $tp => $lt) {
-            $layouts .= "\r\n \t\t\t'$tp' => '".addslashes($lt)."',";
+            $layouts .= PHP_EOL . "        '$tp' => '".addslashes($lt)."',";
         }
         $config_template = str_replace('<!-- LAYOUTS -->', $layouts, $config_template);
 
