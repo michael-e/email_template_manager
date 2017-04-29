@@ -17,6 +17,11 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="7.3.2" date="2017-04-29" min="2.4.x" max="2.x.x">
+			<![CDATA[
+- Minor fixes, cleanup
+			]]>
+		</release>
 		<release version="7.3.1" date="2016-08-10" min="2.4.x" max="2.x.x">
 			<![CDATA[
 - Supported on PHP 7
