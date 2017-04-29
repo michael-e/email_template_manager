@@ -21,12 +21,14 @@
 					Name
 					<input type="text" name="fields[name]">
 						<xsl:attribute name="value">
-							<xsl:if test="/data/fields">
-								<xsl:value-of select="/data/fields/name"/>
-							</xsl:if>
-							<xsl:if test="not(/data/fields)">
-								<xsl:value-of select="/data/templates/entry/name"/>
-							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="/data/fields">
+									<xsl:value-of select="/data/fields/name"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="/data/templates/entry/name"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:attribute>
 					</input>
 				</label>
@@ -40,16 +42,18 @@
 				<select multiple="multiple" name="fields[datasources][]">
 					<xsl:for-each select="/data/datasources/entry">
 						<option value="{handle}">
-							<xsl:if test="/data/fields">
-								<xsl:if test="/data/fields/datasources/item = handle">
-									<xsl:attribute name="selected" select="'selected'"/>
-								</xsl:if>
-							</xsl:if>
-							<xsl:if test="not(/data/fields)">
-								<xsl:if test="/data/templates/entry/datasources/item = handle">
-									<xsl:attribute name="selected" select="'selected'"/>
-								</xsl:if>
-							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="/data/fields">
+									<xsl:if test="/data/fields/datasources/item = handle">
+										<xsl:attribute name="selected" select="'selected'"/>
+									</xsl:if>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:if test="/data/templates/entry/datasources/item = handle">
+										<xsl:attribute name="selected" select="'selected'"/>
+									</xsl:if>
+								</xsl:otherwise>
+							</xsl:choose>
 							<xsl:value-of select="name"/>
 						</option>
 					</xsl:for-each>
@@ -96,14 +100,15 @@
 				<label>
 					Subject
 					<input type="text" name="fields[subject]">
-
 						<xsl:attribute name="value">
-							<xsl:if test="/data/fields">
-								<xsl:value-of select="/data/fields/subject"/>
-							</xsl:if>
-							<xsl:if test="not(/data/fields)">
-								<xsl:value-of select="/data/templates/entry/subject"/>
-							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="/data/fields">
+									<xsl:value-of select="/data/fields/subject"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="/data/templates/entry/subject"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:attribute>
 					</input>
 				</label>
@@ -125,12 +130,14 @@
 					<i>optional</i>
 					<input type="text" name="fields[recipients]">
 						<xsl:attribute name="value">
-							<xsl:if test="/data/fields">
-								<xsl:value-of select="/data/fields/recipients"/>
-							</xsl:if>
-							<xsl:if test="not(/data/fields)">
-								<xsl:value-of select="/data/templates/entry/recipients"/>
-							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="/data/fields">
+									<xsl:value-of select="/data/fields/recipients"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="/data/templates/entry/recipients"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:attribute>
 					</input>
 				</label>
@@ -153,12 +160,14 @@
 						<i>optional</i>
 						<input type="text" name="fields[reply-to-name]">
 							<xsl:attribute name="value">
-								<xsl:if test="/data/fields">
-									<xsl:value-of select="/data/fields/reply-to-name"/>
-								</xsl:if>
-								<xsl:if test="not(/data/fields) and /data/templates/entry/reply-to-name">
-									<xsl:value-of select="/data/templates/entry/reply-to-name"/>
-								</xsl:if>
+								<xsl:choose>
+									<xsl:when test="/data/fields">
+										<xsl:value-of select="/data/fields/reply-to-name"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="/data/templates/entry/reply-to-name"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:attribute>
 						</input>
 					</label>
@@ -177,12 +186,14 @@
 						<i>optional</i>
 						<input type="text" name="fields[reply-to-email-address]">
 							<xsl:attribute name="value">
-								<xsl:if test="/data/fields">
-									<xsl:value-of select="/data/fields/reply-to-email-address"/>
-								</xsl:if>
-								<xsl:if test="not(/data/fields) and /data/templates/entry/reply-to-email-address">
-									<xsl:value-of select="/data/templates/entry/reply-to-email-address"/>
-								</xsl:if>
+								<xsl:choose>
+									<xsl:when test="/data/fields">
+										<xsl:value-of select="/data/fields/reply-to-email-address"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="/data/templates/entry/reply-to-email-address"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:attribute>
 						</input>
 					</label>
@@ -202,12 +213,14 @@
 					<i>optional</i>
 					<input type="text" name="fields[attachments]">
 						<xsl:attribute name="value">
-							<xsl:if test="/data/fields">
-								<xsl:value-of select="/data/fields/attachments"/>
-							</xsl:if>
-							<xsl:if test="not(/data/fields) and /data/templates/entry/attachments">
-								<xsl:value-of select="/data/templates/entry/attachments"/>
-							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="/data/fields">
+									<xsl:value-of select="/data/fields/attachments"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="/data/templates/entry/attachments"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:attribute>
 					</input>
 				</label>
