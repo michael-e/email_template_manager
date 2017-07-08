@@ -79,6 +79,6 @@ class ExtensionPage extends AdministrationPage
 
     protected function _getTemplate($type, $context)
     {
-        return sprintf("%s%s.xsl", strtolower($type), ucfirst(strtolower($context)));
+        return sprintf('%s%s.xsl', strtolower($type), ucfirst(strtolower($context)));
     }
 }

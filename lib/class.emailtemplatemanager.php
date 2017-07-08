@@ -1,13 +1,13 @@
 <?php
 
-if(!defined('EMAILTEMPLATES')) define('EMAILTEMPLATES', WORKSPACE . "/email-templates");
-if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . "/email_template_manager");
+if(!defined('EMAILTEMPLATES')) define('EMAILTEMPLATES', WORKSPACE . '/email-templates');
+if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . '/email_template_manager');
 require_once(TOOLKIT . '/class.extensionmanager.php');
 require_once 'class.emailtemplate.php';
 
 class EmailTemplateManager
 {
-    static $errorMsg = "";
+    static $errorMsg = '';
 
     public static function load($handle)
     {
@@ -189,8 +189,8 @@ class EmailTemplateManager
         }
 
         foreach (ExtensionManager::listInstalledHandles() as $extension) {
-            if (is_dir(EXTENSIONS . '/' . $extension . "/email-templates")) {
-                foreach (new DirectoryIterator(EXTENSIONS . '/' . $extension . "/email-templates") as $dir) {
+            if (is_dir(EXTENSIONS . '/' . $extension . '/email-templates')) {
+                foreach (new DirectoryIterator(EXTENSIONS . '/' . $extension . '/email-templates') as $dir) {
                     if ($dir->isDir() && !$dir->isDot()) {
                         if (file_exists($dir->getPathname() . '/' . self::getFileNameFromHandle($dir->getFilename()))) {
                             $result[$dir->getFileName()] = self::load($dir->getFileName());
@@ -271,7 +271,7 @@ class EmailTemplateManager
                     return true;
                 } else {
                     return false;
-                    self::$errorMsg = "File $dir " . '/' . self::getFileNameFromHandle($handle) . " can not be written to. Please check permissions";
+                    self::$errorMsg = "File $dir " . '/' . self::getFileNameFromHandle($handle) . ' can not be written to. Please check permissions';
                 }
             } else {
                 self::$errorMsg = "Directory $dir does not exist, or is not writeable.";
@@ -306,7 +306,7 @@ class EmailTemplateManager
 
                     return true;
                 } else {
-                    self::$errorMsg = "File $dir " . '/' . self::getFileNameFromLayout($layout) . " can not be written to. Please check permissions";
+                    self::$errorMsg = "File $dir " . '/' . self::getFileNameFromLayout($layout) . ' can not be written to. Please check permissions';
 
                     return false;
                 }

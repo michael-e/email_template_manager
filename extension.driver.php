@@ -98,7 +98,7 @@ class extension_email_template_manager extends Extension
             $handle = 'etm-' . $template->getHandle();
             $selected = (in_array($handle, $context['selected']));
             $context['options'][] = array(
-                $handle, $selected, General::sanitize("Send Email Template: " . $template->getName())
+                $handle, $selected, General::sanitize('Send Email Template: ' . $template->getName())
             );
         }
     }
@@ -119,27 +119,27 @@ class extension_email_template_manager extends Extension
     protected function _sendEmail($template, $context)
     {
         try {
-            $template->addParams(array("etm-entry-id"=>$context['entry']->get('id')));
-            Symphony::Engine()->Page()->_param["etm-entry-id"] = $context['entry']->get('id');
+            $template->addParams(array('etm-entry-id' => $context['entry']->get('id')));
+            Symphony::Engine()->Page()->_param['etm-entry-id'] = $context['entry']->get('id');
 
             //Add POST as page parameters
             foreach ($context['fields'] as $field => $val) {
                 if (is_array($val)) {
                     foreach ($val as $key => $value) {
                         if (is_array($value)) $value = implode($value,',');
-                        $template->addParams(array("etm-post-".$field.'.'.$key => $value));
-                        Symphony::Engine()->Page()->_param["etm-post-".$field.'.'.$key] = $value;
+                        $template->addParams(array('etm-post-'.$field.'.'.$key => $value));
+                        Symphony::Engine()->Page()->_param['etm-post-'.$field.'.'.$key] = $value;
                     }
                 } else {
-                    $template->addParams(array("etm-post-".$field => $val));
-                    Symphony::Engine()->Page()->_param["etm-post-".$field] = $val;
+                    $template->addParams(array('etm-post-'.$field => $val));
+                    Symphony::Engine()->Page()->_param['etm-post-'.$field] = $val;
                 }
             }
 
             $xml = $template->processDatasources();
 
             $about = $context['event']->about();
-            General::array_to_xml($xml, array("events" => array($about['name'] => array("post-values" =>$context['fields']))));
+            General::array_to_xml($xml, array('events' => array($about['name'] => array('post-values' => $context['fields']))));
 
             $template->setXML($xml->generate());
 
@@ -156,7 +156,7 @@ class extension_email_template_manager extends Extension
                         $xml = $template->processDatasources();
 
                         $about = $context['event']->about();
-                        General::array_to_xml($xml, array("events" => array($about['name'] => array("post-values" =>$context['fields']))));
+                        General::array_to_xml($xml, array('events' => array($about['name'] => array('post-values' => $context['fields']))));
 
                         $template->setXML($xml->generate());
                         $template->recipients = $emailaddr;
@@ -191,7 +191,7 @@ class extension_email_template_manager extends Extension
                         if (General::validateString($emailaddr, $validators['email'])) {
                             $email->recipients = array($name => $emailaddr);
                         } else {
-                            throw new EmailTemplateException(__("Email address invalid:") . ' ' . $emailaddr);
+                            throw new EmailTemplateException(__('Email address invalid:') . ' ' . $emailaddr);
                         }
 
                         $email->send();
@@ -203,7 +203,7 @@ class extension_email_template_manager extends Extension
                     }
                 }
             } else {
-                throw new EmailTemplateException("Can not send an email to nobody, please set a recipient.");
+                throw new EmailTemplateException('Can not send an email to nobody, please set a recipient.');
             }
         } catch (EmailTemplateException $e) {
             $context['errors'][] = array('etm-' . $template->getHandle(), false, $e->getMessage());

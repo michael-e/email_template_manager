@@ -1,7 +1,7 @@
 <?php
 
-if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . "/email_template_manager");
-if(!defined('ETVIEWS')) define('ETVIEWS', ETMDIR . "/content/templates");
+if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . '/email_template_manager');
+if(!defined('ETVIEWS')) define('ETVIEWS', ETMDIR . '/content/templates');
 
 if (!class_exists('ExtensionPage')) {
     require_once(ETMDIR . '/lib/class.extensionpage.php');
@@ -20,7 +20,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
 
     public function __construct()
     {
-        $this->_XML = new XMLElement("data");
+        $this->_XML = new XMLElement('data');
         parent::__construct(Symphony::Engine());
         $this->viewDir = ETVIEWS;
     }
@@ -123,19 +123,19 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
     public function __viewIndex()
     {
         $this->setPageType('index');
-        $this->setTitle(__("Symphony - Email Templates"));
+        $this->setTitle(__('Symphony - Email Templates'));
 
         $this->appendSubheading(__('Email Templates'), Widget::Anchor(
             __('Create New'), SYMPHONY_URL . '/extension/email_template_manager/templates/new/',
             __('Create a new email template'), 'create button'
         ));
 
-        $templates = new XMLElement("templates");
+        $templates = new XMLElement('templates');
         foreach (EmailTemplateManager::listAll() as $template) {
-            $entry = new XMLElement("entry");
+            $entry = new XMLElement('entry');
             General::array_to_xml($entry, $template->about);
             General::array_to_xml($entry, $template->getProperties());
-            $entry->appendChild(new XMLElement("handle", $template->getHandle()));
+            $entry->appendChild(new XMLElement('handle', $template->getHandle()));
             $templates->appendChild($entry);
         }
         $this->_XML->appendChild($templates);
@@ -144,7 +144,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
     public function __viewEdit($new = false)
     {
         $this->setPageType('form');
-        $this->setTitle(sprintf(__("Symphony - Email Templates - %s", array(), false), ucfirst($this->_context[1])));
+        $this->setTitle(sprintf(__('Symphony - Email Templates - %s', array(), false), ucfirst($this->_context[1])));
 
         if ((isset($this->_context[2]) && $this->_context[2] == 'saved')
             || (isset($this->_context[3]) && $this->_context[3] == 'saved')) {
@@ -160,7 +160,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
         }
 
         // Fix for 2.4 and XSRF
-        if ((Symphony::Configuration()->get("enable_xsrf", "symphony") == "yes") &&
+        if ((Symphony::Configuration()->get('enable_xsrf', 'symphony') == 'yes') &&
             (class_exists('XSRF'))) {
             $xsrf_input = new XMLElement('xsrf_input');
             $xsrf_input->appendChild(XSRF::formToken());
@@ -178,15 +178,15 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
 
         // Edit config
         if (empty($this->_context[2]) || ($this->_context[2] == 'saved')) {
-            $templates = new XMLElement("templates");
+            $templates = new XMLElement('templates');
             $template = EmailTemplateManager::load($this->_context[1]);
             if ($template) {
                 $properties = $template->getProperties();
                 $title = $template->about['name'];
-                $entry = new XMLElement("entry");
+                $entry = new XMLElement('entry');
                 General::array_to_xml($entry, $template->about);
                 General::array_to_xml($entry, $properties);
-                $entry->appendChild(new XMLElement("handle", $template->getHandle()));
+                $entry->appendChild(new XMLElement('handle', $template->getHandle()));
                 $templates->appendChild($entry);
 
                 // Create preview buttons
@@ -202,15 +202,15 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
             }
             $this->_XML->appendChild($templates);
 
-            $datasources = new XMLElement("datasources");
+            $datasources = new XMLElement('datasources');
             $dsmanager = new DatasourceManager($this);
             foreach ($dsmanager->listAll() as $datasource) {
-                $entry = new XMLElement("entry");
+                $entry = new XMLElement('entry');
                 General::array_to_xml($entry, $datasource);
                 $datasources->appendChild($entry);
             }
             $this->_XML->appendChild($datasources);
-            General::array_to_xml($this->_XML, array("email-settings" => Symphony::Configuration()->get('email_' . EmailGatewayManager::getDefaultGateway())));
+            General::array_to_xml($this->_XML, array('email-settings' => Symphony::Configuration()->get('email_' . EmailGatewayManager::getDefaultGateway())));
         } else {
             Administration::instance()->errorPageNotFound();
         }

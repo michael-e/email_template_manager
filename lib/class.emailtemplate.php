@@ -6,7 +6,7 @@ require_once(CORE . '/class.frontend.php');
 
 class EmailTemplate extends XSLTPage
 {
-    public $subject = "";
+    public $subject = '';
     public $reply_to_name;
     public $reply_to_email_address;
     public $recipients;
@@ -68,7 +68,7 @@ class EmailTemplate extends XSLTPage
         $this->_frontendPage->processDatasources(implode(', ',$this->datasources), $xml);
         $env = $this->_frontendPage->Env();
         foreach ((array) $env['pool'] as $name => $val) {
-            $tmp[$name] = implode(", ", (array) $val);
+            $tmp[$name] = implode(', ', (array) $val);
         }
         $this->addParams($tmp);
 
@@ -105,7 +105,7 @@ class EmailTemplate extends XSLTPage
                                     $str[$offset] = str_replace($match, trim($result->textContent), $str[$offset]);
                                 }
                             } else {
-                                throw new EmailTemplateException("XPath matching failed. Number of returned values in queries do not match");
+                                throw new EmailTemplateException('XPath matching failed. Number of returned values in queries do not match');
                             }
                         } elseif ($results->length <= 0) {
                             foreach ($str as $offset=>$val) {
@@ -125,7 +125,7 @@ class EmailTemplate extends XSLTPage
             }
 
             //split the results at the end otherwise it might split an xpath concat function
-            $ret = explode(",", implode(',', $str));
+            $ret = explode(',', implode(',', $str));
 
             return $ret;
         } else {
@@ -182,7 +182,7 @@ class EmailTemplate extends XSLTPage
             $properties = $this->getParsedProperties();
 
             foreach ($this->layouts as $type=>$layout) {
-                if (in_array(strtolower($type), array_map("strtolower", $layouts))) {
+                if (in_array(strtolower($type), array_map('strtolower', $layouts))) {
                     $xsl = '<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="/' . rawurlencode(ltrim(WORKSPACE, '/')) . '/email-templates/' . $this->getHandle() . '/' . $layout.'"/>
@@ -242,7 +242,7 @@ class EmailTemplate extends XSLTPage
                 if (strlen($recipient) > 0) {
                     if (strpos($recipient, '@') !== false) {
                         // NAME <email@domain>
-                        if ((($start = strpos($recipient, "<")) !== false) && (($stop = strpos($recipient, ">")) !== false)) {
+                        if ((($start = strpos($recipient, '<')) !== false) && (($stop = strpos($recipient, '>')) !== false)) {
                             $name = trim(substr($recipient, 0, $start), '"< ');
                             if (strlen($name) == 0) {
                                 $name = count((array) $rcpts);
@@ -258,7 +258,7 @@ class EmailTemplate extends XSLTPage
                     else{
                         $author = AuthorManager::fetchByUserName(trim($recipient));
                         if (is_a($author, 'Author')) {
-                            $rcpts[trim($author->get('first_name') . ' '. $author->get('last_name'))] = $author->get("email");
+                            $rcpts[trim($author->get('first_name') . ' '. $author->get('last_name'))] = $author->get('email');
                         } else {
                             Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' Recipient is recognised as a username, but the user can not be found: ' . $recipient , 100, true);
                         }
