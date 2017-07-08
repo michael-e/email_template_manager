@@ -103,14 +103,14 @@ class EmailTemplateManager
     public static function editConfig($handle, $config)
     {
         if ($template = self::load($handle)) {
-            if ($template->editable == true) {
+            if ($template->editable === true) {
                 $etm = new EmailTemplateManager();
                 if ($etm->_writeConfig($handle, $etm->_parseConfigTemplate($handle, $config))) {
 
                     $old_dir = dirname(self::find($handle));
                     $new_dir = dirname($old_dir) . '/' . self::getHandleFromName($config['name']);
 
-                    if (self::getHandleFromName($config['name']) != $handle) {
+                    if (self::getHandleFromName($config['name']) !== $handle) {
                         if (!is_dir($new_dir)) {
                             if (!rename($old_dir, $new_dir)) return false;
 

@@ -81,7 +81,7 @@ class EmailTemplate extends XSLTPage
         $dom->strictErrorChecking = false;
         $dom->loadXML($this->getXML());
         $xpath = new DOMXPath($dom);
-        if ($multiple == true) {
+        if ($multiple === true) {
 
             foreach (array_keys($this->_param) as $param) {
                 $search_strings[] = '{$' . $param . '}';
@@ -97,10 +97,10 @@ class EmailTemplate extends XSLTPage
                     $results = @$xpath->evaluate(trim($match, '{}'));
                     if (is_object($results)) {
                         if ($results->length > 0) {
-                            if (count($str) == 1) {
+                            if (count($str) === 1) {
                                 $str = array_fill(0, $results->length, $str[0]);
                             }
-                            if (count($str) == $results->length) {
+                            if (count($str) === $results->length) {
                                 foreach ($results as $offset => $result) {
                                     $str[$offset] = str_replace($match, trim($result->textContent), $str[$offset]);
                                 }
@@ -244,7 +244,7 @@ class EmailTemplate extends XSLTPage
                         // NAME <email@domain>
                         if ((($start = strpos($recipient, '<')) !== false) && (($stop = strpos($recipient, '>')) !== false)) {
                             $name = trim(substr($recipient, 0, $start), '"< ');
-                            if (strlen($name) == 0) {
+                            if (strlen($name) === 0) {
                                 $name = count((array) $rcpts);
                             }
                             $rcpts[trim($name)] = trim(substr($recipient, $start+1, $stop - ($start+1)));

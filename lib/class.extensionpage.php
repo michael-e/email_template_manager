@@ -17,7 +17,7 @@ class ExtensionPage extends AdministrationPage
     public function __switchboard($type = 'view')
     {
         $this->_type = $type;
-        if (!isset($this->_context[0]) || trim($this->_context[0]) == '') $this->_function = 'index';
+        if (!isset($this->_context[0]) || trim($this->_context[0]) === '') $this->_function = 'index';
         else $this->_function = $this->_context[0];
         parent::__switchboard($type);
     }

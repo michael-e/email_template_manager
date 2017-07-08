@@ -36,13 +36,13 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
                 Alert::ERROR
             );
         } else {
-            if ($fields['layouts'] == 'both') {
+            if ($fields['layouts'] === 'both') {
                 unset($fields['layouts']);
             }
-            if ($fields['layouts'] == 'html') {
+            if ($fields['layouts'] === 'html') {
                 $fields['layouts'] = array('html' => 'template.html.xsl');
             }
-            if ($fields['layouts'] == 'plain') {
+            if ($fields['layouts'] === 'plain') {
                 $fields['layouts'] = array('plain' => 'template.plain.xsl');
             }
             if (EmailTemplateManager::create($fields)) {
@@ -74,7 +74,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
         } else {
 
             // Config editing
-            if (empty($this->_context[2]) || ($this->_context[2] == 'saved')) {
+            if (empty($this->_context[2]) || ($this->_context[2] === 'saved')) {
 
                 if (!$this->_validateConfig($fields)) {
                     $this->_XML->appendChild($this->_validateConfig($fields, true, true));
@@ -84,13 +84,13 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
                     );
                 }
 
-                if ($fields['layouts'] == 'both') {
+                if ($fields['layouts'] === 'both') {
                     unset($fields['layouts']);
                 }
-                if ($fields['layouts'] == 'html') {
+                if ($fields['layouts'] === 'html') {
                     $fields['layouts'] = array('html' => 'template.html.xsl');
                 }
-                if ($fields['layouts'] == 'plain') {
+                if ($fields['layouts'] === 'plain') {
                     $fields['layouts'] = array('plain' => 'template.plain.xsl');
                 }
 
@@ -108,7 +108,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
 
     public function __actionIndex()
     {
-        if ($_POST['with-selected'] == 'delete') {
+        if ($_POST['with-selected'] === 'delete') {
             foreach ((array) $_POST['items'] as $item => $status) {
                 if (!EmailTemplateManager::delete($item)) {
                     $this->pageAlert(
@@ -146,8 +146,8 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
         $this->setPageType('form');
         $this->setTitle(sprintf(__('Symphony - Email Templates - %s', array(), false), ucfirst($this->_context[1])));
 
-        if ((isset($this->_context[2]) && $this->_context[2] == 'saved')
-            || (isset($this->_context[3]) && $this->_context[3] == 'saved')) {
+        if ((isset($this->_context[2]) && $this->_context[2] === 'saved')
+            || (isset($this->_context[3]) && $this->_context[3] === 'saved')) {
             $this->pageAlert(
                 __(
                     __('Template updated at %1$s.'),
@@ -160,7 +160,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
         }
 
         // Fix for 2.4 and XSRF
-        if ((Symphony::Configuration()->get('enable_xsrf', 'symphony') == 'yes') &&
+        if ((Symphony::Configuration()->get('enable_xsrf', 'symphony') === 'yes') &&
             (class_exists('XSRF'))) {
             $xsrf_input = new XMLElement('xsrf_input');
             $xsrf_input->appendChild(XSRF::formToken());
@@ -177,7 +177,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
         );
 
         // Edit config
-        if (empty($this->_context[2]) || ($this->_context[2] == 'saved')) {
+        if (empty($this->_context[2]) || ($this->_context[2] === 'saved')) {
             $templates = new XMLElement('templates');
             $template = EmailTemplateManager::load($this->_context[1]);
             if ($template) {
@@ -233,7 +233,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
         list(,$handle, $template) = $this->_context;
         $templates = EmailTemplateManager::load($handle);
         $output =  $templates->preview($template);
-        if ($template == 'plain' && !isset($_REQUEST['debug']) && !isset($_REQUEST['profile'])) {
+        if ($template === 'plain' && !isset($_REQUEST['debug']) && !isset($_REQUEST['profile'])) {
             header('Content-Type:text/plain; charset=utf-8');
         }
         echo $output;
@@ -250,7 +250,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
 
     public function action()
     {
-        if (isset($this->_context[2]) && $this->_context[2] == 'saved') {
+        if (isset($this->_context[2]) && $this->_context[2] === 'saved') {
             $this->_context[2] = null;
         }
         $fields = new XMLElement('fields');
