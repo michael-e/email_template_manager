@@ -88,7 +88,7 @@ class extension_email_template_manager extends Extension
     public function appendEventFilter($context)
     {
         $templates = EmailTemplateManager::listAll();
-        if( empty($templates) ) return;
+        if (empty($templates)) return;
         foreach ($templates as $template) {
             $tmp[$template->getHandle()] = $template;
         }
@@ -219,6 +219,6 @@ class extension_email_template_manager extends Extension
             return false;
         }
 
-        return array('total'=>count($recipients), 'sent'=>$sent);
+        return array('total' => count($recipients), 'sent' => $sent);
     }
 }

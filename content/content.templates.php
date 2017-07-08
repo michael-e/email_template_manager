@@ -1,7 +1,7 @@
 <?php
 
-if(!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . '/email_template_manager');
-if(!defined('ETVIEWS')) define('ETVIEWS', ETMDIR . '/content/templates');
+if (!defined('ETMDIR')) define('ETMDIR', EXTENSIONS . '/email_template_manager');
+if (!defined('ETVIEWS')) define('ETVIEWS', ETMDIR . '/content/templates');
 
 if (!class_exists('ExtensionPage')) {
     require_once(ETMDIR . '/lib/class.extensionpage.php');
@@ -40,10 +40,10 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
                 unset($fields['layouts']);
             }
             if ($fields['layouts'] == 'html') {
-                $fields['layouts'] = array('html'=>'template.html.xsl');
+                $fields['layouts'] = array('html' => 'template.html.xsl');
             }
             if ($fields['layouts'] == 'plain') {
-                $fields['layouts'] = array('plain'=>'template.plain.xsl');
+                $fields['layouts'] = array('plain' => 'template.plain.xsl');
             }
             if (EmailTemplateManager::create($fields)) {
                 redirect(SYMPHONY_URL . '/extension/email_template_manager/templates/edit/' . EmailTemplateManager::getHandleFromName($fields['name']) . '/saved/');
@@ -88,10 +88,10 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
                     unset($fields['layouts']);
                 }
                 if ($fields['layouts'] == 'html') {
-                    $fields['layouts'] = array('html'=>'template.html.xsl');
+                    $fields['layouts'] = array('html' => 'template.html.xsl');
                 }
                 if ($fields['layouts'] == 'plain') {
-                    $fields['layouts'] = array('plain'=>'template.plain.xsl');
+                    $fields['layouts'] = array('plain' => 'template.plain.xsl');
                 }
 
                 if (EmailTemplateManager::editConfig($this->_context[1], $fields)) {
@@ -109,7 +109,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
     public function __actionIndex()
     {
         if ($_POST['with-selected'] == 'delete') {
-            foreach ((array) $_POST['items'] as $item=>$status) {
+            foreach ((array) $_POST['items'] as $item => $status) {
                 if (!EmailTemplateManager::delete($item)) {
                     $this->pageAlert(
                         __('Could not delete: ') .  __(EmailTemplateManager::$errorMsg),
@@ -270,15 +270,15 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
         if (!empty($config['name'])) {
             if ($unique_name && EmailTemplateManager::find(EmailTemplateManager::getHandleFromName($config['name']))) {
                 $errors->appendChild(new XMLElement('name', __('A template with this name already exists.')));
-                if(!$as_xml) return false;
+                if (!$as_xml) return false;
             }
         } else {
             $errors->appendChild(new XMLElement('name', __('This field can not be empty')));
-            if(!$as_xml) return false;
+            if (!$as_xml) return false;
         }
         if (empty($config['subject'])) {
             $errors->appendChild(new XMLElement('subject', __('This field can not be empty')));
-            if(!$as_xml) return false;
+            if (!$as_xml) return false;
         }
 
         return $errors;
