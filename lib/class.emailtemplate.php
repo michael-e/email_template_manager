@@ -227,7 +227,8 @@ class EmailTemplate extends XSLTPage
     public function __set($var, $val)
     {
         if (property_exists($this, $var)) {
-            if (is_public($this->$var)) {
+            $prop = new ReflectionProperty($this, $var);
+            if ($prop->isPublic()) {
                 $this->$var = $val;
                 unset($this->_parsedProperties[$var]);
             }
