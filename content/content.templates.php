@@ -146,7 +146,8 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
         $this->setPageType('form');
         $this->setTitle(sprintf(__("Symphony - Email Templates - %s", array(), false), ucfirst($this->_context[1])));
 
-        if ($this->_context[2] == 'saved' || $this->_context[3] == 'saved') {
+        if ((isset($this->_context[2]) && $this->_context[2] == 'saved')
+            || (isset($this->_context[3]) && $this->_context[3] == 'saved')) {
             $this->pageAlert(
                 __(
                     __('Template updated at %1$s.'),
@@ -249,7 +250,7 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
 
     public function action()
     {
-        if ($this->_context[2] == 'saved') {
+        if (isset($this->_context[2]) && $this->_context[2] == 'saved') {
             $this->_context[2] = null;
         }
         $fields = new XMLElement('fields');

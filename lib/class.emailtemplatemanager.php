@@ -74,9 +74,10 @@ class EmailTemplateManager
         if (!self::find($handle)) {
             if (!is_dir(EMAILTEMPLATES . "/$handle")) {
                 mkdir(EMAILTEMPLATES . "/$handle");
-                if(!self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config), true)) return false;
-                if(!self::_writeLayout($handle, 'Plain', file_get_contents(ETMDIR . '/content/templates/xsl-plain.tpl'), true)) return false;
-                if(!self::_writeLayout($handle, 'HTML',  file_get_contents(ETMDIR . '/content/templates/xsl-html.tpl'), true)) return false;
+                $etm = new EmailTemplateManager();
+                if(!$etm->_writeConfig($handle, $etm->_parseConfigTemplate($handle, $config), true)) return false;
+                if(!$etm->_writeLayout($handle, 'Plain', file_get_contents(ETMDIR . '/content/templates/xsl-plain.tpl'), true)) return false;
+                if(!$etm->_writeLayout($handle, 'HTML',  file_get_contents(ETMDIR . '/content/templates/xsl-html.tpl'), true)) return false;
 
                 Symphony::ExtensionManager()->notifyMembers('EmailTemplatePostCreate', '/extension/email_template_manager/', array('config'=>$config));
 
@@ -97,7 +98,8 @@ class EmailTemplateManager
     {
         if ($template = self::load($handle)) {
             if ($template->editable == true) {
-                if (self::_writeConfig($handle, self::_parseConfigTemplate($handle, $config))) {
+                $etm = new EmailTemplateManager();
+                if ($etm->_writeConfig($handle, $etm->_parseConfigTemplate($handle, $config))) {
 
                     $old_dir = dirname(self::find($handle));
                     $new_dir = dirname($old_dir) . '/' . self::getHandleFromName($config['name']);
@@ -333,7 +335,7 @@ class EmailTemplateManager
 
         $config = array_merge($default_config, $config);
 
-        $config_template = file_get_contents(ETMDIR . '/content/templates/class.tpl', $config_template);
+        $config_template = file_get_contents(ETMDIR . '/content/templates/class.tpl');
 
         // Author: Use the accessor function if available (Symphony 2.5)
         if (is_callable(array('Symphony', 'Author'))) {
@@ -355,11 +357,13 @@ class EmailTemplateManager
         $config_template = str_replace('<!-- RELEASE DATE -->', DateTimeObj::getGMT('c'), $config_template);
         $config_template = str_replace('<!-- SUBJECT -->', addslashes($config['subject']), $config_template);
 
+        $datasources = '';
         foreach ($config['datasources'] as $ds) {
             $datasources .= PHP_EOL . "        '" . addslashes($ds) ."',";
         }
         $config_template = str_replace('<!-- DATASOURCES -->', $datasources, $config_template);
 
+        $layouts = '';
         foreach ($config['layouts'] as $tp => $lt) {
             $layouts .= PHP_EOL . "        '$tp' => '".addslashes($lt)."',";
         }
