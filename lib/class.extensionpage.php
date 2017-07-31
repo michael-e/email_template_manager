@@ -38,6 +38,8 @@ class ExtensionPage extends AdministrationPage
             if (file_exists($template)) {
                 $current_path = explode(dirname($_SERVER['SCRIPT_NAME']), $_SERVER['REQUEST_URI'], 2);
                 $current_path = '/' . ltrim(end($current_path), '/');
+                $upload_size_php = ini_size_to_bytes(ini_get('upload_max_filesize'));
+                $upload_size_sym = Symphony::Configuration()->get('max_upload_size', 'admin');
                 $params = array(
                     'today' => DateTimeObj::get('Y-m-d'),
                     'current-time' => DateTimeObj::get('H:i'),
