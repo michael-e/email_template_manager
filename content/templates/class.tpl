@@ -11,6 +11,7 @@ class <!-- CLASS NAME --> extends EmailTemplate
     public $reply_to_email_address = '<!-- REPLYTOEMAIL -->';
     public $recipients = '<!-- RECIPIENTS -->';
     public $attachments = '<!-- ATTACHMENTS -->';
+    public $ignore_attachment_errors = <!-- IGNORE ATTACHMENT ERRORS -->;
 
     public $editable = true;
 

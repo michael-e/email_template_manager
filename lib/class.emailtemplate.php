@@ -11,6 +11,7 @@ class EmailTemplate extends XSLTPage
     public $reply_to_email_address;
     public $recipients;
     public $attachments;
+    public $ignore_attachment_errors;
 
     public $datasources = array();
     public $layouts = array();
@@ -300,6 +301,10 @@ class EmailTemplate extends XSLTPage
             }
             $this->_parsedProperties['attachments'] = $atts_eval;
         }
+
+        if (empty($this->_parsedProperties['ignore-attachment-errors'])) {
+            $this->_parsedProperties['ignore-attachment-errors'] = $this->ignore_attachment_errors;
+        }
     }
 
     public function getParsedProperties()
@@ -313,6 +318,7 @@ class EmailTemplate extends XSLTPage
             'reply-to-name' => $this->reply_to_name,
             'reply-to-email-address' => $this->reply_to_email_address,
             'attachments' => $this->attachments,
+            'ignore-attachment-errors' => $this->ignore_attachment_errors,
             'subject' => $this->subject,
             'recipients' => $this->recipients,
             'datasources' => $this->datasources,

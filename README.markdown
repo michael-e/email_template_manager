@@ -49,6 +49,8 @@ For attachments, you may specify a comma-separated list of local file paths star
 
 **Warning: it is not possible to mix the parameters and xpath syntax in one query: `{/data/$param}` will not work**
 
+Tick the checkbox "Ignore attachment errors" if you like an email to be sent even if an attachment can not be loaded. This is useful if your email source contains an optional file upload, for example.
+
 ### 2.3 Parameters (event filters only!)
 
 If you are using filters, the ETM will automatically add a few parameters that you can use to filter your datasources:

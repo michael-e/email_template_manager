@@ -186,6 +186,9 @@ class extension_email_template_manager extends Extension
                         if (!empty($content['attachments'])) {
                             $email->attachments = $content['attachments'];
                         }
+                        if (isset($content['ignore-attachment-errors'])) {
+                            $email->validate_attachment_errors = !$content['ignore-attachment-errors'];
+                        }
 
                         require_once(TOOLKIT . '/util.validators.php');
                         if (General::validateString($emailaddr, $validators['email'])) {
