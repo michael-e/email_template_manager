@@ -297,7 +297,12 @@ class EmailTemplate extends XSLTPage
             $atts = !empty($this->attachments) ? explode(',', $this->attachments) : array();
             $atts_eval = array();
             foreach ($atts as $att) {
-                $atts_eval[] = DOCROOT . $this->evalXPath($att, false);
+                $att = $this->evalXPath($att, false);
+                if (filter_var($att, FILTER_VALIDATE_URL)) {
+                    $atts_eval[] = $att;
+                } else {
+                    $atts_eval[] = DOCROOT . $att;
+                }
             }
             $this->_parsedProperties['attachments'] = $atts_eval;
         }

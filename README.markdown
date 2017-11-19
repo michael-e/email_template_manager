@@ -51,6 +51,10 @@ For attachments, you may specify a comma-separated list of local file paths star
 
 Tick the checkbox "Ignore attachment errors" if you like an email to be sent even if an attachment can not be loaded. This is useful if your email source contains an optional file upload, for example.
 
+Starting with version 7.5.0 ETM also allows HTTP(S) URLs for attachments, with a slight restriction: URLs must not contain commas, because the comma is supposed to be the separator for multiple attachments. It is possible, however, to mix local paths and URLs in the attachments string.
+
+Loading attachments via HTTP(S) can be rather inefficient. For mass emails (using the Email Newsletter Manager) it is strongly recommended to download all static files once and define them using the local path.
+
 ### 2.3 Parameters (event filters only!)
 
 If you are using filters, the ETM will automatically add a few parameters that you can use to filter your datasources:

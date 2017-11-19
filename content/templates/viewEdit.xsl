@@ -228,7 +228,7 @@
 					<p><xsl:value-of select="/data/errors/attachments"/></p>
 				</xsl:if>
 				<xsl:if test="not(/data/errors/attachments)">
-					<p class="help">Select multiple attachments by separating them with commas. For each file define a local path starting from the DOCROOT, e.g. <code>/workspace/media/foo.pdf</code>. It is also possible to include dynamic parts.</p>
+					<p class="help">Select multiple attachments by separating them with commas. For each file define either a URL or a local path starting from the DOCROOT, e.g. <code>/workspace/media/foo.pdf</code>. It is also possible to include dynamic parts. URLs and local paths must not contain commas.</p>
 				</xsl:if>
 			</div>
 			<div>
