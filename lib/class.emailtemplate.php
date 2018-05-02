@@ -273,8 +273,6 @@ class EmailTemplate extends XSLTPage
                 $this->_parsedProperties['recipients'] = $rcpts;
             } else {
                 Symphony::Log()->pushToLog(__('Email Template Manager') . ': ' . ' No valid recipients are selected, can not send emails.' , 100, true);
-
-                return false;
             }
         }
 
