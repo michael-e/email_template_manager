@@ -17,6 +17,12 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="7.6.0" date="2018-06-26" min="2.7.0" max="2.7.x">
+			<![CDATA[
+- Add delegates before and after output generation
+- Remove php-min and php-max attributes
+			]]>
+		</release>
 		<release version="7.5.1" date="2018-05-02" min="2.7.0" max="2.7.x">
 			<![CDATA[
 - Do not return false when parsing properties (#94)
