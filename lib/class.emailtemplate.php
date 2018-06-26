@@ -204,6 +204,52 @@ class EmailTemplate extends XSLTPage
         }
     }
 
+    public function generate()
+    {
+        /**
+         * Immediately before generating the output. Provided with the template object, XML and XSLT
+         * @delegate EmailTemplateOutputPreGenerate
+         * @param string $context
+         * '/extension/email_template_manager/'
+         * @param EmailTemplate $page
+         *  This EmailTemplate object, by reference
+         * @param XMLElement $xml
+         *  This template's XML, including the Parameters, Datasource and Event XML,
+         *  by reference as an XMLElement
+         * @param string $xsl
+         *  This template's XSLT, by reference
+         */
+        Symphony::ExtensionManager()->notifyMembers(
+            'EmailTemplateOutputPreGenerate',
+            '/extension/email_template_manager/',
+            array(
+                'page' => &$this,
+                'xml'  => &$this->_xml,
+                'xsl'  => &$this->_xsl
+            )
+        );
+
+        $output = parent::generate();
+
+        /**
+         * Immediately after generating the output. Provided with string containing the output
+         * @delegate EmailTemplateOutputPostGenerate
+         * @param string $context
+         * '/extension/email_template_manager/'
+         * @param string $output
+         *  The generated output of this template, i.e. a string, passed by reference
+         */
+        Symphony::ExtensionManager()->notifyMembers(
+            'EmailTemplateOutputPostGenerate',
+            '/extension/email_template_manager/',
+            array(
+                'output' => &$output
+            )
+        );
+
+        return $output;
+    }
+
     public function preview($template)
     {
         $output = $this->render($template);
