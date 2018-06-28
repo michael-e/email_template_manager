@@ -204,7 +204,7 @@ class EmailTemplate extends XSLTPage
         }
     }
 
-    public function generate()
+    public function generate($page = null)
     {
         /**
          * Immediately before generating the output. Provided with the template object, XML and XSLT
