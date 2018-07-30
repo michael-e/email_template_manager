@@ -68,10 +68,12 @@ class EmailTemplate extends XSLTPage
         $xml->setIncludeHeader(true);
         $this->_frontendPage->processDatasources(implode(', ',$this->datasources), $xml);
         $env = $this->_frontendPage->Env();
-        foreach ((array) $env['pool'] as $name => $val) {
-            $tmp[$name] = implode(', ', (array) $val);
+        if (isset($env['pool'])) {
+            foreach ((array) $env['pool'] as $name => $val) {
+                $tmp[$name] = implode(', ', (array) $val);
+            }
+            $this->addParams($tmp);
         }
-        $this->addParams($tmp);
 
         return $xml;
     }
