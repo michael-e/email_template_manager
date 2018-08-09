@@ -3,6 +3,8 @@
 * Author: Huib Keemink (@creativedutchmen)
 * Current maintainer: Michael Eichelsdoerfer (@michael-e)
 
+**A note on compatibility**: Releases > 7.3.3 officially require Symphony 2.7.x only because they implement the "Ignore attachment errors" option (see below). If you don't care about this checkbox having no effect, you can use the latest and greatest ETM with Symphony 2.6.x. (It might even work down to Symphony 2.4.0.)
+
 
 ## Contents
 
