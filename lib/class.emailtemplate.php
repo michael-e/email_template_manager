@@ -350,17 +350,19 @@ class EmailTemplate extends XSLTPage
         }
 
         if (empty($this->_parsedProperties['attachments'])) {
-            $atts = !empty($this->attachments) ? explode(',', $this->attachments) : array();
-            $atts_eval = array();
-            foreach ($atts as $att) {
-                $att = $this->evalXPath($att, false);
-                if (filter_var($att, FILTER_VALIDATE_URL)) {
-                    $atts_eval[] = $att;
-                } else {
-                    $atts_eval[] = DOCROOT . $att;
+            $atts_config_eval = $this->evalXPath($this->attachments, false);
+            $attachments = array();
+            if (!empty($atts_config_eval)) {
+                $atts = explode(',', $atts_config_eval);
+                foreach ($atts as $att) {
+                    if (filter_var($att, FILTER_VALIDATE_URL)) {
+                        $attachments[] = $att;
+                    } else {
+                        $attachments[] = DOCROOT . $att;
+                    }
                 }
             }
-            $this->_parsedProperties['attachments'] = $atts_eval;
+            $this->_parsedProperties['attachments'] = $attachments;
         }
 
         if (empty($this->_parsedProperties['ignore-attachment-errors'])) {
