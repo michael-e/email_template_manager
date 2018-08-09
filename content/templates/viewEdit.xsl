@@ -150,6 +150,63 @@
 			</div>
 			<div class="group">
 				<div>
+					<xsl:if test="/data/errors/from-name">
+						<xsl:attribute name="class">
+							<xsl:text>invalid</xsl:text>
+						</xsl:attribute>
+					</xsl:if>
+					<label>
+						From Name
+						<i>optional</i>
+						<input type="text" name="fields[from-name]">
+							<xsl:attribute name="value">
+								<xsl:choose>
+									<xsl:when test="/data/fields">
+										<xsl:value-of select="/data/fields/from-name"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="/data/templates/entry/from-name"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+						</input>
+					</label>
+					<xsl:if test="/data/errors/from-name">
+						<p><xsl:value-of select="/data/errors/from-name"/></p>
+					</xsl:if>
+				</div>
+				<div>
+					<xsl:if test="/data/errors/from-email-address">
+						<xsl:attribute name="class">
+							<xsl:text>invalid</xsl:text>
+						</xsl:attribute>
+					</xsl:if>
+					<label>
+						From Email Address
+						<i>optional</i>
+						<input type="text" name="fields[from-email-address]">
+							<xsl:attribute name="value">
+								<xsl:choose>
+									<xsl:when test="/data/fields">
+										<xsl:value-of select="/data/fields/from-email-address"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="/data/templates/entry/from-email-address"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+						</input>
+					</label>
+					<xsl:if test="/data/errors/from-email-address">
+						<p><xsl:value-of select="/data/errors/from-email-address"/></p>
+					</xsl:if>
+					<xsl:if test="not(/data/errors/from-email-address)">
+						<p class="help">Faking this address is dangerous. It may cause issues with spam filters and even break sending, especially via SMTP.</p>
+					</xsl:if>
+				</div>
+			</div>
+			<div class="group">
+				<div>
 					<xsl:if test="/data/errors/reply-to-name">
 						<xsl:attribute name="class">
 							<xsl:text>invalid</xsl:text>

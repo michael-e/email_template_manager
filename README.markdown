@@ -31,13 +31,13 @@ However, there are a few differences, too. Most emails will consist of two layou
 
 **Warning: although it is possible, sending HTML-only templates is not recommended!**
 
-### 2.2 Subject, recipients, reply-to and attachments
+### 2.2 Subject, recipients, from, reply-to and attachments
 
-The subject and reply-to settings in the config panel can contain XPath and parameters.
-
-For the subject and reply-to settings, if your XPath returns more than one piece of data, only the first result is used - you can not have more than one subject, for example.
+The subject, from and reply-to settings in the config panel can contain XPath and parameters. If your XPath returns more than one piece of data, only the first result is used - you can not have more than one subject, for example.
 
 For the recipients field, on the other hand, you can select more than one recipient with a single piece of XPath. You can use the `Name <email@domain.com>`, `username`, `<email@domain.com>` and `"Name" <email@domain.com>` syntaxes. Also, you can mix sources by combining queries with a comma: `username, email@domain.com, {/data/recipients/entry/email}` will create a valid list.
+
+You may override Symphony's "From Name" and "From Email Address" preferences. Changing the name can often be useful, but **faking the email address is dangerous and will not work (or be restricted to certain addresses) with most SMTP accounts**. Even if this works, you must be aware of possible implications in spam filters etc. Please consider this a "Pro" feature.
 
 For attachments, you may specify a comma-separated list of local file paths starting from the DOCROOT, e.g. `/workspace/media/foo.pdf`. It is also possible to include dynamic parts, e.g. using a (filtered) datasource: `/workspace/media/order-confirmations/order-{/data/order-confirmations/entry/@id}.pdf`. Like with the subject or reply-to settings, only the first matching node of an XPath expression is used.
 

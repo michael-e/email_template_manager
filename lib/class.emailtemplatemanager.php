@@ -364,6 +364,8 @@ class EmailTemplateManager
 
         $config_template = str_replace('<!-- CLASS NAME -->', self::getClassNameFromHandle(self::getHandleFromName($config['name'])), $config_template);
         $config_template = str_replace('<!-- NAME -->', addslashes($config['name']), $config_template);
+        $config_template = str_replace('<!-- FROMNAME -->', addslashes($config['from-name']), $config_template);
+        $config_template = str_replace('<!-- FROMEMAIL -->', addslashes($config['from-email-address']), $config_template);
         $config_template = str_replace('<!-- REPLYTONAME -->', addslashes($config['reply-to-name']), $config_template);
         $config_template = str_replace('<!-- REPLYTOEMAIL -->', addslashes($config['reply-to-email-address']), $config_template);
         $config_template = str_replace('<!-- ATTACHMENTS -->', addslashes($config['attachments']), $config_template);

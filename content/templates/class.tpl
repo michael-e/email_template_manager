@@ -7,6 +7,8 @@ class <!-- CLASS NAME --> extends EmailTemplate
     public $layouts = array(<!-- LAYOUTS -->
     );
     public $subject = '<!-- SUBJECT -->';
+    public $from_name = '<!-- FROMNAME -->';
+    public $from_email_address = '<!-- FROMEMAIL -->';
     public $reply_to_name = '<!-- REPLYTONAME -->';
     public $reply_to_email_address = '<!-- REPLYTOEMAIL -->';
     public $recipients = '<!-- RECIPIENTS -->';

@@ -7,6 +7,8 @@ require_once(CORE . '/class.frontend.php');
 class EmailTemplate extends XSLTPage
 {
     public $subject = '';
+    public $from_name;
+    public $from_email_address;
     public $reply_to_name;
     public $reply_to_email_address;
     public $recipients;
@@ -329,6 +331,14 @@ class EmailTemplate extends XSLTPage
             //$this->addParams(array('etm-subject' => $this->_parsedProperties['subject']));
         }
 
+        if (empty($this->_parsedProperties['from-name'])) {
+            $this->_parsedProperties['from-name'] = $this->evalXPath($this->from_name, false);
+        }
+
+        if (empty($this->_parsedProperties['from-email-address'])) {
+            $this->_parsedProperties['from-email-address'] = $this->evalXPath($this->from_email_address, false);
+        }
+
         if (empty($this->_parsedProperties['reply-to-name'])) {
             $this->_parsedProperties['reply-to-name'] = $this->evalXPath($this->reply_to_name, false);
             //$this->addParams(array('etm-reply-to-name' => $this->_parsedProperties['reply-to-name']));
@@ -366,6 +376,8 @@ class EmailTemplate extends XSLTPage
     public function getProperties()
     {
         return array(
+            'from-name' => $this->from_name,
+            'from-email-address' => $this->from_email_address,
             'reply-to-name' => $this->reply_to_name,
             'reply-to-email-address' => $this->reply_to_email_address,
             'attachments' => $this->attachments,

@@ -169,6 +169,14 @@ class extension_email_template_manager extends Extension
                             throw new EmailTemplateException(__('Can not send emails without a subject'));
                         }
 
+                        if (!empty($content['from-name'])) {
+                            $email->sender_name = $content['from-name'];
+                        }
+
+                        if (!empty($content['from-email-address'])) {
+                            $email->sender_email_address = $content['from-email-address'];
+                        }
+
                         if (isset($content['reply-to-name'])) {
                             $email->reply_to_name = $content['reply-to-name'];
                         }
