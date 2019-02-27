@@ -160,7 +160,7 @@ class EmailTemplate extends XSLTPage
         }
     }
 
-    public function render($layouts = array('plain', 'html'))
+    public function render($layouts = array('plain', 'html'), $is_preview = false)
     {
         if (!is_array($layouts)) {
             $layouts = array($layouts);
@@ -183,7 +183,9 @@ class EmailTemplate extends XSLTPage
                 }
             }
 
-            $this->parseProperties();
+            if (!$is_preview) {
+                $this->parseProperties();
+            }
             $properties = $this->getParsedProperties();
 
             foreach ($this->layouts as $type => $layout) {
@@ -256,7 +258,7 @@ class EmailTemplate extends XSLTPage
 
     public function preview($template)
     {
-        $output = $this->render($template);
+        $output = $this->render($template, true);
         $output = $output[$template];
         $devkit = null;
         Symphony::ExtensionManager()->notifyMembers(
