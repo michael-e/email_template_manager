@@ -17,6 +17,11 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="8.0.2" date="2023-05-16" min="2.7.0" max="2.7.x">
+			<![CDATA[
+- [#99](https://github.com/michael-e/email_template_manager/issues/99): Undefined array key "layouts"
+			]]>
+		</release>
 		<release version="8.0.1" date="2019-02-27" min="2.7.0" max="2.7.x">
 			<![CDATA[
 - [#98](https://github.com/michael-e/email_template_manager/issues/98): Superfluous "missing recipient" messages in log file
