@@ -37,7 +37,10 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
             );
         } else {
             if ($fields['layouts'] === 'both') {
-                unset($fields['layouts']);
+                $fields['layouts'] = array(
+                    'html' => 'template.html.xsl',
+                    'plain' => 'template.plain.xsl',
+                );
             }
             if ($fields['layouts'] === 'html') {
                 $fields['layouts'] = array('html' => 'template.html.xsl');
@@ -85,7 +88,10 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
                 }
 
                 if ($fields['layouts'] === 'both') {
-                    unset($fields['layouts']);
+                    $fields['layouts'] = array(
+                        'html' => 'template.html.xsl',
+                        'plain' => 'template.plain.xsl',
+                    );
                 }
                 if ($fields['layouts'] === 'html') {
                     $fields['layouts'] = array('html' => 'template.html.xsl');
