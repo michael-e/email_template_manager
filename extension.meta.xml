@@ -17,6 +17,12 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="8.0.3" date="2023-05-27" min="2.7.0" max="2.7.x">
+			<![CDATA[
+- [#78](https://github.com/michael-e/email_template_manager/issues/78): Fails to delete template files and folder
+- [#100](https://github.com/michael-e/email_template_manager/issues/100): Delete template from index view fails
+			]]>
+		</release>
 		<release version="8.0.2" date="2023-05-16" min="2.7.0" max="2.7.x">
 			<![CDATA[
 - [#99](https://github.com/michael-e/email_template_manager/issues/99): Undefined array key "layouts"
