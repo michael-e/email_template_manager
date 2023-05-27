@@ -136,6 +136,16 @@ class contentExtensionemail_template_managertemplates extends ExtensionPage
             __('Create a new email template'), 'create button'
         ));
 
+        // Fix for 2.4 and XSRF
+        if ((Symphony::Configuration()->get('enable_xsrf', 'symphony') === 'yes') &&
+            (class_exists('XSRF'))) {
+            $xsrf_input = new XMLElement('xsrf_input');
+            $xsrf_input->appendChild(XSRF::formToken());
+            $this->_XML->appendChild(
+                $xsrf_input
+            );
+        }
+
         $templates = new XMLElement('templates');
         foreach (EmailTemplateManager::listAll() as $template) {
             $entry = new XMLElement('entry');

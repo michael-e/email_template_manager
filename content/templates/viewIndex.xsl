@@ -30,6 +30,9 @@
 			</tbody>
 		</table>
 	    <div class="actions">
+			<xsl:if test="/data/xsrf_input">
+				<xsl:copy-of select="/data/xsrf_input/*"/>
+			</xsl:if>
 	        <fieldset class="apply">
 	            <div>
 	                <select name="with-selected">
