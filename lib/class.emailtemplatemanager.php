@@ -167,7 +167,7 @@ class EmailTemplateManager
         if (is_dir($dir) && is_writeable($dir)) {
             try {
                 if (!(($files = @scandir($dir)) && count($files) <= 2)) {
-                    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir)) as $filename => $cur) {
+                    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS)) as $filename => $cur) {
                         if (is_dir($filename)) {
                             rmdir($filename);
                         } elseif (is_file($filename)) {
