@@ -77,7 +77,7 @@ class extension_email_template_manager extends Extension
         $templates = EmailTemplateManager::listAll();
         foreach ($templates as $template) {
             $config = $template->getProperties();
-            if (($key = array_search($file['parent']->Page->_context[1], $config['datasources'])) !== false) {
+            if (!is_null($file['previous_file']) && ($key = array_search(DatasourceManager::__getHandleFromFilename(basename($file['previous_file'])), $config['datasources'])) !== false) {
                 $config['datasources'][$key] = $ds_handle;
 
                 return EmailTemplateManager::editConfig($template->getHandle(), array_merge($template->getAbout(), $config));
