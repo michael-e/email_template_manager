@@ -17,6 +17,12 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="8.0.4" date="2023-11-02" min="2.7.0" max="2.7.x">
+			<![CDATA[
+- [#101](https://github.com/michael-e/email_template_manager/issues/101): Undefined array key "parent"
+- [#102](https://github.com/michael-e/email_template_manager/issues/102): Renaming a Data Source does not change the handle in associated template files
+			]]>
+		</release>
 		<release version="8.0.3" date="2023-05-27" min="2.7.0" max="2.7.x">
 			<![CDATA[
 - [#78](https://github.com/michael-e/email_template_manager/issues/78): Fails to delete template files and folder
