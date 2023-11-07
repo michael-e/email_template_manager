@@ -17,6 +17,11 @@
 		<item type="image" url="http://symphonyextensions.com/creativedutchmen/email_template_manager/media/email_template_manager.jpg">Email Template Manager: Emails need pages no more</item>
 	</media>
 	<releases>
+		<release version="8.0.5" date="2023-11-07" min="2.7.0" max="2.7.x">
+			<![CDATA[
+- Add license file
+			]]>
+		</release>
 		<release version="8.0.4" date="2023-11-02" min="2.7.0" max="2.7.x">
 			<![CDATA[
 - [#101](https://github.com/michael-e/email_template_manager/issues/101): Undefined array key "parent"
